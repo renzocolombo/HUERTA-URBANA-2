@@ -144,22 +144,111 @@ header {
     color: var(--primary);
 }
 
-.cart-summary {
+.header-cart-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.cart-total-header {
+    font-weight: 700;
+    color: var(--primary);
+    font-size: 1.1rem;
+}
+
+.btn-ver-pedido {
     display: flex;
     align-items: center;
     gap: 8px;
     background: var(--primary);
     color: white;
-    padding: 8px 15px;
+    padding: 8px 16px;
     border-radius: 50px;
-    cursor: pointer;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
     font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
     transition: var(--transition);
 }
 
-.cart-summary:hover {
+.btn-ver-pedido ion-icon {
+    font-size: 1.2rem;
+}
+
+.btn-ver-pedido:hover {
     background: var(--primary-light);
     transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(45, 90, 39, 0.2);
+}
+
+/* Cart Modal Styles */
+.cart-modal-header {
+    padding: 30px 25px 20px;
+    border-bottom: 1px solid #eee;
+    text-align: left;
+}
+
+.cart-modal-header h2 {
+    color: var(--primary);
+    margin-bottom: 5px;
+}
+
+.cart-modal-header p {
+    color: #888;
+    font-size: 0.9rem;
+}
+
+.cart-modal-body {
+    padding: 20px 25px;
+}
+
+.cart-modal-items {
+    max-height: 350px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+    padding-right: 10px;
+}
+
+.cart-modal-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px dotted #eee;
+}
+
+.cart-modal-item-info {
+    display: flex;
+    flex-direction: column;
+}
+
+.cart-modal-item-name {
+    font-weight: 600;
+    color: var(--text-dark);
+}
+
+.cart-modal-item-qty {
+    font-size: 0.85rem;
+    color: #777;
+}
+
+.cart-modal-item-price {
+    font-weight: 700;
+    color: var(--primary);
+}
+
+.cart-modal-total-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-top: 15px;
+    border-top: 2px solid var(--bg-alt);
+    font-weight: 700;
+}
+
+.cart-modal-footer {
+    padding: 0 25px 30px;
 }
 
 /* Hero Section */

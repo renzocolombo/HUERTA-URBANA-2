@@ -34,26 +34,12 @@
                     <li><a href="#formulario">Finalizar</a></li>
                 </ul>
             </nav>
-            <div class="cart-summary" id="open-cart">
-                <ion-icon name="cart-outline"></ion-icon>
-                <span id="cart-total-badge">$0</span>
-                <!-- Desplegable del Carrito -->
-                <div class="cart-dropdown" id="cart-dropdown">
-                    <div class="cart-dropdown-header">
-                        <h4>Tu Carrito</h4>
-                    </div>
-                    <div class="cart-dropdown-items" id="cart-dropdown-items">
-                        <!-- Se puebla dinámicamente -->
-                    </div>
-                    <div class="cart-dropdown-footer">
-                        <div class="cart-dropdown-total">
-                            <span>Total:</span>
-                            <span id="cart-dropdown-total-val">$0</span>
-                        </div>
-                        <a href="#formulario" class="btn btn-primary btn-sm btn-full"
-                            onclick="toggleCart(event)">Finalizar Pedido</a>
-                    </div>
-                </div>
+            <div class="header-cart-info" id="open-cart">
+                <span id="cart-total-header" class="cart-total-header">$0</span>
+                <button class="btn-ver-pedido" id="open-cart-btn">
+                    <ion-icon name="cart-outline"></ion-icon>
+                    <span>Ver pedido</span>
+                </button>
             </div>
         </div>
     </header>
