@@ -3,90 +3,83 @@
 const PRODUCTS = {
     combos: [
         {
-            id: 'c1', name: 'Combo Inicial', price: 35000,
-            desc: 'Básico: Mezcla de verduras y frutas esenciales.',
+            id: 'c1', name: 'Combo básico', price: 35000,
+            desc: 'Mezcla esencial de frutas y verduras para arrancar la semana con energía y frescura.',
             img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=300',
-            items: ['2kg Papa', '1kg Cebolla', '1kg Tomate', '1/2kg Lechuga', '1kg Manzana', '1kg Naranja']
+            items: ['2kg Papa blanca', '1kg Cebolla blanca', '1kg Tomate', '1/2kg Lechuga mantecosa', '1kg Manzana roja', '1kg Naranja']
         },
         {
-            id: 'c2', name: 'Combo Familiar', price: 65000,
-            desc: 'Pensado para 4 personas (mamá, papá y dos hijos).',
+            id: 'c2', name: 'Combo familiar', price: 65000,
+            desc: 'Pensado para cubrir las necesidades de una familia, con frutas y verduras frescas para todos los días.',
             img: 'https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&q=80&w=300',
-            items: ['4kg Papa', '2kg Cebolla', '2kg Tomate', '1kg Lechuga', '1kg Zanahoria', '1kg Zapallo', '2kg Manzana', '2kg Naranja', '1kg Banana']
+            items: ['4kg Papa blanca', '2kg Cebolla blanca', '2kg Tomate', '1kg Lechuga mantecosa', '1kg Zanahoria', '1kg Calabaza anco', '2kg Manzana roja', '2kg Naranja', '1kg Banana']
         },
         {
-            id: 'c3', name: 'Combo Premium', price: 95000,
-            desc: 'Mezcla de todas las verduras, frutas, frutos secos y miel.',
+            id: 'c3', name: 'Combo premium', price: 95000,
+            desc: 'Selección exclusiva de productos premium, con sabores y calidad superior para quienes buscan lo mejor.',
             img: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&q=80&w=300',
-            items: ['Variedad de Estación (Verduras)', 'Variedad de Estación (Frutas)', 'Mix Frutos Secos 250g', 'Nueces 250g', 'Miel Pura 1kg']
+            items: ['Productos de Estación Premium', 'Variedad de Frutas Seleccionadas', 'Frutos Secos 250g', 'Miel Pura 1kg']
         },
         {
-            id: 'c4', name: 'Combo Frutos Secos', price: 42000,
-            desc: '100% frutos secos, miel, granola y pasas de uva.',
+            id: 'c4', name: 'Combo frutos secos', price: 42000,
+            desc: 'Mezcla de frutos secos y miel, ideal para un snack nutritivo y delicioso.',
             img: 'https://images.unsplash.com/photo-1596591606975-97ee5cef3a1e?auto=format&fit=crop&q=80&w=300',
-            items: ['Mix Frutos Secos 500g', 'Almendras 250g', 'Nueces 250g', 'Granola 500g', 'Pasas de Uva 250g', 'Miel 1kg']
+            items: ['Frutos Secos Mix 500g', 'Miel Pura 1kg']
         },
         {
-            id: 'c5', name: 'Combo Fit', price: 58000,
-            desc: 'Orientado a personas que hacen gimnasio (Proteína y Energía).',
+            id: 'c5', name: 'Combo fit', price: 58000,
+            desc: 'Orientado a personas que hacen ejercicio, rico en proteínas y energía natural para rendir al máximo.',
             img: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&q=80&w=300',
-            items: ['Bananas (varios kg)', 'Mix Frutos Secos', 'Nueces', 'Miel', 'Palta (estación)', 'Espinaca']
+            items: ['Banana (varios kg)', 'Frutos Secos', 'Miel Pura', 'Acelga']
         },
         {
-            id: 'c6', name: 'Combo Semanal', price: 32000,
-            desc: 'Tamaño para 1-2 personas, por 7 días.',
+            id: 'c6', name: 'Combo semanal', price: 32000,
+            desc: 'Mezcla pensada para una familia durante toda la semana, con frutas y verduras frescas de lunes a domingo.',
             img: 'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&q=80&w=300',
-            items: ['2kg Papa', '1kg Cebolla', '1kg Tomate', '1/2kg Zanahoria', '1kg Fruta Mezclada']
+            items: ['2kg Papa blanca', '1kg Cebolla blanca', '1kg Tomate', '1kg Fruta Mezclada']
         },
         {
-            id: 'c7', name: 'Combo Mensual', price: 120000,
-            desc: 'Tamaño familia, mezcla variada de todos los productos.',
+            id: 'c7', name: 'Combo mensual', price: 120000,
+            desc: 'Variedad completa de frutas y verduras para cubrir todo un mes, fresco y equilibrado para tu familia.',
             img: 'https://images.unsplash.com/photo-1574316071802-0d684efa7bf5?auto=format&fit=crop&q=80&w=300',
-            items: ['Súper Canasta de Verduras', 'Súper Canasta de Frutas', 'Línea completa Frutos Secos', 'Miel 2kg']
+            items: ['Canasta Mensual de Verduras', 'Canasta Mensual de Frutas', 'Miel Pura 2kg']
         },
         {
-            id: 'c8', name: 'Combo Llena la Heladera', price: 85000,
-            desc: 'Mezcla de todas las frutas y verduras disponibles, tamaño grande.',
+            id: 'c8', name: 'Combo llena la heladera', price: 85000,
+            desc: 'Selección abundante de todas las frutas y verduras disponibles, para tener la heladera siempre lista y llena de frescura.',
             img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=300',
-            items: ['Mix Completo de Verduras (15kg approx)', 'Mix Completo de Frutas (10kg approx)']
+            items: ['Mix Abundante de Verduras', 'Mix Abundante de Frutas']
         }
     ],
     individual: {
         'verduras': [
-            { id: 'v1', name: 'Tomate', price: 3500, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v2', name: 'Lechuga Mantecosa', price: 2800, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v3', name: 'Papa Blanca', price: 1500, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v4', name: 'Cebolla Blanca', price: 1800, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v5', name: 'Cebolla Morada', price: 2100, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v6', name: 'Zanahoria', price: 1600, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v7', name: 'Morrón Rojo', price: 4500, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v8', name: 'Pepino', price: 2200, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v9', name: 'Calabaza Cabutía', price: 1900, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v10', name: 'Calabaza Anco', price: 1700, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v11', name: 'Acelga', price: 2400, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v12', name: 'Espinaca', price: 3200, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v13', name: 'Remolacha', price: 2600, unit: 'kg', step: 0.5, min: 1 }
+            { id: 'v1', name: 'tomate', price: 3500, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'v2', name: 'lechuga mantecosa', price: 2800, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'v3', name: 'papa blanca', price: 1500, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'v4', name: 'cebolla blanca', price: 1800, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'v5', name: 'cebolla morada', price: 2100, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'v6', name: 'zanahoria', price: 1600, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'v7', name: 'morrón', price: 4500, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'v8', name: 'pepino', price: 2200, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'v9', name: 'calabaza cabutia', price: 1900, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'v10', name: 'calabaza anco', price: 1700, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'v11', name: 'acelga', price: 2400, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'v13', name: 'cabeza de remolacha', price: 2600, unit: 'kg', step: 0.5, min: 1 }
         ],
         'frutas': [
-            { id: 'f1', name: 'Manzana Roja', price: 4200, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'f2', name: 'Manzana Verde', price: 4600, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'f3', name: 'Bananas', price: 3800, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'f4', name: 'Naranja', price: 3200, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'f5', name: 'Limón', price: 2500, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'f6', name: 'Mandarina', price: 3000, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'f7', name: 'Bandejita de Arándanos', price: 3500, unit: 'un', step: 1, min: 1 },
-            { id: 'f8', name: 'Durazno', price: 5500, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'f9', name: 'Pomelo', price: 3400, unit: 'kg', step: 0.5, min: 1 }
+            { id: 'f1', name: 'manzana roja', price: 4200, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'f2', name: 'manzana verde', price: 4600, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'f3', name: 'banana', price: 3800, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'f4', name: 'naranja', price: 3200, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'f5', name: 'limón', price: 2500, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'f6', name: 'mandarina', price: 3000, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'f8', name: 'durazno', price: 5500, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'f9', name: 'pomelo', price: 3400, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'f7', name: 'bandeja de arándanos', price: 3500, unit: 'un', step: 1, min: 1 }
         ],
         'frutos-secos-extras': [
-            { id: 's1', name: 'Mix Frutos Secos', price: 18000, unit: 'g', step: 50, min: 100, max: 1000 },
-            { id: 's2', name: 'Nueces', price: 22000, unit: 'g', step: 50, min: 100, max: 1000 },
-            { id: 's3', name: 'Almendras', price: 24000, unit: 'g', step: 50, min: 100, max: 1000 },
-            { id: 's4', name: 'Maní', price: 8000, unit: 'g', step: 50, min: 100, max: 1000 },
-            { id: 's5', name: 'Castañas de Cajú', price: 28000, unit: 'g', step: 50, min: 100, max: 1000 },
-            { id: 's6', name: 'Granola', price: 12000, unit: 'g', step: 50, min: 100, max: 1000 },
-            { id: 's7', name: 'Pasas de Uva', price: 9000, unit: 'g', step: 50, min: 100, max: 1000 },
-            { id: 'ex1', name: 'Miel Pura', price: 7500, unit: 'kg', step: 0.5, min: 1 }
+            { id: 's1', name: 'frutos secos', price: 18000, unit: 'g', step: 100, min: 100, max: 1000 },
+            { id: 'ex1', name: 'miel pura', price: 7500, unit: 'kg', step: 0.5, min: 1 }
         ]
     }
 };
