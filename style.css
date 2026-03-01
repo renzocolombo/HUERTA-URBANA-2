@@ -159,17 +159,18 @@ header {
 .btn-ver-pedido {
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 10px;
     background: var(--primary);
     color: white;
-    padding: 8px 16px;
+    padding: 12px 24px;
     border-radius: 50px;
     border: none;
     font-family: 'Montserrat', sans-serif;
-    font-weight: 600;
-    font-size: 0.9rem;
+    font-weight: 700;
+    font-size: 1.05rem;
     cursor: pointer;
     transition: var(--transition);
+    box-shadow: 0 4px 15px rgba(45, 90, 39, 0.15);
 }
 
 .btn-ver-pedido ion-icon {
