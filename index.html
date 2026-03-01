@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Huerta Urbana | Frutas y Verduras Premium</title>
+    <meta name="description"
+        content="Huerta Urbana - Venta de frutas y verduras frescas con combos estándar y personalizados. Calidad premium en la palma de tu mano.">
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap"
+        rel="stylesheet">
+    <!-- Ionicons para iconos elegantes -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <header id="header">
+        <div class="container header-container">
+            <div class="logo">
+                <ion-icon name="leaf" class="logo-icon"></ion-icon>
+                <span>HUERTA URBANA</span>
+            </div>
+            <nav class="desktop-nav">
+                <ul>
+                    <li><a href="#hero">Inicio</a></li>
+                    <li><a href="#combos-estandar">Combos</a></li>
+                    <li><a href="#personalizado">Armar Pedido</a></li>
+                    <li><a href="#formulario">Finalizar</a></li>
+                </ul>
+            </nav>
+            <div class="cart-summary" id="open-cart">
+                <ion-icon name="cart-outline"></ion-icon>
+                <span id="cart-total-badge">$0</span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- Hero Section -->
+        <section id="hero" class="hero">
+            <div class="container hero-content">
+                <h1 class="fade-in">Frescura del campo <br><span>en tu mesa</span></h1>
+                <p class="fade-in delay-1">Seleccionamos las mejores frutas y verduras para vos. Pedidos personalizados
+                    y combos diseñados para tu hogar.</p>
+                <div class="hero-actions fade-in delay-2">
+                    <a href="#combos-estandar" class="btn btn-primary">Ver Combos</a>
+                    <a href="#personalizado" class="btn btn-secondary">Armar mi Pedido</a>
+                </div>
+            </div>
+            <div class="hero-overlay"></div>
+        </section>
+
+        <!-- Combos Estándar -->
+        <section id="combos-estandar" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Combos Premium</h2>
+                    <p>Elegí la opción que mejor se adapte a tu necesidad.</p>
+                </div>
+                <div class="combos-grid" id="combos-container">
+                    <!-- Cards will be injected by JS -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Pedido Personalizado -->
+        <section id="personalizado" class="section section-alt">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Armá tu Pedido</h2>
+                    <p>Seleccioná tus productos individuales con pesajes específicos.</p>
+                </div>
+
+                <!-- Sistema de Pestañas (Tabs) -->
+                <div class="tabs-container">
+                    <div class="tabs-header">
+                        <button class="tab-btn active" onclick="switchCategory('verduras')">Verduras</button>
+                        <button class="tab-btn" onclick="switchCategory('frutas')">Frutas</button>
+                        <button class="tab-btn" onclick="switchCategory('frutos-secos-extras')">Frutos Secos /
+                            Extras</button>
+                    </div>
+                </div>
+
+                <div class="custom-grid" id="custom-products-container">
+                    <!-- Products will be injected by JS based on selected category -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Resumen Dinámico y Formulario -->
+        <section id="formulario" class="section">
+            <div class="container">
+                <div class="order-layout">
+                    <!-- Resumen del Pedido -->
+                    <div class="order-summary" id="order-summary-card">
+                        <h3>Resumen de Pedido</h3>
+                        <div id="summary-items" class="summary-items">
+                            <p class="empty-msg">Tu carrito está vacío</p>
+                        </div>
+                        <div class="summary-footer">
+                            <div class="total-row">
+                                <span>Total:</span>
+                                <span id="summary-total">$0</span>
+                            </div>
+                            <p id="min-purchase-msg" class="warning-text">Compra mínima: $45.000</p>
+                        </div>
+                    </div>
+
+                    <!-- Formulario -->
+                    <div class="order-form-container">
+                        <h3>Datos de Entrega</h3>
+                        <form id="order-form">
+                            <div class="form-group">
+                                <label for="fullname">Nombre Completo</label>
+                                <input type="text" id="fullname" placeholder="Nombre y Apellido" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="address">Dirección</label>
+                                <input type="text" id="address" placeholder="Ej: Av. Siempreviva 123" required>
+                            </div>
+                            <div class="form-group">
+                                <label for="phone">Teléfono / WhatsApp</label>
+                                <input type="tel" id="phone" placeholder="Ej: 11 1234 5678" required>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
+                                    <label for="delivery-day">Día de Entrega</label>
+                                    <select id="delivery-day" required>
+                                        <option value="" disabled selected>Seleccionar día</option>
+                                        <option value="Martes">Martes</option>
+                                        <option value="Jueves">Jueves</option>
+                                    </select>
+                                </div>
+                                <div class="form-group">
+                                    <label for="delivery-time">Rango Horario</label>
+                                    <select id="delivery-time" required>
+                                        <option value="" disabled selected>Seleccionar rango</option>
+                                        <option value="Antes de las 14hs">Antes de las 14:00hs</option>
+                                        <option value="Después de las 14hs">Después de las 14:00hs</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <button type="submit" id="submit-btn" class="btn btn-full btn-disabled" disabled>Confirmar
+                                Pedido</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-info">
+                <div class="logo logo-light">
+                    <ion-icon name="leaf" class="logo-icon"></ion-icon>
+                    <span>HUERTA URBANA</span>
+                </div>
+                <p>Calidad premium y frescura garantizada en cada entrega. <br> Compra mínima: $45.000</p>
+                <a href="mailto:huertaurbana@gmail.com" class="footer-email">huertaurbana@gmail.com</a>
+            </div>
+            <div class="social-links">
+                <a href="#" class="social-btn instagram" title="Instagram">
+                    <ion-icon name="logo-instagram"></ion-icon>
+                </a>
+                <a href="#" class="social-btn tiktok" title="TikTok">
+                    <ion-icon name="logo-tiktok"></ion-icon>
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Huerta Urbana. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- Modal Success -->
+    <div id="success-modal" class="modal">
+        <div class="modal-content">
+            <ion-icon name="checkmark-circle" class="success-icon"></ion-icon>
+            <h2>¡Pedido enviado correctamente!</h2>
+            <p>Gracias por confiar en Huerta Urbana. Nos contactaremos pronto por WhatsApp.</p>
+            <button onclick="closeModal()" class="btn btn-primary">Cerrar</button>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
