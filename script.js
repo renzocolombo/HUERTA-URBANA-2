@@ -99,6 +99,29 @@ document.addEventListener('DOMContentLoaded', () => {
 function initUI() {
     const orderForm = document.getElementById('order-form');
     orderForm.addEventListener('submit', handleOrderSubmit);
+
+    // Toggle Cart Dropdown
+    const cartBtn = document.getElementById('open-cart');
+    cartBtn.addEventListener('click', (e) => {
+        if (!e.target.closest('.cart-dropdown')) {
+            toggleCart(e);
+        }
+    });
+
+    // Close cart when clicking outside
+    document.addEventListener('click', (e) => {
+        const cartDropdown = document.getElementById('cart-dropdown');
+        const cartBtn = document.getElementById('open-cart');
+        if (!cartBtn.contains(e.target) && cartDropdown.classList.contains('active')) {
+            cartDropdown.classList.remove('active');
+        }
+    });
+}
+
+function toggleCart(e) {
+    if (e) e.stopPropagation();
+    const dropdown = document.getElementById('cart-dropdown');
+    dropdown.classList.toggle('active');
 }
 
 function switchCategory(cat) {
@@ -203,18 +226,22 @@ function updateCustomQty(id, delta, category) {
 
 function updateSummary() {
     const summaryItems = document.getElementById('summary-items');
+    const dropdownItems = document.getElementById('cart-dropdown-items');
     const summaryTotal = document.getElementById('summary-total');
+    const dropdownTotalVal = document.getElementById('cart-dropdown-total-val');
     const badge = document.getElementById('cart-total-badge');
     const minMsg = document.getElementById('min-purchase-msg');
     const submitBtn = document.getElementById('submit-btn');
 
     let total = 0;
     let itemsHtml = '';
+    let dropdownHtml = '';
 
     const cartEntries = Object.values(cart);
 
     if (cartEntries.length === 0) {
         itemsHtml = '<p class="empty-msg">Tu carrito está vacío</p>';
+        dropdownHtml = '<p class="empty-msg" style="text-align: center; color: #999; font-size: 0.9rem;">Tu carrito está vacío</p>';
     } else {
         cartEntries.forEach(item => {
             // Precio para frutos secos es por kg en la BD, pero se vende en g
@@ -228,17 +255,29 @@ function updateSummary() {
             }
 
             total += subtotal;
+            const itemText = `${item.name} (${item.qty}${item.unit})`;
+            const subtotalText = `$${subtotal.toLocaleString('es-AR')}`;
+
             itemsHtml += `
                 <div class="summary-item">
-                    <span>${item.name} (${item.qty}${item.unit})</span>
-                    <span>$${subtotal.toLocaleString('es-AR')}</span>
+                    <span>${itemText}</span>
+                    <span>${subtotalText}</span>
+                </div>
+            `;
+
+            dropdownHtml += `
+                <div class="cart-dropdown-item">
+                    <span>${itemText}</span>
+                    <strong>${subtotalText}</strong>
                 </div>
             `;
         });
     }
 
     summaryItems.innerHTML = itemsHtml;
+    dropdownItems.innerHTML = dropdownHtml;
     summaryTotal.innerText = `$${Math.round(total).toLocaleString('es-AR')}`;
+    dropdownTotalVal.innerText = `$${Math.round(total).toLocaleString('es-AR')}`;
     badge.innerText = `$${Math.round(total).toLocaleString('es-AR')}`;
 
     if (total >= MIN_PURCHASE) {
