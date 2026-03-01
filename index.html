@@ -235,6 +235,30 @@
         </div>
     </div>
 
+    <!-- Modal Carrito Detalle -->
+    <div id="cart-modal" class="modal">
+        <div class="modal-content combo-detail-content">
+            <button class="close-modal" onclick="closeCartModal()"><ion-icon name="close-outline"></ion-icon></button>
+            <div class="cart-modal-header">
+                <h2>Tu Pedido</h2>
+                <p>Resumen de productos seleccionados</p>
+            </div>
+            <div class="cart-modal-body">
+                <div id="cart-modal-items" class="cart-modal-items">
+                    <!-- Items will be injected by JS -->
+                </div>
+                <div class="cart-modal-total-row">
+                    <span>Total acumulado:</span>
+                    <span id="cart-modal-total-val" class="price">$0</span>
+                </div>
+            </div>
+            <div class="cart-modal-footer">
+                <button onclick="closeCartModal(); window.location.href='#formulario';"
+                    class="btn btn-primary btn-full">Finalizar Pedido</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Botón Flotante de WhatsApp -->
     <a href="https://wa.me/5491122334455" class="whatsapp-float" target="_blank" rel="noopener noreferrer"
         title="Comunicate por WhatsApp">

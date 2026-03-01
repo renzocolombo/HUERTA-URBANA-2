@@ -100,28 +100,71 @@ function initUI() {
     const orderForm = document.getElementById('order-form');
     orderForm.addEventListener('submit', handleOrderSubmit);
 
-    // Toggle Cart Dropdown
-    const cartBtn = document.getElementById('open-cart');
-    cartBtn.addEventListener('click', (e) => {
-        if (!e.target.closest('.cart-dropdown')) {
-            toggleCart(e);
-        }
-    });
+    // Cart Modal Events
+    const cartBtn = document.getElementById('open-cart-btn');
+    cartBtn.addEventListener('click', showCartModal);
 
-    // Close cart when clicking outside
-    document.addEventListener('click', (e) => {
-        const cartDropdown = document.getElementById('cart-dropdown');
-        const cartBtn = document.getElementById('open-cart');
-        if (!cartBtn.contains(e.target) && cartDropdown.classList.contains('active')) {
-            cartDropdown.classList.remove('active');
-        }
+    // Close modal when clicking background
+    window.addEventListener('click', (e) => {
+        const cartModal = document.getElementById('cart-modal');
+        const comboModal = document.getElementById('combo-modal');
+        const successModal = document.getElementById('success-modal');
+
+        if (e.target === cartModal) closeCartModal();
+        if (e.target === comboModal) closeComboModal();
+        if (e.target === successModal) closeModal();
     });
 }
 
-function toggleCart(e) {
-    if (e) e.stopPropagation();
-    const dropdown = document.getElementById('cart-dropdown');
-    dropdown.classList.toggle('active');
+function showCartModal() {
+    const modal = document.getElementById('cart-modal');
+    updateCartModalContent();
+    modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
+function closeCartModal() {
+    const modal = document.getElementById('cart-modal');
+    modal.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+function updateCartModalContent() {
+    const modalItems = document.getElementById('cart-modal-items');
+    const modalTotal = document.getElementById('cart-modal-total-val');
+
+    let total = 0;
+    let html = '';
+
+    const cartEntries = Object.values(cart);
+
+    if (cartEntries.length === 0) {
+        html = '<p style="text-align:center; padding: 20px; color: #888;">Tu carrito todavía está vacío.</p>';
+    } else {
+        cartEntries.forEach(item => {
+            let itemPrice = item.price;
+            let subtotal = 0;
+            if (item.unit === 'g') {
+                subtotal = (itemPrice / 1000) * item.qty;
+            } else {
+                subtotal = itemPrice * item.qty;
+            }
+            total += subtotal;
+
+            html += `
+                <div class="cart-modal-item">
+                    <div class="cart-modal-item-info">
+                        <span class="cart-modal-item-name">${item.name}</span>
+                        <span class="cart-modal-item-qty">${item.qty}${item.unit}</span>
+                    </div>
+                    <span class="cart-modal-item-price">$${Math.round(subtotal).toLocaleString('es-AR')}</span>
+                </div>
+            `;
+        });
+    }
+
+    modalItems.innerHTML = html;
+    modalTotal.innerText = `$${Math.round(total).toLocaleString('es-AR')}`;
 }
 
 function switchCategory(cat) {
@@ -226,22 +269,18 @@ function updateCustomQty(id, delta, category) {
 
 function updateSummary() {
     const summaryItems = document.getElementById('summary-items');
-    const dropdownItems = document.getElementById('cart-dropdown-items');
     const summaryTotal = document.getElementById('summary-total');
-    const dropdownTotalVal = document.getElementById('cart-dropdown-total-val');
-    const badge = document.getElementById('cart-total-badge');
+    const headerTotal = document.getElementById('cart-total-header');
     const minMsg = document.getElementById('min-purchase-msg');
     const submitBtn = document.getElementById('submit-btn');
 
     let total = 0;
     let itemsHtml = '';
-    let dropdownHtml = '';
 
     const cartEntries = Object.values(cart);
 
     if (cartEntries.length === 0) {
         itemsHtml = '<p class="empty-msg">Tu carrito está vacío</p>';
-        dropdownHtml = '<p class="empty-msg" style="text-align: center; color: #999; font-size: 0.9rem;">Tu carrito está vacío</p>';
     } else {
         cartEntries.forEach(item => {
             // Precio para frutos secos es por kg en la BD, pero se vende en g
@@ -256,7 +295,7 @@ function updateSummary() {
 
             total += subtotal;
             const itemText = `${item.name} (${item.qty}${item.unit})`;
-            const subtotalText = `$${subtotal.toLocaleString('es-AR')}`;
+            const subtotalText = `$${Math.round(subtotal).toLocaleString('es-AR')}`;
 
             itemsHtml += `
                 <div class="summary-item">
@@ -264,21 +303,17 @@ function updateSummary() {
                     <span>${subtotalText}</span>
                 </div>
             `;
-
-            dropdownHtml += `
-                <div class="cart-dropdown-item">
-                    <span>${itemText}</span>
-                    <strong>${subtotalText}</strong>
-                </div>
-            `;
         });
     }
 
     summaryItems.innerHTML = itemsHtml;
-    dropdownItems.innerHTML = dropdownHtml;
     summaryTotal.innerText = `$${Math.round(total).toLocaleString('es-AR')}`;
-    dropdownTotalVal.innerText = `$${Math.round(total).toLocaleString('es-AR')}`;
-    badge.innerText = `$${Math.round(total).toLocaleString('es-AR')}`;
+    headerTotal.innerText = `$${Math.round(total).toLocaleString('es-AR')}`;
+
+    // Also update modal if visible
+    if (document.getElementById('cart-modal').style.display === 'flex') {
+        updateCartModalContent();
+    }
 
     if (total >= MIN_PURCHASE) {
         minMsg.style.color = '#27ae60';
