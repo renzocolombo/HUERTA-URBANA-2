@@ -263,7 +263,8 @@ function handleOrderSubmit(e) {
             direccion: document.getElementById('address').value,
             telefono: document.getElementById('phone').value,
             diaEntrega: document.getElementById('delivery-day').value,
-            rangoHorario: document.getElementById('delivery-time').value
+            rangoHorario: document.getElementById('delivery-time').value,
+            comentarios: document.getElementById('notes').value
         },
         pedido: Object.values(cart).map(item => ({
             producto: item.name,
