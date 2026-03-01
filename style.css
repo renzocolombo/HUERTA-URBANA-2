@@ -656,23 +656,31 @@ select:focus,
 textarea:focus {
     outline: none;
     border-color: #0088cc;
-    background-color: #222;
+    background-color: #ffffff !important;
     box-shadow: 0 0 0 3px rgba(0, 136, 204, 0.2);
+}
+
+/* Forzar color de texto y fondo en las opciones del select */
+select option {
+    background-color: #ffffff;
+    color: #333333;
 }
 
 #submit-btn {
     width: 100%;
     margin-top: 5px;
-    padding: 14px !important;
+    padding: 16px !important;
     background-color: #0088cc !important;
-    color: white !important;
+    color: #ffffff !important;
     font-weight: 700 !important;
-    font-size: 1.1rem !important;
+    font-size: 1.15rem !important;
     border: none;
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 4px 10px rgba(0, 136, 204, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 136, 204, 0.3);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
 #submit-btn:hover:not(.btn-disabled) {
