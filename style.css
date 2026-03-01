@@ -471,18 +471,18 @@ header {
 
 .order-form-container {
     background: white;
-    padding: 40px;
+    padding: 25px 30px;
     border-radius: 20px;
     box-shadow: var(--shadow-md);
 }
 
 .order-form-container h3 {
-    margin-bottom: 30px;
-    font-size: 1.8rem;
+    margin-bottom: 20px;
+    font-size: 1.5rem;
 }
 
 .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
 }
 
 .form-row {
