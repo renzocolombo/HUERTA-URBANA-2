@@ -2,14 +2,54 @@
 
 const PRODUCTS = {
     combos: [
-        { id: 'c1', name: 'Combo Inicial', price: 35000, desc: 'Básico: Mezcla de verduras y frutas esenciales.', img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=300' },
-        { id: 'c2', name: 'Combo Familiar', price: 65000, desc: 'Pensado para 4 personas (mamá, papá y dos hijos).', img: 'https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&q=80&w=300' },
-        { id: 'c3', name: 'Combo Premium', price: 95000, desc: 'Mezcla de todas las verduras, frutas, frutos secos y miel.', img: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&q=80&w=300' },
-        { id: 'c4', name: 'Combo Frutos Secos', price: 42000, desc: '100% frutos secos, miel, granola y pasas de uva.', img: 'https://images.unsplash.com/photo-1596591606975-97ee5cef3a1e?auto=format&fit=crop&q=80&w=300' },
-        { id: 'c5', name: 'Combo Fit', price: 58000, desc: 'Orientado a personas que hacen gimnasio (Proteína y Energía).', img: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&q=80&w=300' },
-        { id: 'c6', name: 'Combo Semanal', price: 32000, desc: 'Tamaño para 1-2 personas, por 7 días.', img: 'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&q=80&w=300' },
-        { id: 'c7', name: 'Combo Mensual', price: 120000, desc: 'Tamaño familia, mezcla variada de todos los productos.', img: 'https://images.unsplash.com/photo-1574316071802-0d684efa7bf5?auto=format&fit=crop&q=80&w=300' },
-        { id: 'c8', name: 'Combo Llena la Heladera', price: 85000, desc: 'Mezcla de todas las frutas y verduras disponibles, tamaño grande.', img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=300' }
+        {
+            id: 'c1', name: 'Combo Inicial', price: 35000,
+            desc: 'Básico: Mezcla de verduras y frutas esenciales.',
+            img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=300',
+            items: ['2kg Papa', '1kg Cebolla', '1kg Tomate', '1/2kg Lechuga', '1kg Manzana', '1kg Naranja']
+        },
+        {
+            id: 'c2', name: 'Combo Familiar', price: 65000,
+            desc: 'Pensado para 4 personas (mamá, papá y dos hijos).',
+            img: 'https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&q=80&w=300',
+            items: ['4kg Papa', '2kg Cebolla', '2kg Tomate', '1kg Lechuga', '1kg Zanahoria', '1kg Zapallo', '2kg Manzana', '2kg Naranja', '1kg Banana']
+        },
+        {
+            id: 'c3', name: 'Combo Premium', price: 95000,
+            desc: 'Mezcla de todas las verduras, frutas, frutos secos y miel.',
+            img: 'https://images.unsplash.com/photo-1610832958506-aa56368176cf?auto=format&fit=crop&q=80&w=300',
+            items: ['Variedad de Estación (Verduras)', 'Variedad de Estación (Frutas)', 'Mix Frutos Secos 250g', 'Nueces 250g', 'Miel Pura 1kg']
+        },
+        {
+            id: 'c4', name: 'Combo Frutos Secos', price: 42000,
+            desc: '100% frutos secos, miel, granola y pasas de uva.',
+            img: 'https://images.unsplash.com/photo-1596591606975-97ee5cef3a1e?auto=format&fit=crop&q=80&w=300',
+            items: ['Mix Frutos Secos 500g', 'Almendras 250g', 'Nueces 250g', 'Granola 500g', 'Pasas de Uva 250g', 'Miel 1kg']
+        },
+        {
+            id: 'c5', name: 'Combo Fit', price: 58000,
+            desc: 'Orientado a personas que hacen gimnasio (Proteína y Energía).',
+            img: 'https://images.unsplash.com/photo-1543339308-43e59d6b73a6?auto=format&fit=crop&q=80&w=300',
+            items: ['Bananas (varios kg)', 'Mix Frutos Secos', 'Nueces', 'Miel', 'Palta (estación)', 'Espinaca']
+        },
+        {
+            id: 'c6', name: 'Combo Semanal', price: 32000,
+            desc: 'Tamaño para 1-2 personas, por 7 días.',
+            img: 'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&q=80&w=300',
+            items: ['2kg Papa', '1kg Cebolla', '1kg Tomate', '1/2kg Zanahoria', '1kg Fruta Mezclada']
+        },
+        {
+            id: 'c7', name: 'Combo Mensual', price: 120000,
+            desc: 'Tamaño familia, mezcla variada de todos los productos.',
+            img: 'https://images.unsplash.com/photo-1574316071802-0d684efa7bf5?auto=format&fit=crop&q=80&w=300',
+            items: ['Súper Canasta de Verduras', 'Súper Canasta de Frutas', 'Línea completa Frutos Secos', 'Miel 2kg']
+        },
+        {
+            id: 'c8', name: 'Combo Llena la Heladera', price: 85000,
+            desc: 'Mezcla de todas las frutas y verduras disponibles, tamaño grande.',
+            img: 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd?auto=format&fit=crop&q=80&w=300',
+            items: ['Mix Completo de Verduras (15kg approx)', 'Mix Completo de Frutas (10kg approx)']
+        }
     ],
     individual: {
         'verduras': [
@@ -80,14 +120,14 @@ function switchCategory(cat) {
 function renderCombos() {
     const combosContainer = document.getElementById('combos-container');
     combosContainer.innerHTML = PRODUCTS.combos.map(combo => `
-        <div class="combo-card">
+        <div class="combo-card" onclick="showComboDetails('${combo.id}')" style="cursor: pointer;">
             <img src="${combo.img}" alt="${combo.name}" class="combo-img">
             <div class="combo-info">
                 <h3>${combo.name}</h3>
                 <p>${combo.desc}</p>
                 <div class="combo-price-row">
                     <span class="price">$${combo.price.toLocaleString('es-AR')}</span>
-                    <div class="qty-control">
+                    <div class="qty-control" onclick="event.stopPropagation()">
                         <button type="button" class="qty-btn" onclick="updateComboQty('${combo.id}', -1)"><ion-icon name="remove-circle-outline"></ion-icon></button>
                         <span class="qty-val" id="qty-combo-${combo.id}">0</span>
                         <button type="button" class="qty-btn" onclick="updateComboQty('${combo.id}', 1)"><ion-icon name="add-circle-outline"></ion-icon></button>
@@ -259,4 +299,29 @@ function closeModal() {
     renderCustomProducts();
     updateSummary();
     window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showComboDetails(id) {
+    const combo = PRODUCTS.combos.find(c => c.id === id);
+    if (!combo) return;
+
+    document.getElementById('modal-combo-img').src = combo.img;
+    document.getElementById('modal-combo-img').alt = combo.name;
+    document.getElementById('modal-combo-name').innerText = combo.name;
+    document.getElementById('modal-combo-price').innerText = `$${combo.price.toLocaleString('es-AR')}`;
+
+    const itemsList = document.getElementById('modal-combo-items');
+    itemsList.innerHTML = combo.items.map(item => `<li><ion-icon name="checkmark-outline"></ion-icon> ${item}</li>`).join('');
+
+    const addBtn = document.getElementById('modal-add-btn');
+    addBtn.onclick = () => {
+        updateComboQty(id, 1);
+        closeComboModal();
+    };
+
+    document.getElementById('combo-modal').style.display = 'flex';
+}
+
+function closeComboModal() {
+    document.getElementById('combo-modal').style.display = 'none';
 }

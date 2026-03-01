@@ -22,10 +22,10 @@
 <body>
     <header id="header">
         <div class="container header-container">
-            <div class="logo">
+            <a href="#hero" class="logo">
                 <ion-icon name="leaf" class="logo-icon"></ion-icon>
                 <span>HUERTA URBANA</span>
-            </div>
+            </a>
             <nav class="desktop-nav">
                 <ul>
                     <li><a href="#hero">Inicio</a></li>
@@ -188,6 +188,35 @@
             <button onclick="closeModal()" class="btn btn-primary">Cerrar</button>
         </div>
     </div>
+
+    <!-- Modal Combo Details -->
+    <div id="combo-modal" class="modal">
+        <div class="modal-content combo-detail-content">
+            <button class="close-modal" onclick="closeComboModal()"><ion-icon name="close-outline"></ion-icon></button>
+            <div class="combo-detail-header">
+                <img id="modal-combo-img" src="" alt="">
+                <div class="combo-detail-title">
+                    <h2 id="modal-combo-name"></h2>
+                    <span id="modal-combo-price" class="price"></span>
+                </div>
+            </div>
+            <div class="combo-detail-body">
+                <h3>¿Qué incluye este combo?</h3>
+                <ul id="modal-combo-items" class="combo-items-list">
+                    <!-- Items will be injected by JS -->
+                </ul>
+            </div>
+            <div class="combo-detail-footer">
+                <button id="modal-add-btn" class="btn btn-primary btn-full">Agregar al Pedido</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botón Flotante de WhatsApp -->
+    <a href="https://wa.me/5491122334455" class="whatsapp-float" target="_blank" rel="noopener noreferrer"
+        title="Comunicate por WhatsApp">
+        <ion-icon name="logo-whatsapp"></ion-icon>
+    </a>
 
     <script src="script.js"></script>
 </body>
