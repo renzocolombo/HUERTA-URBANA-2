@@ -429,8 +429,8 @@ header {
 }
 
 .order-summary {
-    background: #111;
-    color: white;
+    background: white;
+    color: var(--text-dark);
     padding: 30px;
     border-radius: 20px;
     box-shadow: var(--shadow-md);
@@ -449,7 +449,7 @@ header {
     display: flex;
     justify-content: space-between;
     padding: 10px 0;
-    border-bottom: 1px solid #333;
+    border-bottom: 1px solid #eee;
     font-size: 0.9rem;
 }
 
