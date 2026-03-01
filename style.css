@@ -690,10 +690,11 @@ select option {
 }
 
 #submit-btn.btn-disabled {
-    background-color: #e0e0e0 !important;
-    color: #999 !important;
+    background-color: #0088cc !important;
+    color: rgba(255, 255, 255, 0.7) !important;
     cursor: not-allowed;
-    opacity: 0.8;
+    opacity: 0.5;
+    /* Se ve azul pero clarito/faded */
     box-shadow: none;
 }
 
