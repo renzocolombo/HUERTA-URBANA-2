@@ -374,7 +374,7 @@ async function handleOrderSubmit(e) {
     console.log(jsonString);
 
     try {
-        const response = await fetch('https://hook.us2.make.com/3amorxbekb5oybqbyirqv7y183txmmvm', {
+        const response = await fetch('https://hook.us2.make.com/u7gga4qjr36bpx7q38fekusbf3yo2ilj', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
