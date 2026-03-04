@@ -94,7 +94,27 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCombos();
     renderCustomProducts();
     updateSummary();
+    loadCustomerData();
 });
+
+function loadCustomerData() {
+    const savedData = localStorage.getItem('customer_data');
+    if (savedData) {
+        const data = JSON.parse(savedData);
+        if (data.fullname) document.getElementById('fullname').value = data.fullname;
+        if (data.address) document.getElementById('address').value = data.address;
+        if (data.phone) document.getElementById('phone').value = data.phone;
+    }
+}
+
+function saveCustomerData() {
+    const data = {
+        fullname: document.getElementById('fullname').value,
+        address: document.getElementById('address').value,
+        phone: document.getElementById('phone').value
+    };
+    localStorage.setItem('customer_data', JSON.stringify(data));
+}
 
 function initUI() {
     const orderForm = document.getElementById('order-form');
@@ -368,8 +388,10 @@ async function handleOrderSubmit(e) {
         });
 
         if (response.ok) {
+            saveCustomerData();
             document.getElementById('success-modal').style.display = 'flex';
             document.getElementById('order-form').reset();
+            loadCustomerData(); // Volver a cargar los datos guardados tras el reset
             cart = {};
             updateSummary();
         } else {
