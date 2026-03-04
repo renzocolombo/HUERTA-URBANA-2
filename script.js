@@ -374,9 +374,11 @@ async function handleOrderSubmit(e) {
     console.log(jsonString);
 
     try {
-        // Usamos text/plain para evitar el Preflight (OPTIONS) que a veces falla en local
         const response = await fetch('https://hook.us2.make.com/3amorxbekb5oybqbyirqv7y183txmmvm', {
             method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
             body: jsonString
         });
 
