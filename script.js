@@ -369,32 +369,31 @@ async function handleOrderSubmit(e) {
     };
 
     // Ejemplo de cómo se ve el JSON (para consola)
-    console.log('--- ENVIANDO DATOS A MAKE.COM ---');
-    console.log('URL:', 'https://hook.us2.make.com/u7gga4qjr36bpx7q38fekusbf3yo2ilj');
-    console.log('Payload:', orderDataFlat);
+    const jsonString = JSON.stringify(orderDataFlat);
+    console.log('--- JSON A ENVIAR ---');
+    console.log(jsonString);
 
     try {
         const response = await fetch('https://hook.us2.make.com/u7gga4qjr36bpx7q38fekusbf3yo2ilj', {
             method: 'POST',
-            mode: 'cors', // Asegurar CORS
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(orderDataFlat)
+            body: jsonString
         });
 
-        console.log('Respuesta de Make.com (Status):', response.status);
+        console.log('Status de Respuesta:', response.status);
+        const responseText = await response.text();
+        console.log('Cuerpo de Respuesta:', responseText);
 
         if (response.ok) {
-            console.log('Pedido enviado con éxito!');
             document.getElementById('success-modal').style.display = 'flex';
         } else {
-            console.error('Error en la respuesta del servidor:', response.statusText);
-            alert('Hubo un error al enviar el pedido (Error ' + response.status + '). Por favor, inténtalo de nuevo.');
+            alert('Make.com recibió el pedido pero devolvió error: ' + response.status);
         }
     } catch (error) {
-        console.error('ERROR CRÍTICO AL ENVIAR:', error);
-        alert('No se pudo conectar con el sistema de pedidos. Verifica tu conexión o si el navegador bloquea el envío.');
+        console.error('Error de red/CORS:', error);
+        alert('Error de conexión. Si estás usando el archivo localmente, el navegador podría bloquear el envío por seguridad. Prueba subirlo a un servidor o revisar la consola (F12).');
     } finally {
         submitBtn.disabled = false;
         submitBtn.innerText = originalBtnText;
