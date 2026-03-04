@@ -369,25 +369,32 @@ async function handleOrderSubmit(e) {
     };
 
     // Ejemplo de cómo se ve el JSON (para consola)
-    console.log('--- ENVIANDO JSON PLANO A MAKE ---', orderDataFlat);
+    console.log('--- ENVIANDO DATOS A MAKE.COM ---');
+    console.log('URL:', 'https://hook.us2.make.com/u7gga4qjr36bpx7q38fekusbf3yo2ilj');
+    console.log('Payload:', orderDataFlat);
 
     try {
         const response = await fetch('https://hook.us2.make.com/u7gga4qjr36bpx7q38fekusbf3yo2ilj', {
             method: 'POST',
+            mode: 'cors', // Asegurar CORS
             headers: {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify(orderDataFlat)
         });
 
+        console.log('Respuesta de Make.com (Status):', response.status);
+
         if (response.ok) {
+            console.log('Pedido enviado con éxito!');
             document.getElementById('success-modal').style.display = 'flex';
         } else {
-            alert('Hubo un error al enviar el pedido. Por favor, inténtalo de nuevo.');
+            console.error('Error en la respuesta del servidor:', response.statusText);
+            alert('Hubo un error al enviar el pedido (Error ' + response.status + '). Por favor, inténtalo de nuevo.');
         }
     } catch (error) {
-        console.error('Error:', error);
-        alert('Error de conexión. Revisa tu internet e inténtalo de nuevo.');
+        console.error('ERROR CRÍTICO AL ENVIAR:', error);
+        alert('No se pudo conectar con el sistema de pedidos. Verifica tu conexión o si el navegador bloquea el envío.');
     } finally {
         submitBtn.disabled = false;
         submitBtn.innerText = originalBtnText;
