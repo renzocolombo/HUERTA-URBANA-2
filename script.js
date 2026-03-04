@@ -328,9 +328,60 @@ function updateSummary() {
     }
 }
 
-function handleOrderSubmit(e) {
+async function handleOrderSubmit(e) {
     e.preventDefault();
-    document.getElementById('success-modal').style.display = 'flex';
+
+    const submitBtn = document.getElementById('submit-btn');
+    const originalBtnText = submitBtn.innerText;
+
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Enviando...';
+
+    // Crear resumen detallado de productos para el mail
+    const resumenProductos = Object.values(cart).map(item => {
+        const sub = Math.round(item.unit === 'g' ? (item.price / 1000) * item.qty : item.price * item.qty);
+        return `- ${item.name}: ${item.qty}${item.unit} ($${sub.toLocaleString('es-AR')})`;
+    }).join('\n');
+
+    const totalPedido = document.getElementById('summary-total').innerText;
+
+    const formData = {
+        Nombre: document.getElementById('fullname').value,
+        Dirección: document.getElementById('address').value,
+        Teléfono: document.getElementById('phone').value,
+        Día_Entrega: document.getElementById('delivery-day').value,
+        Horario_Entrega: document.getElementById('delivery-time').value,
+        Observaciones: document.getElementById('notes').value,
+        PEDIDO_DETALLE: resumenProductos,
+        TOTAL_COMPRA: totalPedido,
+        _subject: `Nuevo Pedido de ${document.getElementById('fullname').value}`
+    };
+
+    try {
+        const response = await fetch('https://formspree.io/f/maqdrvbb', {
+            method: 'POST',
+            body: JSON.stringify(formData),
+            headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            document.getElementById('success-modal').style.display = 'flex';
+            document.getElementById('order-form').reset();
+            cart = {};
+            updateSummary();
+        } else {
+            alert('Hubo un problema al enviar tu pedido. Por favor, intenta de nuevo o contáctanos por WhatsApp.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error de conexión. Revisa tu internet e intenta de nuevo.');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalBtnText;
+    }
 }
 
 function closeModal() {
