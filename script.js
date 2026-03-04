@@ -127,7 +127,11 @@ function saveCustomerData() {
 
 function initUI() {
     const orderForm = document.getElementById('order-form');
-    // Se elimina el listener de submit para que el navegador maneje el POST estándar
+    // Escuchar el evento submit para actualizar los campos ocultos de último momento
+    // pero SIN preventDefault para permitir que el POST estándar ocurra.
+    orderForm.addEventListener('submit', () => {
+        updateSummary();
+    });
 
     // Cart Modal Events
     const cartBtn = document.getElementById('open-cart-btn');

@@ -121,8 +121,11 @@
                         <form id="order-form" action="https://formspree.io/f/maqdrvbb" method="POST">
                             <!-- Configuración de Formspree -->
                             <input type="text" name="_gotcha" style="display:none">
-                            <input type="hidden" id="hidden-subject" name="_subject" value="Nuevo Pedido">
-                            <input type="hidden" id="hidden-details" name="DETALLE_DEL_PEDIDO">
+                            <input type="hidden" name="_next" value="https://huertaurbana.click#success">
+                            <input type="hidden" name="_template" value="table">
+                            <input type="hidden" id="hidden-subject" name="_subject"
+                                value="🛒 Nuevo Pedido - Huerta Urbana">
+                            <textarea id="hidden-details" name="DETALLE_DEL_PEDIDO" style="display:none"></textarea>
                             <input type="hidden" id="hidden-total" name="TOTAL_A_PAGAR">
 
                             <div class="form-row">
