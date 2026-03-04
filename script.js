@@ -94,7 +94,7 @@ document.addEventListener('DOMContentLoaded', () => {
     renderCombos();
     renderCustomProducts();
     updateSummary();
-    loadCustomerData();
+    // loadCustomerData(); // Eliminado para que el formulario inicie vacío
 });
 
 function loadCustomerData() {
@@ -128,13 +128,6 @@ function saveCustomerData() {
 function initUI() {
     const orderForm = document.getElementById('order-form');
     orderForm.addEventListener('submit', handleOrderSubmit);
-
-    // Auto-guardado al escribir (Persistencia)
-    const formInputs = orderForm.querySelectorAll('input, select, textarea');
-    formInputs.forEach(input => {
-        input.addEventListener('input', saveCustomerData);
-        input.addEventListener('change', saveCustomerData);
-    });
 
     // Cart Modal Events
     const cartBtn = document.getElementById('open-cart-btn');
@@ -381,6 +374,10 @@ async function handleOrderSubmit(e) {
     }).join('\n');
 
     const totalPedido = document.getElementById('summary-total').innerText;
+    const now = new Date();
+    const timeStr = now.getHours().toString().padStart(2, '0') + ':' +
+        now.getMinutes().toString().padStart(2, '0') + ':' +
+        now.getSeconds().toString().padStart(2, '0');
 
     const formData = new FormData();
     formData.append('Nombre', document.getElementById('fullname').value);
@@ -392,7 +389,7 @@ async function handleOrderSubmit(e) {
     formData.append('Observaciones', document.getElementById('notes').value || 'Sin observaciones');
     formData.append('DETALLE_DEL_PEDIDO', '\n' + resumenProductos);
     formData.append('TOTAL_A_PAGAR', totalPedido);
-    formData.append('_subject', `🛒 Nuevo Pedido: ${document.getElementById('fullname').value}`);
+    formData.append('_subject', `🛒 Pedido [${timeStr}]: ${document.getElementById('fullname').value}`);
 
     try {
         const response = await fetch('https://formspree.io/f/maqdrvbb', {
