@@ -129,6 +129,13 @@ function initUI() {
     const orderForm = document.getElementById('order-form');
     orderForm.addEventListener('submit', handleOrderSubmit);
 
+    // Auto-guardado al escribir (Persistencia)
+    const formInputs = orderForm.querySelectorAll('input, select, textarea');
+    formInputs.forEach(input => {
+        input.addEventListener('input', saveCustomerData);
+        input.addEventListener('change', saveCustomerData);
+    });
+
     // Cart Modal Events
     const cartBtn = document.getElementById('open-cart-btn');
     cartBtn.addEventListener('click', showCartModal);
@@ -366,10 +373,11 @@ async function handleOrderSubmit(e) {
     submitBtn.disabled = true;
     submitBtn.innerText = 'Enviando...';
 
-    // Crear resumen detallado de productos para el mail
+    // Crear resumen detallado de productos para el mail (Mejor formato)
     const resumenProductos = Object.values(cart).map(item => {
         const sub = Math.round(item.unit === 'g' ? (item.price / 1000) * item.qty : item.price * item.qty);
-        return `- ${item.name}: ${item.qty}${item.unit} ($${sub.toLocaleString('es-AR')})`;
+        const unitLabel = item.unit === 'g' ? 'g' : (item.unit === 'un' ? ' un.' : 'kg');
+        return `• ${item.name.toUpperCase()}: ${item.qty}${unitLabel} — $${sub.toLocaleString('es-AR')}`;
     }).join('\n');
 
     const totalPedido = document.getElementById('summary-total').innerText;
@@ -381,10 +389,10 @@ async function handleOrderSubmit(e) {
     formData.append('Teléfono', document.getElementById('phone').value);
     formData.append('Dia_Entrega', document.getElementById('delivery-day').value);
     formData.append('Horario_Entrega', document.getElementById('delivery-time').value);
-    formData.append('Observaciones', document.getElementById('notes').value);
-    formData.append('PEDIDO_DETALLE', resumenProductos);
-    formData.append('TOTAL_COMPRA', totalPedido);
-    formData.append('_subject', `Nuevo Pedido de ${document.getElementById('fullname').value}`);
+    formData.append('Observaciones', document.getElementById('notes').value || 'Sin observaciones');
+    formData.append('DETALLE_DEL_PEDIDO', '\n' + resumenProductos);
+    formData.append('TOTAL_A_PAGAR', totalPedido);
+    formData.append('_subject', `🛒 Nuevo Pedido: ${document.getElementById('fullname').value}`);
 
     try {
         const response = await fetch('https://formspree.io/f/maqdrvbb', {
