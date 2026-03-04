@@ -127,7 +127,7 @@ function saveCustomerData() {
 
 function initUI() {
     const orderForm = document.getElementById('order-form');
-    orderForm.addEventListener('submit', handleOrderSubmit);
+    // Se elimina el listener de submit para que el navegador maneje el POST estándar
 
     // Cart Modal Events
     const cartBtn = document.getElementById('open-cart-btn');
@@ -339,6 +339,31 @@ function updateSummary() {
     summaryTotal.innerText = `$${Math.round(total).toLocaleString('es-AR')}`;
     headerTotal.innerText = `$${Math.round(total).toLocaleString('es-AR')}`;
 
+    // Sincronizar con campos ocultos para el envío estándar (Formspree)
+    const hiddenDetails = document.getElementById('hidden-details');
+    const hiddenTotal = document.getElementById('hidden-total');
+    const hiddenSubject = document.getElementById('hidden-subject');
+    const fullname = document.getElementById('fullname').value;
+
+    if (hiddenDetails && hiddenTotal) {
+        // Generar resumen de texto para el campo oculto
+        const textSummary = Object.values(cart).map(item => {
+            const sub = Math.round(item.unit === 'g' ? (item.price / 1000) * item.qty : item.price * item.qty);
+            const unitLabel = item.unit === 'g' ? 'g' : (item.unit === 'un' ? ' un.' : 'kg');
+            return `• ${item.name.toUpperCase()}: ${item.qty}${unitLabel} — $${sub.toLocaleString('es-AR')}`;
+        }).join('\n');
+
+        hiddenDetails.value = '\n' + textSummary;
+        hiddenTotal.value = summaryTotal.innerText;
+
+        // Actualizar asunto con hora para evitar hilos en Gmail
+        const now = new Date();
+        const timeStr = now.getHours().toString().padStart(2, '0') + ':' +
+            now.getMinutes().toString().padStart(2, '0') + ':' +
+            now.getSeconds().toString().padStart(2, '0');
+        hiddenSubject.value = `🛒 Pedido [${timeStr}]: ${fullname || 'Cliente'}`;
+    }
+
     // Also update modal if visible
     if (document.getElementById('cart-modal').style.display === 'flex') {
         updateCartModalContent();
@@ -357,67 +382,8 @@ function updateSummary() {
     }
 }
 
-async function handleOrderSubmit(e) {
-    e.preventDefault();
+// Se eliminó handleOrderSubmit para utilizar el envío estándar de HTML POST dirigido a Formspree
 
-    const submitBtn = document.getElementById('submit-btn');
-    const originalBtnText = submitBtn.innerText;
-
-    submitBtn.disabled = true;
-    submitBtn.innerText = 'Enviando...';
-
-    // Crear resumen detallado de productos para el mail (Mejor formato)
-    const resumenProductos = Object.values(cart).map(item => {
-        const sub = Math.round(item.unit === 'g' ? (item.price / 1000) * item.qty : item.price * item.qty);
-        const unitLabel = item.unit === 'g' ? 'g' : (item.unit === 'un' ? ' un.' : 'kg');
-        return `• ${item.name.toUpperCase()}: ${item.qty}${unitLabel} — $${sub.toLocaleString('es-AR')}`;
-    }).join('\n');
-
-    const totalPedido = document.getElementById('summary-total').innerText;
-    const now = new Date();
-    const timeStr = now.getHours().toString().padStart(2, '0') + ':' +
-        now.getMinutes().toString().padStart(2, '0') + ':' +
-        now.getSeconds().toString().padStart(2, '0');
-
-    const formData = new FormData();
-    formData.append('Nombre', document.getElementById('fullname').value);
-    formData.append('email', document.getElementById('email').value);
-    formData.append('Dirección', document.getElementById('address').value);
-    formData.append('Teléfono', document.getElementById('phone').value);
-    formData.append('Dia_Entrega', document.getElementById('delivery-day').value);
-    formData.append('Horario_Entrega', document.getElementById('delivery-time').value);
-    formData.append('Observaciones', document.getElementById('notes').value || 'Sin observaciones');
-    formData.append('DETALLE_DEL_PEDIDO', '\n' + resumenProductos);
-    formData.append('TOTAL_A_PAGAR', totalPedido);
-    formData.append('_subject', `🛒 Pedido [${timeStr}]: ${document.getElementById('fullname').value}`);
-
-    try {
-        const response = await fetch('https://formspree.io/f/maqdrvbb', {
-            method: 'POST',
-            body: formData,
-            headers: {
-                'Accept': 'application/json'
-            }
-        });
-
-        if (response.ok) {
-            saveCustomerData();
-            document.getElementById('success-modal').style.display = 'flex';
-            document.getElementById('order-form').reset();
-            loadCustomerData(); // Volver a cargar los datos guardados tras el reset
-            cart = {};
-            updateSummary();
-        } else {
-            alert('Hubo un problema al enviar tu pedido. Por favor, intenta de nuevo o contáctanos por WhatsApp.');
-        }
-    } catch (error) {
-        console.error('Error:', error);
-        alert('Error de conexión. Revisa tu internet e intenta de nuevo.');
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerText = originalBtnText;
-    }
-}
 
 function closeModal() {
     document.getElementById('success-modal').style.display = 'none';

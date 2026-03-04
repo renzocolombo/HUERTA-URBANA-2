@@ -118,7 +118,13 @@
                     <!-- Formulario -->
                     <div class="order-form-container">
                         <h3>Datos de Entrega</h3>
-                        <form id="order-form">
+                        <form id="order-form" action="https://formspree.io/f/maqdrvbb" method="POST">
+                            <!-- Configuración de Formspree -->
+                            <input type="text" name="_gotcha" style="display:none">
+                            <input type="hidden" id="hidden-subject" name="_subject" value="Nuevo Pedido">
+                            <input type="hidden" id="hidden-details" name="DETALLE_DEL_PEDIDO">
+                            <input type="hidden" id="hidden-total" name="TOTAL_A_PAGAR">
+
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="fullname">Nombre Completo</label>
