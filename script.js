@@ -127,11 +127,7 @@ function saveCustomerData() {
 
 function initUI() {
     const orderForm = document.getElementById('order-form');
-    // Escuchar el evento submit para actualizar los campos ocultos de último momento
-    // pero SIN preventDefault para permitir que el POST estándar ocurra.
-    orderForm.addEventListener('submit', () => {
-        updateSummary();
-    });
+    orderForm.addEventListener('submit', handleOrderSubmit);
 
     // Cart Modal Events
     const cartBtn = document.getElementById('open-cart-btn');
@@ -386,7 +382,47 @@ function updateSummary() {
     }
 }
 
-// Se eliminó handleOrderSubmit para utilizar el envío estándar de HTML POST dirigido a Formspree
+async function handleOrderSubmit(e) {
+    e.preventDefault();
+
+    const submitBtn = document.getElementById('submit-btn');
+    const originalBtnText = submitBtn.innerText;
+
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Enviando...';
+
+    // Asegurarse de que los campos ocultos tengan la info más reciente
+    updateSummary();
+
+    const formData = new FormData(e.target);
+
+    try {
+        const response = await fetch('https://formspree.io/f/maqdrvbb', {
+            method: 'POST',
+            body: formData,
+            headers: {
+                'Accept': 'application/json'
+            }
+        });
+
+        if (response.ok) {
+            // Mostrar modal de éxito interno
+            document.getElementById('success-modal').style.display = 'flex';
+            // Resetear todo
+            e.target.reset();
+            cart = {};
+            updateSummary();
+        } else {
+            alert('Hubo un problema al enviar tu pedido. Por favor, intenta de nuevo o contáctanos por WhatsApp.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error de conexión. Revisa tu internet e intenta de nuevo.');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalBtnText;
+    }
+}
 
 
 function closeModal() {
