@@ -328,38 +328,48 @@ function updateSummary() {
     }
 }
 
+function getNextOrderNumber() {
+    let currentNumber = localStorage.getItem('last_order_number');
+    if (!currentNumber) {
+        currentNumber = 1000; // Número inicial si no existe
+    }
+    const nextNumber = parseInt(currentNumber) + 1;
+    localStorage.setItem('last_order_number', nextNumber);
+    return nextNumber;
+}
+
 async function handleOrderSubmit(e) {
     e.preventDefault();
 
     const submitBtn = document.getElementById('submit-btn');
     const originalBtnText = submitBtn.innerText;
 
-    // Estado de carga
     submitBtn.disabled = true;
     submitBtn.innerText = 'Enviando...';
 
-    const orderData = {
-        cliente: {
-            nombre: document.getElementById('fullname').value,
-            direccion: document.getElementById('address').value,
-            telefono: document.getElementById('phone').value,
-            diaEntrega: document.getElementById('delivery-day').value,
-            rangoHorario: document.getElementById('delivery-time').value,
-            comentarios: document.getElementById('notes').value
-        },
-        pedido: Object.values(cart).map(item => ({
-            producto: item.name,
-            cantidad: `${item.qty}${item.unit}`,
-            precioUnitario: item.price,
-            subtotal: Math.round(item.unit === 'g' ? (item.price / 1000) * item.qty : item.price * item.qty)
-        })),
+    // Generar string detallado de productos para el campo observaciones o uno nuevo
+    const productosConcatenados = Object.values(cart).map(item => {
+        return `${item.name} (${item.qty}${item.unit})`;
+    }).join(', ');
+
+    const orderDataFlat = {
+        pedido_numero: getNextOrderNumber(),
+        pedido_fecha: new Date().toLocaleString('es-AR'),
+        cliente_nombre: document.getElementById('fullname').value,
+        cliente_telefono: document.getElementById('phone').value,
+        cliente_direccion: document.getElementById('address').value,
+        dia_entrega: document.getElementById('delivery-day').value,
+        horario_entrega: document.getElementById('delivery-time').value,
         total: Math.round(Object.values(cart).reduce((acc, curr) => {
             const sub = curr.unit === 'g' ? (curr.price / 1000) * curr.qty : curr.price * curr.qty;
             return acc + sub;
         }, 0)),
-        fecha: new Date().toLocaleString('es-AR'),
-        timestamp: new Date().getTime()
+        observaciones: document.getElementById('notes').value,
+        detalles_pedido: productosConcatenados // Añadido para no perder la info de los productos
     };
+
+    // Ejemplo de cómo se ve el JSON (para consola)
+    console.log('--- ENVIANDO JSON PLANO A MAKE ---', orderDataFlat);
 
     try {
         const response = await fetch('https://hook.us2.make.com/u7gga4qjr36bpx7q38fekusbf3yo2ilj', {
@@ -367,7 +377,7 @@ async function handleOrderSubmit(e) {
             headers: {
                 'Content-Type': 'application/json'
             },
-            body: JSON.stringify(orderData)
+            body: JSON.stringify(orderDataFlat)
         });
 
         if (response.ok) {
