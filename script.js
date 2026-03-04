@@ -365,25 +365,23 @@ async function handleOrderSubmit(e) {
 
     const totalPedido = document.getElementById('summary-total').innerText;
 
-    const formData = {
-        Nombre: document.getElementById('fullname').value,
-        Dirección: document.getElementById('address').value,
-        Teléfono: document.getElementById('phone').value,
-        Día_Entrega: document.getElementById('delivery-day').value,
-        Horario_Entrega: document.getElementById('delivery-time').value,
-        Observaciones: document.getElementById('notes').value,
-        PEDIDO_DETALLE: resumenProductos,
-        TOTAL_COMPRA: totalPedido,
-        _subject: `Nuevo Pedido de ${document.getElementById('fullname').value}`
-    };
+    const formData = new FormData();
+    formData.append('Nombre', document.getElementById('fullname').value);
+    formData.append('Dirección', document.getElementById('address').value);
+    formData.append('Teléfono', document.getElementById('phone').value);
+    formData.append('Dia_Entrega', document.getElementById('delivery-day').value);
+    formData.append('Horario_Entrega', document.getElementById('delivery-time').value);
+    formData.append('Observaciones', document.getElementById('notes').value);
+    formData.append('PEDIDO_DETALLE', resumenProductos);
+    formData.append('TOTAL_COMPRA', totalPedido);
+    formData.append('_subject', `Nuevo Pedido de ${document.getElementById('fullname').value}`);
 
     try {
         const response = await fetch('https://formspree.io/f/maqdrvbb', {
             method: 'POST',
-            body: JSON.stringify(formData),
+            body: formData,
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
+                'Accept': 'application/json'
             }
         });
 
