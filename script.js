@@ -328,8 +328,15 @@ function updateSummary() {
     }
 }
 
-function handleOrderSubmit(e) {
+async function handleOrderSubmit(e) {
     e.preventDefault();
+
+    const submitBtn = document.getElementById('submit-btn');
+    const originalBtnText = submitBtn.innerText;
+
+    // Estado de carga
+    submitBtn.disabled = true;
+    submitBtn.innerText = 'Enviando...';
 
     const orderData = {
         cliente: {
@@ -344,19 +351,37 @@ function handleOrderSubmit(e) {
             producto: item.name,
             cantidad: `${item.qty}${item.unit}`,
             precioUnitario: item.price,
-            subtotal: item.unit === 'g' ? (item.price / 1000) * item.qty : item.price * item.qty
+            subtotal: Math.round(item.unit === 'g' ? (item.price / 1000) * item.qty : item.price * item.qty)
         })),
         total: Math.round(Object.values(cart).reduce((acc, curr) => {
             const sub = curr.unit === 'g' ? (curr.price / 1000) * curr.qty : curr.price * curr.qty;
             return acc + sub;
         }, 0)),
-        fecha: new Date().toISOString()
+        fecha: new Date().toLocaleString('es-AR'),
+        timestamp: new Date().getTime()
     };
 
-    console.log('--- PEDIDO RECIBIDO (JSON) ---');
-    console.log(JSON.stringify(orderData, null, 2));
+    try {
+        const response = await fetch('https://hook.us2.make.com/u7gga4qjr36bpx7q38fekusbf3yo2ilj', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderData)
+        });
 
-    document.getElementById('success-modal').style.display = 'flex';
+        if (response.ok) {
+            document.getElementById('success-modal').style.display = 'flex';
+        } else {
+            alert('Hubo un error al enviar el pedido. Por favor, inténtalo de nuevo.');
+        }
+    } catch (error) {
+        console.error('Error:', error);
+        alert('Error de conexión. Revisa tu internet e inténtalo de nuevo.');
+    } finally {
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalBtnText;
+    }
 }
 
 function closeModal() {
