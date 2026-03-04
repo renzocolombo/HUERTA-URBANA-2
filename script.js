@@ -328,76 +328,9 @@ function updateSummary() {
     }
 }
 
-function getNextOrderNumber() {
-    let currentNumber = localStorage.getItem('last_order_number');
-    if (!currentNumber) {
-        currentNumber = 1000; // Número inicial si no existe
-    }
-    const nextNumber = parseInt(currentNumber) + 1;
-    localStorage.setItem('last_order_number', nextNumber);
-    return nextNumber;
-}
-
-async function handleOrderSubmit(e) {
+function handleOrderSubmit(e) {
     e.preventDefault();
-
-    const submitBtn = document.getElementById('submit-btn');
-    const originalBtnText = submitBtn.innerText;
-
-    submitBtn.disabled = true;
-    submitBtn.innerText = 'Enviando...';
-
-    // Generar string detallado de productos para el campo observaciones o uno nuevo
-    const productosConcatenados = Object.values(cart).map(item => {
-        return `${item.name} (${item.qty}${item.unit})`;
-    }).join(', ');
-
-    const orderDataFlat = {
-        pedido_numero: getNextOrderNumber(),
-        pedido_fecha: new Date().toLocaleString('es-AR'),
-        cliente_nombre: document.getElementById('fullname').value,
-        cliente_telefono: document.getElementById('phone').value,
-        cliente_direccion: document.getElementById('address').value,
-        dia_entrega: document.getElementById('delivery-day').value,
-        horario_entrega: document.getElementById('delivery-time').value,
-        total: Math.round(Object.values(cart).reduce((acc, curr) => {
-            const sub = curr.unit === 'g' ? (curr.price / 1000) * curr.qty : curr.price * curr.qty;
-            return acc + sub;
-        }, 0)),
-        observaciones: document.getElementById('notes').value,
-        detalles_pedido: productosConcatenados // Añadido para no perder la info de los productos
-    };
-
-    // Ejemplo de cómo se ve el JSON (para consola)
-    const jsonString = JSON.stringify(orderDataFlat);
-    console.log('--- JSON A ENVIAR ---');
-    console.log(jsonString);
-
-    try {
-        const response = await fetch('https://hook.us2.make.com/u7gga4qjr36bpx7q38fekusbf3yo2ilj', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: jsonString
-        });
-
-        console.log('Status de Respuesta:', response.status);
-        const responseText = await response.text();
-        console.log('Cuerpo de Respuesta:', responseText);
-
-        if (response.ok) {
-            document.getElementById('success-modal').style.display = 'flex';
-        } else {
-            alert('Make.com recibió el pedido pero devolvió error: ' + response.status);
-        }
-    } catch (error) {
-        console.error('Error de red/CORS:', error);
-        alert('Error de conexión. Si estás usando el archivo localmente, el navegador podría bloquear el envío por seguridad. Prueba subirlo a un servidor o revisar la consola (F12).');
-    } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerText = originalBtnText;
-    }
+    document.getElementById('success-modal').style.display = 'flex';
 }
 
 function closeModal() {
