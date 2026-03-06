@@ -406,28 +406,27 @@ async function handleOrderSubmit(e) {
     document.querySelector('[name="fecha"]').value = fechaActual;
     document.querySelector('[name="ficha_entrega"]').value = `https://huertaurbana.click/pedido/${numeroPedido}`;
 
-    // Construcción del objeto JSON con los 15 campos EXACTOS según el formulario
-    const orderData = {};
-    const formElements = document.getElementById('order-form').elements;
+    // Construcción del objeto JSON PLANO (sin wrappers ni arrays) para Google Sheets
+    const orderData = {
+        numero_pedido: document.querySelector('[name="numero_pedido"]').value,
+        fecha: document.querySelector('[name="fecha"]').value,
+        nombre: document.querySelector('[name="nombre"]').value,
+        telefono: document.querySelector('[name="telefono"]').value,
+        email: document.querySelector('[name="email"]').value,
+        direccion: document.querySelector('[name="direccion"]').value,
+        dia_entrega: document.querySelector('[name="dia_entrega"]').value,
+        horario_entrega: document.querySelector('[name="horario_entrega"]').value,
+        metodo_pago: document.querySelector('[name="metodo_pago"]').value,
+        producto: document.querySelector('[name="producto"]').value,
+        cantidad: document.querySelector('[name="cantidad"]').value,
+        total: document.querySelector('[name="total"]').value,
+        estado: document.querySelector('[name="estado"]').value,
+        observaciones: document.querySelector('[name="observaciones"]').value || 'Sin observaciones',
+        ficha_entrega: document.querySelector('[name="ficha_entrega"]').value
+    };
 
-    // Lista de los 15 campos requeridos para asegurar el orden y la existencia
-    const requiredFields = [
-        "numero_pedido", "fecha", "nombre", "telefono", "email",
-        "direccion", "dia_entrega", "horario_entrega", "metodo_pago",
-        "producto", "cantidad", "total", "estado", "observaciones", "ficha_entrega"
-    ];
-
-    requiredFields.forEach(field => {
-        const element = document.querySelector(`[name="${field}"]`);
-        if (element) {
-            orderData[field] = element.value;
-        } else {
-            orderData[field] = ""; // Fallback por si falta alguno
-        }
-    });
-
-    // Ajuste manual de observaciones si está vacío
-    if (!orderData.observaciones) orderData.observaciones = "Sin observaciones";
+    // Depuración: Verificar en consola que el JSON sea plano
+    console.log("JSON plano enviado a Make:", orderData);
 
     try {
         // Webhook de Make proporcionado
