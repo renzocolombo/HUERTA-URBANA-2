@@ -392,44 +392,43 @@ async function handleOrderSubmit(e) {
     submitBtn.disabled = true;
     submitBtn.innerText = 'Enviando...';
 
-    // Generar el detalle de productos para el campo "productos"
-    const detalleProductos = Object.values(cart).map(item => {
-        const unitLabel = item.unit === 'g' ? 'g' : (item.unit === 'un' ? ' un.' : 'kg');
-        return `${item.name.toUpperCase()} (${item.qty}${unitLabel})`;
-    }).join(', ');
+    // 4. Capturar campos obligatorios y validar (Evitar envíos vacíos)
+    const nombre = document.querySelector('[name="nombre"]').value.trim();
+    const telefono = document.querySelector('[name="telefono"]').value.trim();
+    const direccion = document.querySelector('[name="direccion"]').value.trim();
 
-    // Generar datos adicionales y sincronizar campos ocultos en el DOM
-    const numeroPedido = 'HU-' + Date.now().toString().slice(-6);
-    const fechaActual = new Date().toLocaleString('es-AR');
+    if (!nombre || !telefono || !direccion) {
+        alert("Por favor, completa los campos de nombre, teléfono y dirección.");
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalBtnText;
+        return;
+    }
 
-    document.querySelector('[name="numero_pedido"]').value = numeroPedido;
-    document.querySelector('[name="fecha"]').value = fechaActual;
-    document.querySelector('[name="ficha_entrega"]').value = `https://huertaurbana.click/pedido/${numeroPedido}`;
-
-    // Construcción del objeto JSON PLANO (sin wrappers ni arrays) para Google Sheets
+    // 5. Construcción del objeto JSON PLANO (15 campos para Google Sheets)
+    // Cada campo es un valor independiente para que Make lo mapee directamente.
     const orderData = {
-        numero_pedido: document.querySelector('[name="numero_pedido"]').value,
-        fecha: document.querySelector('[name="fecha"]').value,
-        nombre: document.querySelector('[name="nombre"]').value,
-        telefono: document.querySelector('[name="telefono"]').value,
-        email: document.querySelector('[name="email"]').value,
-        direccion: document.querySelector('[name="direccion"]').value,
-        dia_entrega: document.querySelector('[name="dia_entrega"]').value,
-        horario_entrega: document.querySelector('[name="horario_entrega"]').value,
-        metodo_pago: document.querySelector('[name="metodo_pago"]').value,
-        producto: document.querySelector('[name="producto"]').value,
-        cantidad: document.querySelector('[name="cantidad"]').value,
-        total: document.querySelector('[name="total"]').value,
-        estado: document.querySelector('[name="estado"]').value,
-        observaciones: document.querySelector('[name="observaciones"]').value || 'Sin observaciones',
-        ficha_entrega: document.querySelector('[name="ficha_entrega"]').value
+        "numero_pedido": document.querySelector('[name="numero_pedido"]').value, // Campo oculto: Número de pedido único
+        "fecha": document.querySelector('[name="fecha"]').value,                 // Campo oculto: Fecha y hora del pedido
+        "nombre": nombre,                                                        // Campo de formulario: Nombre del cliente
+        "telefono": telefono,                                                    // Campo de formulario: Teléfono del cliente
+        "email": document.querySelector('[name="email"]').value,                 // Campo de formulario: Email del cliente
+        "direccion": direccion,                                                  // Campo de formulario: Dirección de entrega
+        "dia_entrega": document.querySelector('[name="dia_entrega"]').value,     // Campo de formulario: Día de entrega seleccionado
+        "horario_entrega": document.querySelector('[name="horario_entrega"]').value, // Campo de formulario: Horario de entrega seleccionado
+        "metodo_pago": document.querySelector('[name="metodo_pago"]').value,     // Campo de formulario: Método de pago
+        "producto": document.querySelector('[name="producto"]').value,           // Campo oculto: Resumen de productos en texto
+        "cantidad": document.querySelector('[name="cantidad"]').value,           // Campo oculto: Cantidad total de ítems
+        "total": document.querySelector('[name="total"]').value,                 // Campo oculto: Total del pedido
+        "estado": document.querySelector('[name="estado"]').value,               // Campo oculto: Estado inicial del pedido (ej: "Pendiente")
+        "observaciones": document.querySelector('[name="observaciones"]').value || 'Sin observaciones', // Campo de formulario: Observaciones del cliente
+        "ficha_entrega": document.querySelector('[name="ficha_entrega"]').value // Campo oculto: URL de la ficha de entrega
     };
 
-    // Depuración: Verificar en consola que el JSON sea plano
-    console.log("JSON plano enviado a Make:", orderData);
+    // Depuración: Ver en consola antes de enviar
+    console.log("Enviando JSON plano a Make:", orderData);
 
     try {
-        // Webhook de Make proporcionado
+        // PEGÁ AQUÍ TU URL DE WEBHOOK DE MAKE
         const WEBHOOK_MAKE_URL = "https://hook.us2.make.com/3amorxbekb5oybqbyirqv7y183txmmvm";
 
         const response = await fetch(WEBHOOK_MAKE_URL, {
