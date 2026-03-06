@@ -419,14 +419,12 @@ async function handleOrderSubmit(e) {
         });
 
         if (response.ok) {
-            alert("Pedido enviado correctamente");
-
             // Limpiar formulario y carrito
             document.getElementById('order-form').reset();
             cart = {};
             updateSummary();
 
-            // Opcional: mostrar modal de éxito si existe en el diseño
+            // Mostrar modal de éxito interno (sin alert del navegador)
             const successModal = document.getElementById('success-modal');
             if (successModal) successModal.style.display = 'flex';
 
