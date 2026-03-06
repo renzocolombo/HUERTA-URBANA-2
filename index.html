@@ -119,8 +119,15 @@
                     <div class="order-form-container">
                         <h3>Datos de Entrega</h3>
                         <form id="order-form">
-                            <!-- Datos del Pedido (Ocultos para el JSON) -->
-                            <textarea id="hidden-details" name="productos" style="display:none"></textarea>
+                            <!-- Campos de Control (Ocultos para Make/Google Sheets) -->
+                            <input type="hidden" name="numero_pedido">
+                            <input type="hidden" name="fecha">
+                            <input type="hidden" name="metodo_pago" value="Efectivo/Transferencia">
+                            <input type="hidden" name="estado" value="Pendiente">
+                            <input type="hidden" name="ficha_entrega">
+                            <input type="hidden" name="cantidad">
+                            <input type="hidden" name="total">
+                            <input type="hidden" name="producto" id="hidden-details">
 
 
                             <div class="form-row">

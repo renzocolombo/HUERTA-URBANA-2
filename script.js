@@ -340,7 +340,7 @@ function updateSummary() {
     summaryTotal.innerText = `$${Math.round(total).toLocaleString('es-AR')}`;
     headerTotal.innerText = `$${Math.round(total).toLocaleString('es-AR')}`;
 
-    // Sincronizar con campo de productos para el JSON de Make
+    // Sincronizar con campo de producto para el JSON de Make
     const hiddenDetails = document.getElementById('hidden-details');
 
     if (hiddenDetails) {
@@ -351,6 +351,12 @@ function updateSummary() {
         }).join(', ');
 
         hiddenDetails.value = textSummary;
+
+        // Sincronizar también cantidad y total en el DOM (campos ocultos)
+        const cantidadInput = document.querySelector('[name="cantidad"]');
+        const totalInput = document.querySelector('[name="total"]');
+        if (cantidadInput) cantidadInput.value = Object.values(cart).reduce((acc, item) => acc + (item.qty || 1), 0);
+        if (totalInput) totalInput.value = total;
     }
 
     // Also update modal if visible
@@ -392,35 +398,36 @@ async function handleOrderSubmit(e) {
         return `${item.name.toUpperCase()} (${item.qty}${unitLabel})`;
     }).join(', ');
 
-    // Calcular cantidad total de ítems o tipos de productos
-    const cantidadTotal = Object.values(cart).reduce((acc, item) => acc + (item.qty || 1), 0);
-
-    // Generar datos adicionales para Google Sheets
+    // Generar datos adicionales y sincronizar campos ocultos en el DOM
     const numeroPedido = 'HU-' + Date.now().toString().slice(-6);
     const fechaActual = new Date().toLocaleString('es-AR');
-    const totalCompra = Object.values(cart).reduce((acc, item) => {
-        const sub = Math.round(item.unit === 'g' ? (item.price / 1000) * item.qty : item.price * item.qty);
-        return acc + sub;
-    }, 0);
 
-    // Construcción del objeto JSON con los 15 campos para Google Sheets
-    const orderData = {
-        numero_pedido: numeroPedido,
-        fecha: fechaActual,
-        nombre: document.querySelector('[name="nombre"]').value,
-        telefono: document.querySelector('[name="telefono"]').value,
-        email: document.querySelector('[name="email"]').value,
-        direccion: document.querySelector('[name="direccion"]').value,
-        dia_entrega: document.querySelector('[name="dia_entrega"]').value,
-        horario_entrega: document.querySelector('[name="horario_entrega"]').value,
-        metodo_pago: "Efectivo/Transferencia", // Valor por defecto
-        producto: detalleProductos,
-        cantidad: cantidadTotal,
-        total: totalCompra,
-        estado: "Pendiente",
-        observaciones: document.querySelector('[name="observaciones"]').value || 'Sin observaciones',
-        ficha_entrega: `https://huertaurbana.click/pedido/${numeroPedido}` // Link de referencia
-    };
+    document.querySelector('[name="numero_pedido"]').value = numeroPedido;
+    document.querySelector('[name="fecha"]').value = fechaActual;
+    document.querySelector('[name="ficha_entrega"]').value = `https://huertaurbana.click/pedido/${numeroPedido}`;
+
+    // Construcción del objeto JSON con los 15 campos EXACTOS según el formulario
+    const orderData = {};
+    const formElements = document.getElementById('order-form').elements;
+
+    // Lista de los 15 campos requeridos para asegurar el orden y la existencia
+    const requiredFields = [
+        "numero_pedido", "fecha", "nombre", "telefono", "email",
+        "direccion", "dia_entrega", "horario_entrega", "metodo_pago",
+        "producto", "cantidad", "total", "estado", "observaciones", "ficha_entrega"
+    ];
+
+    requiredFields.forEach(field => {
+        const element = document.querySelector(`[name="${field}"]`);
+        if (element) {
+            orderData[field] = element.value;
+        } else {
+            orderData[field] = ""; // Fallback por si falta alguno
+        }
+    });
+
+    // Ajuste manual de observaciones si está vacío
+    if (!orderData.observaciones) orderData.observaciones = "Sin observaciones";
 
     try {
         // Webhook de Make proporcionado
