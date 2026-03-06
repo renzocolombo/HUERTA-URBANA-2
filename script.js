@@ -404,24 +404,38 @@ async function handleOrderSubmit(e) {
         return;
     }
 
-    // 5. Construcción del objeto JSON PLANO (15 campos para Google Sheets)
+    // 5. Construcción del objeto JSON PLANO (16 campos para Google Sheets)
+    // Generar datos adicionales y sincronizar campos ocultos en el DOM
+    const numeroPedido = 'HU-' + Date.now().toString().slice(-6);
+    const fechaActual = new Date().toLocaleString('es-AR');
+
+    // Capturar valor de día de entrega para fecha_entrega
+    const diaSeleccionado = document.querySelector('[name="dia_entrega"]').value;
+    const horarioSeleccionado = document.querySelector('[name="horario_entrega"]').value;
+
+    document.querySelector('[name="numero_pedido"]').value = numeroPedido;
+    document.querySelector('[name="fecha"]').value = fechaActual;
+    document.querySelector('[name="fecha_entrega"]').value = diaSeleccionado + " (" + horarioSeleccionado + ")";
+    document.querySelector('[name="ficha_entrega"]').value = `https://huertaurbana.click/pedido/${numeroPedido}`;
+
     // Cada campo es un valor independiente para que Make lo mapee directamente.
     const orderData = {
-        "numero_pedido": document.querySelector('[name="numero_pedido"]').value, // Campo oculto: Número de pedido único
-        "fecha": document.querySelector('[name="fecha"]').value,                 // Campo oculto: Fecha y hora del pedido
-        "nombre": nombre,                                                        // Campo de formulario: Nombre del cliente
-        "telefono": telefono,                                                    // Campo de formulario: Teléfono del cliente
-        "email": document.querySelector('[name="email"]').value,                 // Campo de formulario: Email del cliente
-        "direccion": direccion,                                                  // Campo de formulario: Dirección de entrega
-        "dia_entrega": document.querySelector('[name="dia_entrega"]').value,     // Campo de formulario: Día de entrega seleccionado
-        "horario_entrega": document.querySelector('[name="horario_entrega"]').value, // Campo de formulario: Horario de entrega seleccionado
-        "metodo_pago": document.querySelector('[name="metodo_pago"]').value,     // Campo de formulario: Método de pago
-        "producto": document.querySelector('[name="producto"]').value,           // Campo oculto: Resumen de productos en texto
-        "cantidad": document.querySelector('[name="cantidad"]').value,           // Campo oculto: Cantidad total de ítems
-        "total": document.querySelector('[name="total"]').value,                 // Campo oculto: Total del pedido
-        "estado": document.querySelector('[name="estado"]').value,               // Campo oculto: Estado inicial del pedido (ej: "Pendiente")
-        "observaciones": document.querySelector('[name="observaciones"]').value || 'Sin observaciones', // Campo de formulario: Observaciones del cliente
-        "ficha_entrega": document.querySelector('[name="ficha_entrega"]').value // Campo oculto: URL de la ficha de entrega
+        "numero_pedido": document.querySelector('[name="numero_pedido"]').value,    // Identificador único
+        "fecha": document.querySelector('[name="fecha"]').value,            // Fecha de creación del pedido
+        "nombre": nombre,                                                    // Nombre completo capturado
+        "telefono": telefono,                                                  // Teléfono capturado
+        "email": document.querySelector('[name="email"]').value,            // Email capturado
+        "direccion": direccion,                                                 // Dirección capturada
+        "dia_entrega": document.querySelector('[name="dia_entrega"]').value,      // Día seleccionado
+        "horario_entrega": document.querySelector('[name="horario_entrega"]').value,  // Horario seleccionado
+        "metodo_pago": document.querySelector('[name="metodo_pago"]').value,      // Método de pago (Efectivo/Transferencia)
+        "producto": document.querySelector('[name="producto"]').value,         // Detalle de productos en texto
+        "cantidad": document.querySelector('[name="cantidad"]').value,         // Cantidad total de productos
+        "total": document.querySelector('[name="total"]').value,            // Monto total del pedido
+        "estado": document.querySelector('[name="estado"]').value,            // Estado inicial (Pendiente)
+        "observaciones": document.querySelector('[name="observaciones"]').value || 'Sin observaciones',
+        "fecha_entrega": document.querySelector('[name="fecha_entrega"]').value,    // Día y hora estimada de entrega
+        "ficha_entrega": document.querySelector('[name="ficha_entrega"]').value     // Link a la ficha de entrega
     };
 
     // Depuración: Ver en consola antes de enviar
