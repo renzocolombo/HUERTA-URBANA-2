@@ -443,7 +443,7 @@ async function handleOrderSubmit(e) {
 
     try {
         // PEGÁ AQUÍ TU URL DE WEBHOOK DE MAKE
-        const WEBHOOK_MAKE_URL = "https://hook.us2.make.com/3amorxbekb5oybqbyirqv7y183txmmvm";
+        const WEBHOOK_MAKE_URL = "https://hook.us2.make.com/elknbrsvv3n54pb2cm25loxuokw3j4ca";
 
         const response = await fetch(WEBHOOK_MAKE_URL, {
             method: 'POST',
