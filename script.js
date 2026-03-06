@@ -395,15 +395,31 @@ async function handleOrderSubmit(e) {
     // Calcular cantidad total de ítems o tipos de productos
     const cantidadTotal = Object.values(cart).reduce((acc, item) => acc + (item.qty || 1), 0);
 
-    // Construcción del objeto JSON según especificación exacta del usuario
+    // Generar datos adicionales para Google Sheets
+    const numeroPedido = 'HU-' + Date.now().toString().slice(-6);
+    const fechaActual = new Date().toLocaleString('es-AR');
+    const totalCompra = Object.values(cart).reduce((acc, item) => {
+        const sub = Math.round(item.unit === 'g' ? (item.price / 1000) * item.qty : item.price * item.qty);
+        return acc + sub;
+    }, 0);
+
+    // Construcción del objeto JSON con los 15 campos para Google Sheets
     const orderData = {
+        numero_pedido: numeroPedido,
+        fecha: fechaActual,
         nombre: document.querySelector('[name="nombre"]').value,
         telefono: document.querySelector('[name="telefono"]').value,
+        email: document.querySelector('[name="email"]').value,
         direccion: document.querySelector('[name="direccion"]').value,
         dia_entrega: document.querySelector('[name="dia_entrega"]').value,
         horario_entrega: document.querySelector('[name="horario_entrega"]').value,
+        metodo_pago: "Efectivo/Transferencia", // Valor por defecto
+        producto: detalleProductos,
+        cantidad: cantidadTotal,
+        total: totalCompra,
+        estado: "Pendiente",
         observaciones: document.querySelector('[name="observaciones"]').value || 'Sin observaciones',
-        productos: detalleProductos
+        ficha_entrega: `https://huertaurbana.click/pedido/${numeroPedido}` // Link de referencia
     };
 
     try {
