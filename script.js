@@ -406,21 +406,20 @@ async function handleOrderSubmit(e) {
     // Calcular cantidad total de ítems o tipos de productos
     const cantidadTotal = Object.values(cart).reduce((acc, item) => acc + (item.qty || 1), 0);
 
-    // Construcción del objeto JSON según especificación del usuario
+    // Construcción del objeto JSON según especificación exacta del usuario
     const orderData = {
         nombre: document.getElementById('fullname').value,
         telefono: document.getElementById('phone').value,
         direccion: document.getElementById('address').value,
-        productos: detalleProductos,
-        cantidad: cantidadTotal.toString(),
-        fecha_entrega: document.getElementById('delivery-day').value,
+        dia_entrega: document.getElementById('delivery-day').value,
         horario_entrega: document.getElementById('delivery-time').value,
-        observaciones: document.getElementById('notes').value || 'Sin observaciones'
+        observaciones: document.getElementById('notes').value || 'Sin observaciones',
+        productos: detalleProductos
     };
 
     try {
-        // Marcador de posición para el Webhook de Make
-        const WEBHOOK_MAKE_URL = "AQUI_VA_EL_WEBHOOK_DE_MAKE";
+        // Webhook de Make proporcionado
+        const WEBHOOK_MAKE_URL = "https://hook.us2.make.com/3amorxbekb5oybqbyirqv7y183txmmvm";
 
         const response = await fetch(WEBHOOK_MAKE_URL, {
             method: 'POST',
