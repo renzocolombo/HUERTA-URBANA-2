@@ -388,36 +388,66 @@ async function handleOrderSubmit(e) {
     const submitBtn = document.getElementById('submit-btn');
     const originalBtnText = submitBtn.innerText;
 
+    // Validación de seguridad adicional
+    if (Object.keys(cart).length === 0) {
+        alert('El carrito está vacío');
+        return;
+    }
+
     submitBtn.disabled = true;
     submitBtn.innerText = 'Enviando...';
 
-    // Asegurarse de que los campos ocultos tengan la info más reciente
-    updateSummary();
+    // Generar el detalle de productos para el campo "productos"
+    const detalleProductos = Object.values(cart).map(item => {
+        const unitLabel = item.unit === 'g' ? 'g' : (item.unit === 'un' ? ' un.' : 'kg');
+        return `${item.name.toUpperCase()} (${item.qty}${unitLabel})`;
+    }).join(', ');
 
-    const formData = new FormData(e.target);
+    // Calcular cantidad total de ítems o tipos de productos
+    const cantidadTotal = Object.values(cart).reduce((acc, item) => acc + (item.qty || 1), 0);
+
+    // Construcción del objeto JSON según especificación del usuario
+    const orderData = {
+        nombre: document.getElementById('fullname').value,
+        telefono: document.getElementById('phone').value,
+        direccion: document.getElementById('address').value,
+        productos: detalleProductos,
+        cantidad: cantidadTotal.toString(),
+        fecha_entrega: document.getElementById('delivery-day').value,
+        horario_entrega: document.getElementById('delivery-time').value,
+        observaciones: document.getElementById('notes').value || 'Sin observaciones'
+    };
 
     try {
-        const response = await fetch('https://formspree.io/f/maqdrvbb', {
+        // Marcador de posición para el Webhook de Make
+        const WEBHOOK_MAKE_URL = "AQUI_VA_EL_WEBHOOK_DE_MAKE";
+
+        const response = await fetch(WEBHOOK_MAKE_URL, {
             method: 'POST',
-            body: formData,
             headers: {
-                'Accept': 'application/json'
-            }
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(orderData)
         });
 
         if (response.ok) {
-            // Mostrar modal de éxito interno
-            document.getElementById('success-modal').style.display = 'flex';
-            // Resetear todo
-            e.target.reset();
+            alert("Pedido enviado correctamente");
+
+            // Limpiar formulario y carrito
+            document.getElementById('order-form').reset();
             cart = {};
             updateSummary();
+
+            // Opcional: mostrar modal de éxito si existe en el diseño
+            const successModal = document.getElementById('success-modal');
+            if (successModal) successModal.style.display = 'flex';
+
         } else {
-            alert('Hubo un problema al enviar tu pedido. Por favor, intenta de nuevo o contáctanos por WhatsApp.');
+            throw new Error('Error en el servidor');
         }
     } catch (error) {
         console.error('Error:', error);
-        alert('Error de conexión. Revisa tu internet e intenta de nuevo.');
+        alert('Hubo un error al enviar el pedido. Por favor, intenta de nuevo o contáctanos por WhatsApp.');
     } finally {
         submitBtn.disabled = false;
         submitBtn.innerText = originalBtnText;
