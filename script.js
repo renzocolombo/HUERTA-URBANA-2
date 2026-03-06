@@ -184,7 +184,7 @@ function updateCartModalContent() {
                 <div class="cart-modal-item">
                     <div class="cart-modal-item-info">
                         <span class="cart-modal-item-name">${item.name}</span>
-                        <span class="cart-modal-item-qty">${item.qty}${item.unit}</span>
+                        <span class="cart-modal-item-qty">${item.qty}${item.unit || ''}</span>
                     </div>
                     <span class="cart-modal-item-price">$${Math.round(subtotal).toLocaleString('es-AR')}</span>
                 </div>
@@ -323,7 +323,8 @@ function updateSummary() {
             }
 
             total += subtotal;
-            const itemText = `${item.name} (${item.qty}${item.unit})`;
+            const unitLabel = item.unit === 'g' ? 'g' : (item.unit === 'un' ? ' un.' : (item.unit || ''));
+            const itemText = `${item.name} (${item.qty}${unitLabel})`;
             const subtotalText = `$${Math.round(subtotal).toLocaleString('es-AR')}`;
 
             itemsHtml += `
