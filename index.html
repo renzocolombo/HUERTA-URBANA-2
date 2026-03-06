@@ -119,19 +119,14 @@
                     <div class="order-form-container">
                         <h3>Datos de Entrega</h3>
                         <form id="order-form">
-                            <!-- Configuración de Formspree -->
-                            <input type="text" name="_gotcha" style="display:none">
-                            <input type="hidden" name="_next" value="https://huertaurbana.click#success">
-                            <input type="hidden" name="_template" value="table">
-                            <input type="hidden" id="hidden-subject" name="_subject"
-                                value="🛒 Nuevo Pedido - Huerta Urbana">
-                            <textarea id="hidden-details" name="DETALLE_DEL_PEDIDO" style="display:none"></textarea>
-                            <input type="hidden" id="hidden-total" name="TOTAL_A_PAGAR">
+                            <!-- Datos del Pedido (Ocultos para el JSON) -->
+                            <textarea id="hidden-details" name="productos" style="display:none"></textarea>
+
 
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="fullname">Nombre Completo</label>
-                                    <input type="text" id="fullname" name="Nombre" placeholder="Nombre y Apellido"
+                                    <input type="text" id="fullname" name="nombre" placeholder="Nombre y Apellido"
                                         required autocomplete="name">
                                 </div>
                                 <div class="form-group">
@@ -143,19 +138,19 @@
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="address">Dirección</label>
-                                    <input type="text" id="address" name="Dirección"
+                                    <input type="text" id="address" name="direccion"
                                         placeholder="Ej: Av. Siempreviva 123" required autocomplete="street-address">
                                 </div>
                                 <div class="form-group">
                                     <label for="phone">Teléfono / WhatsApp</label>
-                                    <input type="tel" id="phone" name="Teléfono" placeholder="Ej: 11 1234 5678" required
+                                    <input type="tel" id="phone" name="telefono" placeholder="Ej: 11 1234 5678" required
                                         autocomplete="tel">
                                 </div>
                             </div>
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="delivery-day">Día de Entrega</label>
-                                    <select id="delivery-day" name="Dia_Entrega" required>
+                                    <select id="delivery-day" name="dia_entrega" required>
                                         <option value="" disabled selected>Seleccionar día</option>
                                         <option value="Martes">Martes</option>
                                         <option value="Jueves">Jueves</option>
@@ -163,7 +158,7 @@
                                 </div>
                                 <div class="form-group">
                                     <label for="delivery-time">Rango Horario</label>
-                                    <select id="delivery-time" name="Horario_Entrega" required>
+                                    <select id="delivery-time" name="horario_entrega" required>
                                         <option value="" disabled selected>Seleccionar rango</option>
                                         <option value="Antes de las 14hs">Antes de las 14:00hs</option>
                                         <option value="Después de las 14hs">Después de las 14:00hs</option>
@@ -173,7 +168,7 @@
                             <div class="form-group full-width-group">
                                 <div class="inner-field-container">
                                     <label class="inner-label" for="notes">Tu mensaje</label>
-                                    <textarea id="notes" name="Observaciones" rows="3"></textarea>
+                                    <textarea id="notes" name="observaciones" rows="3"></textarea>
                                 </div>
                             </div>
                             <button type="submit" id="submit-btn" class="btn btn-full btn-disabled" disabled>Confirmar

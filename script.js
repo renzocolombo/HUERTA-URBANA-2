@@ -339,29 +339,17 @@ function updateSummary() {
     summaryTotal.innerText = `$${Math.round(total).toLocaleString('es-AR')}`;
     headerTotal.innerText = `$${Math.round(total).toLocaleString('es-AR')}`;
 
-    // Sincronizar con campos ocultos para el envío estándar (Formspree)
+    // Sincronizar con campo de productos para el JSON de Make
     const hiddenDetails = document.getElementById('hidden-details');
-    const hiddenTotal = document.getElementById('hidden-total');
-    const hiddenSubject = document.getElementById('hidden-subject');
-    const fullname = document.getElementById('fullname').value;
 
-    if (hiddenDetails && hiddenTotal) {
-        // Generar resumen de texto para el campo oculto
+    if (hiddenDetails) {
         const textSummary = Object.values(cart).map(item => {
             const sub = Math.round(item.unit === 'g' ? (item.price / 1000) * item.qty : item.price * item.qty);
             const unitLabel = item.unit === 'g' ? 'g' : (item.unit === 'un' ? ' un.' : 'kg');
-            return `• ${item.name.toUpperCase()}: ${item.qty}${unitLabel} — $${sub.toLocaleString('es-AR')}`;
-        }).join('\n');
+            return `${item.name.toUpperCase()} (${item.qty}${unitLabel})`;
+        }).join(', ');
 
-        hiddenDetails.value = '\n' + textSummary;
-        hiddenTotal.value = summaryTotal.innerText;
-
-        // Actualizar asunto con hora para evitar hilos en Gmail
-        const now = new Date();
-        const timeStr = now.getHours().toString().padStart(2, '0') + ':' +
-            now.getMinutes().toString().padStart(2, '0') + ':' +
-            now.getSeconds().toString().padStart(2, '0');
-        hiddenSubject.value = `🛒 Pedido [${timeStr}]: ${fullname || 'Cliente'}`;
+        hiddenDetails.value = textSummary;
     }
 
     // Also update modal if visible
@@ -408,12 +396,12 @@ async function handleOrderSubmit(e) {
 
     // Construcción del objeto JSON según especificación exacta del usuario
     const orderData = {
-        nombre: document.getElementById('fullname').value,
-        telefono: document.getElementById('phone').value,
-        direccion: document.getElementById('address').value,
-        dia_entrega: document.getElementById('delivery-day').value,
-        horario_entrega: document.getElementById('delivery-time').value,
-        observaciones: document.getElementById('notes').value || 'Sin observaciones',
+        nombre: document.querySelector('[name="nombre"]').value,
+        telefono: document.querySelector('[name="telefono"]').value,
+        direccion: document.querySelector('[name="direccion"]').value,
+        dia_entrega: document.querySelector('[name="dia_entrega"]').value,
+        horario_entrega: document.querySelector('[name="horario_entrega"]').value,
+        observaciones: document.querySelector('[name="observaciones"]').value || 'Sin observaciones',
         productos: detalleProductos
     };
 
