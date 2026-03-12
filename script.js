@@ -416,7 +416,7 @@ async function handleOrderSubmit(e) {
     document.querySelector('[name="numero_pedido"]').value = numeroPedido;
     document.querySelector('[name="fecha"]').value = fechaActual;
     document.querySelector('[name="fecha_entrega"]').value = diaSeleccionado + " (" + horarioSeleccionado + ")";
-    document.querySelector('[name="ficha_entrega"]').value = `https://huertaurbana.click/pedido/${numeroPedido}`;
+    document.querySelector('[name="ficha_entrega"]').value = `https://www.huertaurbana.com.ar/pedido/${numeroPedido}`;
 
     // Cada campo es un valor independiente para que Make lo mapee directamente.
     const orderData = {
