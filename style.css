@@ -32,7 +32,7 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 90px;
+    scroll-padding-top: 80px;
 }
 
 body {
@@ -73,12 +73,11 @@ img {
 }
 
 section {
-    padding: 100px 0 60px;
-    scroll-margin-top: 90px;
+    padding: 40px 0 60px;
 }
 
 #formulario {
-    scroll-margin-top: 100px;
+    scroll-margin-top: 0;
 }
 
 .section-alt {
