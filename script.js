@@ -428,7 +428,7 @@ async function handleOrderSubmit(e) {
         "direccion": direccion,                                                 // Dirección capturada
         "dia_entrega": document.querySelector('[name="dia_entrega"]').value,      // Día seleccionado
         "horario_entrega": document.querySelector('[name="horario_entrega"]').value,  // Horario seleccionado
-        "metodo_pago": document.querySelector('[name="metodo_pago"]').value,      // Método de pago (Efectivo/Transferencia)
+        "metodo_pago": document.querySelector('input[name="metodo_pago"]:checked').value, // Mercado Pago o Efectivo
         "producto": document.querySelector('[name="producto"]').value,         // Detalle de productos en texto
         "cantidad": document.querySelector('[name="cantidad"]').value,         // Cantidad total de productos
         "total": document.querySelector('[name="total"]').value,            // Monto total del pedido
@@ -454,17 +454,31 @@ async function handleOrderSubmit(e) {
         });
 
         if (response.ok) {
-            // Limpiar formulario y carrito
+            const result = await response.json(); // Leer la respuesta de Make
+
+            // 1. Caso Mercado Pago: Redirigir al link de pago
+            if (orderData.metodo_pago === 'mercadopago' && result.link_pago) {
+                console.log("Redirigiendo a Mercado Pago:", result.link_pago);
+                window.location.href = result.link_pago;
+                return; // Evitar limpiar carrito si redirigimos (el usuario vuelve después)
+            }
+
+            // 2. Caso Efectivo: Mostrar mensaje de éxito local y limpiar
             document.getElementById('order-form').reset();
             cart = {};
             updateSummary();
 
-            // Mostrar modal de éxito interno (sin alert del navegador)
             const successModal = document.getElementById('success-modal');
+            const successMsg = document.getElementById('success-message');
+
+            if (orderData.metodo_pago === 'efectivo' && successMsg) {
+                successMsg.innerText = "Pedido recibido. Se paga en efectivo al momento de la entrega.";
+            }
+
             if (successModal) successModal.style.display = 'flex';
 
         } else {
-            throw new Error('Error en el servidor');
+            throw new Error('Error en el servidor de Make');
         }
     } catch (error) {
         console.error('Error:', error);

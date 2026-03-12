@@ -123,7 +123,6 @@
                             <input type="hidden" name="numero_pedido">
                             <input type="hidden" name="fecha">
                             <input type="hidden" name="fecha_entrega">
-                            <input type="hidden" name="metodo_pago" value="Efectivo/Transferencia">
                             <input type="hidden" name="estado" value="Pendiente">
                             <input type="hidden" name="ficha_entrega">
                             <input type="hidden" name="cantidad">
@@ -173,6 +172,29 @@
                                     </select>
                                 </div>
                             </div>
+
+                            <div class="form-row">
+                                <div class="form-group full-width-group">
+                                    <label style="margin-bottom: 15px; display: block; font-weight: 600;">Forma de
+                                        Pago</label>
+                                    <div class="payment-options">
+                                        <label class="payment-option">
+                                            <input type="radio" name="metodo_pago" value="mercadopago" required>
+                                            <div class="payment-card">
+                                                <ion-icon name="card-outline"></ion-icon>
+                                                <span>Pagar ahora (Mercado Pago)</span>
+                                            </div>
+                                        </label>
+                                        <label class="payment-option">
+                                            <input type="radio" name="metodo_pago" value="efectivo" checked required>
+                                            <div class="payment-card">
+                                                <ion-icon name="cash-outline"></ion-icon>
+                                                <span>Efectivo al recibir</span>
+                                            </div>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="form-group full-width-group">
                                 <div class="inner-field-container">
                                     <label class="inner-label" for="notes">Tu mensaje</label>
@@ -217,7 +239,7 @@
         <div class="modal-content">
             <ion-icon name="checkmark-circle" class="success-icon"></ion-icon>
             <h2>Pedido enviado correctamente</h2>
-            <p>Gracias por confiar en Huerta Urbana. Nos contactaremos pronto por WhatsApp.</p>
+            <p id="success-message">Gracias por confiar en Huerta Urbana. Nos contactaremos pronto por WhatsApp.</p>
             <button onclick="closeModal()" class="btn btn-primary">Cerrar</button>
         </div>
     </div>
