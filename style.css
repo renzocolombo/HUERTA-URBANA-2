@@ -525,7 +525,7 @@ header {
 .order-summary {
     background: white !important;
     color: #333 !important;
-    padding: 12px 18px;
+    padding: 10px 15px;
     border-radius: 15px;
     box-shadow: var(--shadow-md);
     position: sticky;
@@ -533,8 +533,8 @@ header {
 }
 
 .summary-items {
-    margin: 20px 0;
-    max-height: 400px;
+    margin: 10px 0;
+    max-height: 350px;
     overflow-y: auto;
     padding-right: 10px;
 }
@@ -542,17 +542,17 @@ header {
 .summary-item {
     display: flex;
     justify-content: space-between;
-    padding: 10px 0;
+    padding: 8px 0;
     border-bottom: 1px solid #eee;
-    font-size: 0.9rem;
+    font-size: 0.85rem;
 }
 
 .total-row {
     display: flex;
     justify-content: space-between;
-    font-size: 1.5rem;
+    font-size: 1.35rem;
     font-weight: 700;
-    margin-top: 20px;
+    margin-top: 15px;
     color: var(--primary);
 }
 
@@ -591,7 +591,7 @@ header {
     background-color: #f5f5f5;
     border: 1px solid #ddd;
     border-radius: 12px;
-    padding: 10px 12px;
+    padding: 8px 10px;
     transition: var(--transition);
 }
 
@@ -618,9 +618,9 @@ header {
     padding: 0 !important;
     box-shadow: none !important;
     color: var(--text-dark);
-    font-size: 1rem;
+    font-size: 0.95rem;
     width: 100%;
-    min-height: 100px;
+    min-height: 80px;
 }
 
 .form-row {
