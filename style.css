@@ -72,12 +72,12 @@ img {
 }
 
 section {
-    padding: 100px 0 60px;
-    scroll-margin-top: 80px;
+    padding: 140px 0 80px;
+    scroll-margin-top: 120px;
 }
 
 #formulario {
-    scroll-margin-top: 100px;
+    scroll-margin-top: 130px;
 }
 
 .section-alt {
