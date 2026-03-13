@@ -74,7 +74,8 @@ img {
 }
 
 section {
-    padding: 30px 0 60px;
+    padding: 5px 0 60px;
+    /* Reducido de 30px a 5px para pegar contenido al header */
     min-height: calc(100vh - 98px);
     /* Cada sección ocupa el cuadro visual */
     display: flex;
@@ -97,6 +98,8 @@ section {
 .section-header h2 {
     font-size: 2.5rem;
     color: var(--primary);
+    margin-top: 0;
+    /* Asegurar que no hay margen extra */
     margin-bottom: 10px;
 }
 
