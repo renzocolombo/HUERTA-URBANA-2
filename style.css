@@ -32,8 +32,8 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 98px;
-    /* Ajuste milimétrico al header */
+    scroll-padding-top: 76px;
+    /* Ajuste milimétrico a la altura real del header (v2.5) */
 }
 
 body {
@@ -76,7 +76,8 @@ img {
 section {
     padding: 5px 0 60px;
     /* Reducido de 30px a 5px para pegar contenido al header */
-    min-height: calc(100vh - 98px);
+    min-height: calc(100vh - 76px);
+    /* Modificado a 76px para alineación perfecta */
     /* Cada sección ocupa el cuadro visual */
     display: flex;
     flex-direction: column;
