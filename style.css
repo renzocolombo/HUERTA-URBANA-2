@@ -271,6 +271,10 @@ header {
     /* Ocupar toda la pantalla inicial */
     display: flex;
     align-items: center;
+    justify-content: center;
+    /* Centrado horizontal */
+    text-align: center;
+    /* Texto centrado */
     background: url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1974') center/cover no-repeat;
     position: relative;
     color: white;
@@ -290,7 +294,9 @@ header {
 .hero-content {
     position: relative;
     z-index: 2;
-    max-width: 650px;
+    max-width: 800px;
+    /* Un poco más ancho para mejor distribución */
+    padding: 0 20px;
 }
 
 .hero h1 {
