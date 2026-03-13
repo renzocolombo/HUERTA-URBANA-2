@@ -32,7 +32,8 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 76px;
+    scroll-padding-top: 98px;
+    /* Ajuste milimétrico al header */
 }
 
 body {
@@ -73,8 +74,11 @@ img {
 }
 
 section {
-    padding: 20px 0 60px;
-    /* Reducido padding superior para eliminar franja blanca */
+    padding: 30px 0 60px;
+    min-height: calc(100vh - 98px);
+    /* Cada sección ocupa el cuadro visual */
+    display: flex;
+    flex-direction: column;
 }
 
 #formulario {
@@ -263,15 +267,14 @@ header {
 
 /* Hero Section */
 .hero {
-    height: 85vh;
-    /* Un poco menos alto para que entre todo mejor */
+    height: 100vh;
+    /* Ocupar toda la pantalla inicial */
     display: flex;
     align-items: center;
     background: url('https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=1974') center/cover no-repeat;
     position: relative;
     color: white;
     margin-top: 0;
-    /* Eliminado margin-top conflictivo */
 }
 
 .hero-overlay {
@@ -717,9 +720,12 @@ select option {
 
 /* Footer */
 .footer {
-    background: #1a1a1a;
-    color: white;
-    padding: 60px 0 20px;
+    background: var(--bg-light);
+    /* Unificado con el fondo */
+    color: var(--text-dark);
+    padding: 40px 0 20px;
+    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    /* Separación sutil */
 }
 
 .footer-content {
@@ -731,13 +737,13 @@ select option {
 }
 
 .footer-info p {
-    color: #999;
+    color: var(--text-muted);
     margin: 15px 0;
     font-size: 0.9rem;
 }
 
 .logo-light {
-    color: white;
+    color: var(--primary);
 }
 
 .footer-email {
