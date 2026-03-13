@@ -32,8 +32,8 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 76px;
-    /* Ajuste milimétrico a la altura real del header (v2.5) */
+    scroll-padding-top: 74px;
+    /* Ajuste de precisión adicional (-2px) para ocultar 1mm superior (v2.6) */
 }
 
 body {
@@ -537,8 +537,11 @@ header {
 /* Order Section Layout */
 .order-layout {
     display: grid;
-    grid-template-columns: 1fr 1.5fr;
-    gap: 10px;
+    grid-template-columns: 100%;
+    /* Una sola columna para centrar el contenido (v2.6) */
+    max-width: 800px;
+    margin: 0 auto;
+    gap: 20px;
     align-items: start;
 }
 
@@ -730,11 +733,11 @@ select option {
 
 /* Footer */
 .footer {
-    background: var(--bg-light);
-    /* Unificado con el fondo */
-    color: var(--text-dark);
+    background: #111111;
+    /* Fondo oscuro solicitado (v2.6) */
+    color: #ffffff;
     padding: 40px 0 20px;
-    border-top: 1px solid rgba(0, 0, 0, 0.05);
+    border-top: 1px solid rgba(0, 0, 0, 0.2);
     /* Separación sutil */
 }
 
@@ -747,7 +750,7 @@ select option {
 }
 
 .footer-info p {
-    color: var(--text-muted);
+    color: #bbbbbb;
     margin: 15px 0;
     font-size: 0.9rem;
 }
