@@ -16,7 +16,7 @@
     <!-- Ionicons para iconos elegantes -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <link rel="stylesheet" href="style.css?v=10.0">
+    <link rel="stylesheet" href="style.css?v=11.0">
 </head>
 
 <body>
@@ -35,12 +35,14 @@
                 </ul>
             </nav>
             <div class="header-cart-info" id="open-cart">
+                <div class="cart-controls-wrapper">
+                    <span id="cart-total-header" class="cart-total-header">$0</span>
+                    <button class="btn-ver-pedido" id="open-cart-btn">
+                        <ion-icon name="cart-outline"></ion-icon>
+                        <span>Ver pedido</span>
+                    </button>
+                </div>
                 <span id="shipping-header-msg" class="shipping-header-msg"></span>
-                <span id="cart-total-header" class="cart-total-header">$0</span>
-                <button class="btn-ver-pedido" id="open-cart-btn">
-                    <ion-icon name="cart-outline"></ion-icon>
-                    <span>Ver pedido</span>
-                </button>
             </div>
         </div>
     </header>
@@ -335,7 +337,7 @@
         <ion-icon name="logo-whatsapp"></ion-icon>
     </a>
 
-    <script src="script.js?v=10.0"></script>
+    <script src="script.js?v=11.0"></script>
 </body>
 
 </html>

@@ -160,13 +160,14 @@ header {
 .header-cart-info {
     display: flex;
     align-items: center;
-    gap: 12px;
+    gap: 15px;
+    flex-direction: row-reverse;
 }
 
-.header-cart-info {
+.cart-controls-wrapper {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 12px;
 }
 
 .shipping-header-msg {
@@ -1301,7 +1302,18 @@ select option {
     }
 
     .order-summary-wrapper {
-        padding: 0 20px;
+        display: none;
+    }
+
+    .header-cart-info {
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 0;
+    }
+
+    .shipping-header-msg {
+        font-size: 0.72rem;
+        margin-top: -2px;
     }
 
     #desktop-help {
