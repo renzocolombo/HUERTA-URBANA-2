@@ -495,6 +495,13 @@ header {
     background: var(--primary);
 }
 
+.custom-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+    margin-top: 20px;
+}
+
 /* Custom Product Items Enhancements */
 .product-item {
     background: white;
