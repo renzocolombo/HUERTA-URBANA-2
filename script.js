@@ -469,19 +469,31 @@ async function handleOrderSubmit(e) {
         });
 
         if (response.ok) {
-            const result = await response.json();
-            console.log("Respuesta completa de Make:", result);
+            const rawText = await response.text();
+            console.log("Respuesta bruta de Make:", rawText);
+
+            let result = {};
+            try {
+                result = JSON.parse(rawText);
+            } catch (e) {
+                console.warn("La respuesta no es un JSON válido:", rawText);
+            }
 
             // Manejo de Redirección (Mercado Pago)
             if (metodoPago === 'mercadopago') {
-                const redirectUrl = result.url || result.link_pago;
+                const redirectUrl = result.url || result.link_pago || result.link || result.checkout_url;
+                
                 if (redirectUrl) {
                     console.log("Redirigiendo a:", redirectUrl);
                     window.location.href = redirectUrl;
                 } else {
-                    console.error("Error: Respuesta sin link de pago.", result);
-                    const respuestaString = JSON.stringify(result);
-                    alert("Error: Make respondió con éxito pero no envió el link de pago.\n\nContenido recibido: " + respuestaString + "\n\nPor favor, avisale al desarrollador (o verfificá el campo en Make).");
+                    console.error("Error: No se encontró un link de pago en la respuesta.", result);
+                    const diagnosticInfo = {
+                        metodo_detectado: metodoPago,
+                        respuesta_servidor: rawText || "[Vacío]",
+                        json_parseado: result
+                    };
+                    alert("⚠️ ERROR DE CONFIGURACIÓN EN MAKE\n\nEl pedido se envió pero Make no devolvió el link de pago.\n\nDIAGNÓSTICO:\n" + JSON.stringify(diagnosticInfo, null, 2) + "\n\nIMPORTANTE: Asegurate que en Make el módulo 'Webhook Response' devuelva un JSON con el campo 'url'.");
                 }
                 return;
             }
