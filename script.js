@@ -386,7 +386,7 @@ function updateSummary() {
         // Estado: Pendiente
         const missing = MIN_PURCHASE - total;
         if (headerMsg) {
-            headerMsg.innerText = `Faltan $${missing.toLocaleString('es-AR')} para envío gratis`;
+            headerMsg.innerText = `Envío gratis a partir de $${MIN_PURCHASE.toLocaleString('es-AR')}`;
             headerMsg.className = 'shipping-header-msg status-red';
         }
         if (summaryBadge) {
