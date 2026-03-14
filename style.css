@@ -32,8 +32,8 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 74px;
-    /* Ajuste de precisión adicional (-2px) para ocultar 1mm superior (v2.6) */
+    scroll-padding-top: 73px;
+    /* Ajuste de precisión adicional (-1px) para ocultar 1mm superior (v2.7) */
 }
 
 body {
