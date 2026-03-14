@@ -555,9 +555,7 @@ header {
     /* Resumen a la izquierda v2.9 */
     align-self: start;
     /* Evita que Grid lo estire hasta el piso copiando a la otra columna (v3.1) */
-    position: sticky;
-    top: 110px;
-    /* Bajo un poco el sticky para acompañar el margin-top */
+    /* Comportamiento 100% estático solicitado en v3.2 (Se remueve position: sticky) */
     display: flex;
     flex-direction: column;
     gap: 20px;
