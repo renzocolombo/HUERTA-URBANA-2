@@ -468,12 +468,18 @@ async function handleOrderSubmit(e) {
 
         if (response.ok) {
             const result = await response.json(); // Leer la respuesta de Make
+            console.log("Respuesta completa de Make:", result);
 
             // 1. Caso Mercado Pago: Redirigir al link de pago
-            if (orderData.metodo_pago === 'mercadopago' && result.url) {
-                console.log("Redirigiendo a Mercado Pago:", result.url);
-                window.location.href = result.url;
-                return; // Evitar limpiar carrito si redirigimos (el usuario vuelve después)
+            if (orderData.metodo_pago === 'mercadopago') {
+                if (result.url) {
+                    console.log("Redirigiendo a Mercado Pago:", result.url);
+                    window.location.href = result.url;
+                } else {
+                    console.error("Error: Make no devolvió el campo 'url'. Respuesta recibida:", result);
+                    alert("Error: No se recibió el link de pago de Mercado Pago. Por favor, verifica la configuración de Make.");
+                }
+                return;
             }
 
             // 2. Caso Efectivo: Mostrar mensaje de éxito local y limpiar
