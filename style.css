@@ -32,8 +32,8 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 89px;
-    /* Ajustado al alto real del header con padding: 25px 0 */
+    scroll-padding-top: 73px;
+    /* Ajustado al alto real del header con padding: 12px 0 */
 }
 
 body {
@@ -75,9 +75,7 @@ img {
 
 section {
     padding: 0 0 60px;
-    /* Sin padding-top para pegar contenido al header */
-    min-height: calc(100vh - 89px);
-    /* Ajustado al alto real del header */
+    min-height: calc(100vh - 73px);
     display: flex;
     flex-direction: column;
 }
@@ -119,7 +117,7 @@ header {
     /* Un poco más opaco */
     backdrop-filter: blur(10px);
     z-index: 1000;
-    padding: 25px 0;
+    padding: 12px 0;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     /* Sombra solo hacia abajo */
     transition: var(--transition);
@@ -129,8 +127,6 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin: 10px 0;
-    /* Margen para extender el alto del header y tapar la franja superior */
 }
 
 .logo {
