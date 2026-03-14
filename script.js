@@ -480,7 +480,8 @@ async function handleOrderSubmit(e) {
                     window.location.href = redirectUrl;
                 } else {
                     console.error("Error: Respuesta sin link de pago.", result);
-                    alert("Error: No recibimos el link de pago de Mercado Pago. Si el problema persiste, por favor elegí Efectivo o contactanos.");
+                    const respuestaString = JSON.stringify(result);
+                    alert("Error: Make respondió con éxito pero no envió el link de pago.\n\nContenido recibido: " + respuestaString + "\n\nPor favor, avisale al desarrollador (o verfificá el campo en Make).");
                 }
                 return;
             }
