@@ -431,53 +431,56 @@ async function handleOrderSubmit(e) {
     document.querySelector('[name="fecha_entrega"]').value = diaSeleccionado + " (" + horarioSeleccionado + ")";
     document.querySelector('[name="ficha_entrega"]').value = `https://www.huertaurbana.com.ar/pedido/${numeroPedido}`;
 
-    // Cada campo es un valor independiente para que Make lo mapee directamente.
+    // Captura robusta de datos del formulario usando FormData
+    const formData = new FormData(form);
+    const metodoPagoRaw = formData.get('metodo_pago') || 'efectivo';
+    const metodoPago = metodoPagoRaw.toString().toLowerCase().trim();
+
+    console.log("Método de pago detectado:", metodoPago);
+
     const orderData = {
-        "numero_pedido": document.querySelector('[name="numero_pedido"]').value,    // Identificador único
-        "fecha": document.querySelector('[name="fecha"]').value,            // Fecha de creación del pedido
-        "nombre": nombre,                                                    // Nombre completo capturado
-        "telefono": telefono,                                                  // Teléfono capturado
-        "email": document.querySelector('[name="email"]').value,            // Email capturado
-        "direccion": direccion,                                                 // Dirección capturada
-        "dia_entrega": document.querySelector('[name="dia_entrega"]').value,      // Día seleccionado
-        "horario_entrega": document.querySelector('[name="horario_entrega"]').value,  // Horario seleccionado
-        "metodo_pago": document.querySelector('input[name="metodo_pago"]:checked').value, // Mercado Pago o Efectivo
-        "producto": document.querySelector('[name="producto"]').value,         // Detalle de productos en texto
-        "cantidad": document.querySelector('[name="cantidad"]').value,         // Cantidad total de productos
-        "total": document.querySelector('[name="total"]').value,            // Monto total del pedido
-        "estado": document.querySelector('[name="estado"]').value,            // Estado inicial (Pendiente)
-        "observaciones": document.querySelector('[name="observaciones"]').value || 'Sin observaciones',
-        "fecha_entrega": document.querySelector('[name="fecha_entrega"]').value,    // Día y hora estimada de entrega
-        "ficha_entrega": document.querySelector('[name="ficha_entrega"]').value     // Link a la ficha de entrega
+        "numero_pedido": formData.get("numero_pedido"),
+        "fecha": formData.get("fecha"),
+        "nombre": nombre,
+        "telefono": telefono,
+        "email": formData.get("email"),
+        "direccion": direccion,
+        "dia_entrega": formData.get("dia_entrega"),
+        "horario_entrega": formData.get("horario_entrega"),
+        "metodo_pago": metodoPago,
+        "producto": formData.get("producto"),
+        "cantidad": formData.get("cantidad"),
+        "total": formData.get("total"),
+        "estado": formData.get("estado"),
+        "observaciones": formData.get("observaciones") || 'Sin observaciones',
+        "fecha_entrega": formData.get("fecha_entrega"),
+        "ficha_entrega": formData.get("ficha_entrega")
     };
 
-    // Depuración: Ver en consola antes de enviar
-    console.log("Enviando JSON plano a Make:", orderData);
+    console.log("Enviando pedido a Make:", orderData);
 
     try {
-        // PEGÁ AQUÍ TU URL DE WEBHOOK DE MAKE
         const WEBHOOK_MAKE_URL = "https://hook.us2.make.com/elknbrsvv3n54pb2cm25loxuokw3j4ca";
 
         const response = await fetch(WEBHOOK_MAKE_URL, {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(orderData)
         });
 
         if (response.ok) {
-            const result = await response.json(); // Leer la respuesta de Make
+            const result = await response.json();
             console.log("Respuesta completa de Make:", result);
 
-            // 1. Caso Mercado Pago: Redirigir al link de pago
-            if (orderData.metodo_pago === 'mercadopago') {
-                if (result.url) {
-                    console.log("Redirigiendo a Mercado Pago:", result.url);
-                    window.location.href = result.url;
+            // Manejo de Redirección (Mercado Pago)
+            if (metodoPago === 'mercadopago') {
+                const redirectUrl = result.url || result.link_pago;
+                if (redirectUrl) {
+                    console.log("Redirigiendo a:", redirectUrl);
+                    window.location.href = redirectUrl;
                 } else {
-                    console.error("Error: Make no devolvió el campo 'url'. Respuesta recibida:", result);
-                    alert("Error: No se recibió el link de pago de Mercado Pago. Por favor, verifica la configuración de Make.");
+                    console.error("Error: Respuesta sin link de pago.", result);
+                    alert("Error: No recibimos el link de pago de Mercado Pago. Si el problema persiste, por favor elegí Efectivo o contactanos.");
                 }
                 return;
             }
