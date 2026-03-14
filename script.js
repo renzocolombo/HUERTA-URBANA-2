@@ -392,7 +392,7 @@ function updateSummary() {
 
 async function handleOrderSubmit(e) {
     e.preventDefault();
-
+    const form = e.target;
     const submitBtn = document.getElementById('submit-btn');
     const originalBtnText = submitBtn.innerText;
 
