@@ -1302,7 +1302,15 @@ select option {
     }
 
     .order-summary-wrapper {
-        display: none;
+        margin-bottom: 30px;
+    }
+
+    .order-summary {
+        border-radius: 0;
+        box-shadow: none;
+        border-left: none;
+        border-right: none;
+        padding: 20px;
     }
 
     .header-cart-info {
