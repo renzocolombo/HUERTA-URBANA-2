@@ -32,8 +32,8 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 55px;
-    /* Ajustado al nuevo alto del header reducido (8px padding top/bottom) */
+    scroll-padding-top: 67px;
+    /* Ajustado al alto real del header con padding: 8px 0 (~67px total) */
 }
 
 body {
@@ -76,8 +76,8 @@ img {
 section {
     padding: 0 0 60px;
     /* Sin padding-top para pegar contenido al header */
-    min-height: calc(100vh - 55px);
-    /* Ajustado al nuevo alto del header reducido */
+    min-height: calc(100vh - 67px);
+    /* Ajustado al alto real del header (~67px) */
     display: flex;
     flex-direction: column;
 }
