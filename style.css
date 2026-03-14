@@ -41,7 +41,7 @@ body {
     color: var(--text-dark);
     background-color: var(--bg-light);
     line-height: 1.6;
-    overflow-x: hidden;
+    /* overflow-x: hidden; Removido en v3.0 porque rompe el position: sticky */
 }
 
 h1,
