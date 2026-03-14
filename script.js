@@ -364,12 +364,35 @@ function updateSummary() {
         updateCartModalContent();
     }
 
+    // Actualizar indicadores de envío y mínimo (v4.0)
+    const headerMsg = document.getElementById('shipping-header-msg');
+    const summaryBadge = document.getElementById('summary-min-badge');
+
     if (total >= MIN_PURCHASE) {
+        // Estado: Éxito
+        if (headerMsg) {
+            headerMsg.innerText = '¡Envío gratis!';
+            headerMsg.className = 'shipping-header-msg status-green';
+        }
+        if (summaryBadge) {
+            summaryBadge.innerHTML = '<ion-icon name="checkmark-circle"></ion-icon> OK';
+            summaryBadge.className = 'min-badge status-green';
+        }
         minMsg.style.color = '#27ae60';
         minMsg.innerText = '✅ Cupo mínimo alcanzado';
         submitBtn.disabled = false;
         submitBtn.classList.remove('btn-disabled');
     } else {
+        // Estado: Pendiente
+        const missing = MIN_PURCHASE - total;
+        if (headerMsg) {
+            headerMsg.innerText = `Faltan $${missing.toLocaleString('es-AR')} para envío gratis`;
+            headerMsg.className = 'shipping-header-msg status-red';
+        }
+        if (summaryBadge) {
+            summaryBadge.innerText = `Mín: $${MIN_PURCHASE.toLocaleString('es-AR')}`;
+            summaryBadge.className = 'min-badge status-red';
+        }
         minMsg.style.color = '#e74c3c';
         minMsg.innerText = `Compra mínima: $${MIN_PURCHASE.toLocaleString('es-AR')}`;
         submitBtn.disabled = true;

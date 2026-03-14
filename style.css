@@ -163,6 +163,26 @@ header {
     gap: 12px;
 }
 
+.header-cart-info {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.shipping-header-msg {
+    font-size: 0.8rem;
+    font-weight: 600;
+    transition: var(--transition);
+}
+
+.shipping-header-msg.status-red {
+    color: var(--danger);
+}
+
+.shipping-header-msg.status-green {
+    color: var(--success);
+}
+
 .cart-total-header {
     font-weight: 700;
     color: var(--primary);
@@ -590,10 +610,38 @@ header {
 .total-row {
     display: flex;
     justify-content: space-between;
+    align-items: center;
     font-size: 1.2rem;
     font-weight: 700;
     margin-top: 8px;
     color: var(--primary);
+}
+
+.total-label-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.min-badge {
+    font-size: 0.75rem;
+    padding: 3px 8px;
+    border-radius: 20px;
+    font-weight: 700;
+    text-transform: uppercase;
+    transition: var(--transition);
+}
+
+.min-badge.status-red {
+    background: rgba(231, 76, 60, 0.1);
+    color: var(--danger);
+    border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+.min-badge.status-green {
+    background: rgba(39, 174, 96, 0.1);
+    color: var(--success);
+    border: 1px solid rgba(39, 174, 96, 0.2);
 }
 
 .shipping-info {
