@@ -470,9 +470,9 @@ async function handleOrderSubmit(e) {
             const result = await response.json(); // Leer la respuesta de Make
 
             // 1. Caso Mercado Pago: Redirigir al link de pago
-            if (orderData.metodo_pago === 'mercadopago' && result.link_pago) {
-                console.log("Redirigiendo a Mercado Pago:", result.link_pago);
-                window.location.href = result.link_pago;
+            if (orderData.metodo_pago === 'mercadopago' && result.url) {
+                console.log("Redirigiendo a Mercado Pago:", result.url);
+                window.location.href = result.url;
                 return; // Evitar limpiar carrito si redirigimos (el usuario vuelve después)
             }
 
