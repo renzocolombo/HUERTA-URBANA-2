@@ -129,6 +129,8 @@ header {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    margin: 10px 0;
+    /* Margen para extender el alto del header y tapar la franja superior */
 }
 
 .logo {
