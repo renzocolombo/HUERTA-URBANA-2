@@ -469,31 +469,16 @@ async function handleOrderSubmit(e) {
         });
 
         if (response.ok) {
-            const rawText = await response.text();
-            console.log("Respuesta bruta de Make:", rawText);
+            const data = await response.json();
+            console.log("Respuesta recibida:", data);
 
-            let result = {};
-            try {
-                result = JSON.parse(rawText);
-            } catch (e) {
-                console.warn("La respuesta no es un JSON válido:", rawText);
-            }
-
-            // Manejo de Redirección (Mercado Pago)
+            // Redirección Automática (Mercado Pago)
             if (metodoPago === 'mercadopago') {
-                const redirectUrl = result.url || result.link_pago || result.link || result.checkout_url;
-                
-                if (redirectUrl) {
-                    console.log("Redirigiendo a:", redirectUrl);
-                    window.location.href = redirectUrl;
+                if (data.url) {
+                    window.location.href = data.url;
                 } else {
-                    console.error("Error: No se encontró un link de pago en la respuesta.", result);
-                    const diagnosticInfo = {
-                        metodo_detectado: metodoPago,
-                        respuesta_servidor: rawText || "[Vacío]",
-                        json_parseado: result
-                    };
-                    alert("⚠️ ERROR DE CONFIGURACIÓN EN MAKE\n\nEl pedido se envió pero Make no devolvió el link de pago.\n\nDIAGNÓSTICO:\n" + JSON.stringify(diagnosticInfo, null, 2) + "\n\nIMPORTANTE: Asegurate que en Make el módulo 'Webhook Response' devuelva un JSON con el campo 'url'.");
+                    console.error("Error: URL de pago no encontrada en la respuesta");
+                    alert("Hubo un error al generar el link de pago. Por favor, intenta de nuevo o elige Efectivo.");
                 }
                 return;
             }
