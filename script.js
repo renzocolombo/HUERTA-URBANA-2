@@ -98,31 +98,39 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function loadCustomerData() {
-    const savedData = localStorage.getItem('customer_data');
-    if (savedData) {
-        const data = JSON.parse(savedData);
-        if (data.fullname) document.getElementById('fullname').value = data.fullname;
-        if (data.email) document.getElementById('email').value = data.email;
-        if (data.address) document.getElementById('address').value = data.address;
-        if (data.phone) document.getElementById('phone').value = data.phone;
-        if (data.deliveryDay) document.getElementById('delivery-day').value = data.deliveryDay;
-        if (data.deliveryTime) document.getElementById('delivery-time').value = data.deliveryTime;
+    try {
+        const savedData = localStorage.getItem('customer_data');
+        if (savedData) {
+            const data = JSON.parse(savedData);
+            if (data.fullname) document.getElementById('fullname').value = data.fullname;
+            if (data.email) document.getElementById('email').value = data.email;
+            if (data.address) document.getElementById('address').value = data.address;
+            if (data.phone) document.getElementById('phone').value = data.phone;
+            if (data.deliveryDay) document.getElementById('delivery-day').value = data.deliveryDay;
+            if (data.deliveryTime) document.getElementById('delivery-time').value = data.deliveryTime;
 
-        // Validar si el botón debe habilitarse si ya hay datos y carrito
-        updateSummary();
+            // Validar si el botón debe habilitarse si ya hay datos y carrito
+            updateSummary();
+        }
+    } catch (e) {
+        console.warn('No se pudieron cargar los datos del cliente (posible modo incógnito):', e);
     }
 }
 
 function saveCustomerData() {
-    const data = {
-        fullname: document.getElementById('fullname').value,
-        email: document.getElementById('email').value,
-        address: document.getElementById('address').value,
-        phone: document.getElementById('phone').value,
-        deliveryDay: document.getElementById('delivery-day').value,
-        deliveryTime: document.getElementById('delivery-time').value
-    };
-    localStorage.setItem('customer_data', JSON.stringify(data));
+    try {
+        const data = {
+            fullname: document.getElementById('fullname').value,
+            email: document.getElementById('email').value,
+            address: document.getElementById('address').value,
+            phone: document.getElementById('phone').value,
+            deliveryDay: document.getElementById('delivery-day').value,
+            deliveryTime: document.getElementById('delivery-time').value
+        };
+        localStorage.setItem('customer_data', JSON.stringify(data));
+    } catch (e) {
+        console.warn('No se pudieron guardar los datos del cliente (posible modo incógnito):', e);
+    }
 }
 
 function initUI() {
