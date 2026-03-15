@@ -126,8 +126,16 @@ function saveCustomerData() {
 }
 
 function initUI() {
-    const orderForm = document.getElementById('order-form');
-    orderForm.addEventListener('submit', handleOrderSubmit);
+    // Asegurar que al hacer clic en la tarjeta de pago se seleccione el radio (útil en móviles)
+    document.querySelectorAll('.payment-option').forEach(option => {
+        option.addEventListener('click', function() {
+            const radio = this.querySelector('input[type="radio"]');
+            if (radio) radio.checked = true;
+        });
+    });
+
+    const form = document.getElementById('order-form');
+    form.addEventListener('submit', handleOrderSubmit);
 
     // Cart Modal Events
     const cartBtn = document.getElementById('open-cart-btn');
