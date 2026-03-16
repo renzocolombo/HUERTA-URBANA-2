@@ -55,7 +55,7 @@ const PRODUCTS = {
         'verduras': [
             { id: 'v1', name: 'tomate', price: 3500, unit: 'kg', step: 0.5, min: 1 },
             { id: 'v2', name: 'lechuga mantecosa', price: 2800, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v3', name: 'papa blanca', price: 1500, unit: 'kg', step: 0.5, min: 1 },
+            { id: 'v3', name: 'papa blanca', price: 100, unit: 'kg', step: 0.5, min: 1 },
             { id: 'v4', name: 'cebolla blanca', price: 1800, unit: 'kg', step: 0.5, min: 1 },
             { id: 'v5', name: 'cebolla morada', price: 2100, unit: 'kg', step: 0.5, min: 1 },
             { id: 'v6', name: 'zanahoria', price: 1600, unit: 'kg', step: 0.5, min: 1 },
@@ -84,7 +84,7 @@ const PRODUCTS = {
     }
 };
 
-const MIN_PURCHASE = 45000;
+const MIN_PURCHASE = 100;
 let cart = {};
 let activeCategory = 'verduras';
 
