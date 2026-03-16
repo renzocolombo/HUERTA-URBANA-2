@@ -473,7 +473,7 @@ async function handleOrderSubmit(e) {
         "ficha_entrega": formData.get("ficha_entrega"),
         // Campos adicionales para integración de notificaciones Mercado Pago vía Make
         "external_reference": formData.get("numero_pedido"),
-        "notification_url": "https://hook.us2.make.com/XXXXXXXX"
+        "notification_url": "https://hook.us2.make.com/uwcvtbynbitqnxvm5ekx75by8jyuljxr"
     };
 
     console.log("Enviando pedido a Make:", orderData);
