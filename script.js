@@ -449,8 +449,7 @@ async function handleOrderSubmit(e) {
 
     // Captura robusta de datos del formulario usando FormData
     const formData = new FormData(form);
-    const metodoPagoRaw = formData.get('metodo_pago') || 'efectivo';
-    const metodoPago = metodoPagoRaw.toString().toLowerCase().trim();
+    const metodoPago = 'mercadopago';
 
     console.log("Método de pago detectado:", metodoPago);
 
