@@ -155,8 +155,8 @@ header {
 
 .logo-subtitle {
     font-size: 0.65rem;
-    color: var(--text-muted);
-    font-weight: 500;
+    color: #8ebd7d; /* Verde clarito solicitado */
+    font-weight: 600;
     margin-top: 2px;
     letter-spacing: 0.2px;
 }
@@ -743,7 +743,8 @@ header {
 }
 
 .form-group.full-width-group {
-    flex: 0 0 100%;
+    flex: 1 1 100%;
+    width: 100%;
 }
 
 .inner-field-container {
