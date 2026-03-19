@@ -461,6 +461,7 @@ async function handleOrderSubmit(e) {
         "telefono": telefono,
         "email": formData.get("email"),
         "direccion": direccion,
+        "localidad": formData.get("localidad"),
         "dia_entrega": formData.get("dia_entrega"),
         "horario_entrega": formData.get("horario_entrega"),
         "metodo_pago": metodoPago,

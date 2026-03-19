@@ -25,7 +25,7 @@
     <!-- Ionicons para iconos elegantes -->
     <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
-    <link rel="stylesheet" href="style.css?v=23.0">
+    <link rel="stylesheet" href="style.css?v=24.0">
 </head>
 
 <body>
@@ -178,6 +178,25 @@
                                         placeholder="Ej: Av. Siempreviva 123" required autocomplete="street-address">
                                 </div>
                                 <div class="form-group">
+                                    <label for="locality">Localidad</label>
+                                    <select id="locality" name="localidad" required>
+                                        <option value="" disabled selected>Seleccionar localidad</option>
+                                        <option value="Del Viso">Del Viso</option>
+                                        <option value="Fátima">Fátima</option>
+                                        <option value="La Lonja">La Lonja</option>
+                                        <option value="Manuel Alberti">Manuel Alberti</option>
+                                        <option value="Manzanares">Manzanares</option>
+                                        <option value="Manzone">Manzone</option>
+                                        <option value="Pilar">Pilar</option>
+                                        <option value="Presidente Derqui">Presidente Derqui</option>
+                                        <option value="Villa Astolfi">Villa Astolfi</option>
+                                        <option value="Villa Rosa">Villa Rosa</option>
+                                        <option value="Zelaya">Zelaya</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="form-row">
+                                <div class="form-group">
                                     <label for="phone">Teléfono / WhatsApp</label>
                                     <input type="tel" id="phone" name="telefono" placeholder="Ej: 11 1234 5678" required
                                         autocomplete="tel">
@@ -208,17 +227,10 @@
                                         Pago</label>
                                     <div class="payment-options">
                                         <label class="payment-option">
-                                            <input type="radio" name="metodo_pago" value="mercadopago" required>
+                                            <input type="radio" name="metodo_pago" value="mercadopago" checked required>
                                             <div class="payment-card">
                                                 <ion-icon name="card-outline"></ion-icon>
                                                 <span>Pagar ahora (Mercado Pago)</span>
-                                            </div>
-                                        </label>
-                                        <label class="payment-option">
-                                            <input type="radio" name="metodo_pago" value="efectivo" checked required>
-                                            <div class="payment-card">
-                                                <ion-icon name="cash-outline"></ion-icon>
-                                                <span>Efectivo al recibir</span>
                                             </div>
                                         </label>
                                     </div>
@@ -346,7 +358,7 @@
         <ion-icon name="logo-whatsapp"></ion-icon>
     </a>
 
-    <script src="script.js?v=23.0"></script>
+    <script src="script.js?v=24.0"></script>
 </body>
 
 </html>
