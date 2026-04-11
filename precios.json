@@ -1,0 +1,237 @@
+{
+  "accion": "publicarPrecios",
+  "monto_minimo": 35000,
+  "mensaje_minimo": "El pedido mínimo es de $35.000",
+  "productos": [
+    {
+      "nombre": "Papa",
+      "precio": 1020,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Cebolla ",
+      "precio": 850,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Tomate",
+      "precio": 1888.8888888888887,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Zanahoria",
+      "precio": 1700,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Lechuga",
+      "precio": 3400,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Zapallito",
+      "precio": 1275,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Zapallo blanco",
+      "precio": 1360,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Morron rojo",
+      "precio": 4675,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Rucula",
+      "precio": 708.3333333333334,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Espinaca",
+      "precio": 1700,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Remolacha",
+      "precio": 4250,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Pepino",
+      "precio": 1360,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Brocoli",
+      "precio": 2185.714285714286,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Cebolla morada",
+      "precio": 2077.777777777778,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Cabutia",
+      "precio": 1275,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Ajo",
+      "precio": 952,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Tomate cherry",
+      "precio": 6071.428571428572,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Berenjena",
+      "precio": 2040,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Palta",
+      "precio": 2210,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Manzana roja",
+      "precio": 5950,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Banana",
+      "precio": 3570,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Naranja",
+      "precio": 3740,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Manzana verde",
+      "precio": 3825,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Limon",
+      "precio": 3173.3333333333335,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Durazno",
+      "precio": 5409.090909090909,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Pomelo",
+      "precio": 3187.5,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Uva",
+      "precio": 5100,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Arandano",
+      "precio": 3541.666666666667,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Choclo",
+      "precio": 765,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Huevos",
+      "precio": 6500,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Miel pura",
+      "precio": 11000,
+      "unidad": "kg",
+      "activo": true
+    }
+  ],
+  "combos": [
+    {
+      "nombre": "Combo Básico",
+      "precio": 0,
+      "descripcion": "",
+      "items": [],
+      "activo": true
+    },
+    {
+      "nombre": "Combo Fit",
+      "precio": 0,
+      "descripcion": "",
+      "items": [],
+      "activo": true
+    },
+    {
+      "nombre": "Combo Familiar",
+      "precio": 0,
+      "descripcion": "",
+      "items": [],
+      "activo": true
+    },
+    {
+      "nombre": "Combo Premium",
+      "precio": 0,
+      "descripcion": "",
+      "items": [],
+      "activo": true
+    },
+    {
+      "nombre": "Combo Vegetariano",
+      "precio": 0,
+      "descripcion": "",
+      "items": [],
+      "activo": true
+    },
+    {
+      "nombre": "Combo Mensual",
+      "precio": 0,
+      "descripcion": "",
+      "items": [],
+      "activo": true
+    }
+  ]
+}
