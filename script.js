@@ -97,17 +97,14 @@ async function cargarPrecios() {
     if (data.success) {
       if (data.monto_minimo) {
         MIN_PURCHASE = data.monto_minimo
-        // Actualizar todos los textos con el monto mínimo
+        // Actualizar los spans dinámicos con el monto mínimo
         const montoFormateado = '$' + MIN_PURCHASE.toLocaleString('es-AR')
-        document.querySelectorAll('#min-purchase-msg').forEach(el => {
-          el.textContent = 'Compra mínima: ' + montoFormateado
-        })
-        document.querySelectorAll('.shipping-info').forEach(el => {
-          el.innerHTML = el.innerHTML.replace(/\$[\d\.,]+/, montoFormateado)
-        })
-        document.querySelectorAll('.footer-info p').forEach(el => {
-          el.innerHTML = el.innerHTML.replace(/\$[\d\.,]+/, montoFormateado)
-        })
+        const spanEnvio = document.getElementById('envio-gratis-monto')
+        const spanMinimo = document.getElementById('compra-minima-monto')
+        const spanFooter = document.getElementById('footer-minima-monto')
+        if (spanEnvio) spanEnvio.textContent = montoFormateado
+        if (spanMinimo) spanMinimo.textContent = montoFormateado
+        if (spanFooter) spanFooter.textContent = montoFormateado
       }
       if (data.productos && data.productos.length > 0) actualizarProductos(data.productos)
       if (data.combos && data.combos.length > 0) actualizarCombos(data.combos)
