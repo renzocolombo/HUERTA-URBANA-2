@@ -96,7 +96,7 @@ async function cargarPrecios() {
 
 // Listas de palabras clave para clasificar productos (sin tildes, la función normaliza)
 const NOMBRES_VERDURAS = [
-  'papa', 'cebolla comun', 'cebolla morada', 'tomate cherry', 'tomate',
+  'papa', 'cebolla comun', 'cebolla morada', 'cebolla', 'tomate cherry', 'tomate',
   'zanahoria', 'lechuga', 'zapallito', 'zapallo blanco', 'zapallo',
   'morron', 'rucula', 'espinaca', 'remolacha', 'pepino',
   'brocoli', 'cabutia', 'ajo', 'berenjena'
