@@ -1,46 +1,237 @@
 {
-  "monto_minimo": 35000,
-  "combos": [
-    { "nombre": "Combo básico",             "precio": 35000,  "activo": true, "descripcion": "Mezcla esencial de frutas y verduras para arrancar la semana con energía y frescura.",                                                                       "items": ["2kg Papa blanca", "1kg Cebolla blanca", "1kg Tomate", "1/2kg Lechuga mantecosa", "1kg Manzana roja", "1kg Naranja"] },
-    { "nombre": "Combo familiar",           "precio": 65000,  "activo": true, "descripcion": "Pensado para cubrir las necesidades de una familia, con frutas y verduras frescas para todos los días.",                                                        "items": ["4kg Papa blanca", "2kg Cebolla blanca", "2kg Tomate", "1kg Lechuga mantecosa", "1kg Zanahoria", "1kg Calabaza anco", "2kg Manzana roja", "2kg Naranja", "1kg Banana"] },
-    { "nombre": "Combo premium",            "precio": 95000,  "activo": true, "descripcion": "Selección exclusiva de productos premium, con sabores y calidad superior para quienes buscan lo mejor.",                                                        "items": ["Productos de Estación Premium", "Variedad de Frutas Seleccionadas", "Frutos Secos 250g", "Miel Pura 1kg"] },
-    { "nombre": "Combo frutos secos",       "precio": 42000,  "activo": true, "descripcion": "Mezcla de frutos secos y miel, ideal para un snack nutritivo y delicioso.",                                                                                      "items": ["Frutos Secos Mix 500g", "Miel Pura 1kg"] },
-    { "nombre": "Combo fit",                "precio": 58000,  "activo": true, "descripcion": "Orientado a personas que hacen ejercicio, rico en proteínas y energía natural para rendir al máximo.",                                                            "items": ["Banana (varios kg)", "Frutos Secos", "Miel Pura", "Acelga"] },
-    { "nombre": "Combo semanal",            "precio": 32000,  "activo": true, "descripcion": "Mezcla pensada para una familia durante toda la semana, con frutas y verduras frescas de lunes a domingo.",                                                      "items": ["2kg Papa blanca", "1kg Cebolla blanca", "1kg Tomate", "1kg Fruta Mezclada"] },
-    { "nombre": "Combo mensual",            "precio": 120000, "activo": true, "descripcion": "Variedad completa de frutas y verduras para cubrir todo un mes, fresco y equilibrado para tu familia.",                                                          "items": ["Canasta Mensual de Verduras", "Canasta Mensual de Frutas", "Miel Pura 2kg"] },
-    { "nombre": "Combo llena la heladera", "precio": 85000,  "activo": true, "descripcion": "Selección abundante de todas las frutas y verduras disponibles, para tener la heladera siempre lista y llena de frescura.",                                      "items": ["Mix Abundante de Verduras", "Mix Abundante de Frutas"] }
-  ],
+  "accion": "publicarPrecios",
+  "monto_minimo": 37000,
+  "mensaje_minimo": "El pedido mínimo es de $37.000",
   "productos": [
-    { "nombre": "Papa blanca",      "precio": 1800,  "activo": true },
-    { "nombre": "Cebolla comun",    "precio": 1500,  "activo": true },
-    { "nombre": "Cebolla morada",   "precio": 2200,  "activo": true },
-    { "nombre": "Tomate",           "precio": 2800,  "activo": true },
-    { "nombre": "Tomate cherry",    "precio": 4500,  "activo": true },
-    { "nombre": "Zanahoria",        "precio": 1200,  "activo": true },
-    { "nombre": "Lechuga",          "precio": 1800,  "activo": true },
-    { "nombre": "Zapallito",        "precio": 2000,  "activo": true },
-    { "nombre": "Zapallo",          "precio": 1600,  "activo": true },
-    { "nombre": "Morron",           "precio": 3500,  "activo": true },
-    { "nombre": "Rucula",           "precio": 2500,  "activo": true },
-    { "nombre": "Espinaca",         "precio": 2200,  "activo": true },
-    { "nombre": "Remolacha",        "precio": 1500,  "activo": true },
-    { "nombre": "Pepino",           "precio": 2800,  "activo": true },
-    { "nombre": "Brocoli",          "precio": 3200,  "activo": true },
-    { "nombre": "Ajo",              "precio": 8000,  "activo": true },
-    { "nombre": "Berenjena",        "precio": 2500,  "activo": true },
-    { "nombre": "Palta",            "precio": 5500,  "activo": true },
-    { "nombre": "Manzana roja",     "precio": 2200,  "activo": true },
-    { "nombre": "Manzana verde",    "precio": 2400,  "activo": true },
-    { "nombre": "Banana",           "precio": 1800,  "activo": true },
-    { "nombre": "Naranja",          "precio": 1500,  "activo": true },
-    { "nombre": "Limon",            "precio": 2000,  "activo": true },
-    { "nombre": "Durazno",          "precio": 3500,  "activo": true },
-    { "nombre": "Pomelo",           "precio": 2000,  "activo": true },
-    { "nombre": "Uva",              "precio": 4500,  "activo": true },
-    { "nombre": "Arandano",         "precio": 3500,  "activo": true },
-    { "nombre": "Choclo",           "precio": 2800,  "activo": true },
-    { "nombre": "Miel pura",        "precio": 12000, "activo": true },
-    { "nombre": "Frutos secos mix", "precio": 18000, "activo": true },
-    { "nombre": "Huevos",           "precio": 4500,  "activo": true }
+    {
+      "nombre": "Papa",
+      "precio": 1020,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Cebolla ",
+      "precio": 850,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Tomate",
+      "precio": 1888.8888888888887,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Zanahoria",
+      "precio": 1700,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Lechuga",
+      "precio": 3400,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Zapallito",
+      "precio": 1275,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Zapallo blanco",
+      "precio": 1360,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Morron rojo",
+      "precio": 4675,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Rucula",
+      "precio": 708.3333333333334,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Espinaca",
+      "precio": 1700,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Remolacha",
+      "precio": 4250,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Pepino",
+      "precio": 1360,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Brocoli",
+      "precio": 2185.714285714286,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Cebolla morada",
+      "precio": 2077.777777777778,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Cabutia",
+      "precio": 1275,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Ajo",
+      "precio": 952,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Tomate cherry",
+      "precio": 6071.428571428572,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Berenjena",
+      "precio": 2040,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Palta",
+      "precio": 2210,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Manzana roja",
+      "precio": 5950,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Banana",
+      "precio": 3570,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Naranja",
+      "precio": 3740,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Manzana verde",
+      "precio": 3825,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Limon",
+      "precio": 3173.3333333333335,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Durazno",
+      "precio": 5409.090909090909,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Pomelo",
+      "precio": 3187.5,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Uva",
+      "precio": 5100,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Arandano",
+      "precio": 3541.666666666667,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Choclo",
+      "precio": 765,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Huevos",
+      "precio": 6500,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Miel pura",
+      "precio": 11000,
+      "unidad": "kg",
+      "activo": true
+    }
+  ],
+  "combos": [
+    {
+      "nombre": "Combo Básico",
+      "precio": 0,
+      "descripcion": "",
+      "items": [],
+      "activo": true
+    },
+    {
+      "nombre": "Combo Fit",
+      "precio": 0,
+      "descripcion": "",
+      "items": [],
+      "activo": true
+    },
+    {
+      "nombre": "Combo Familiar",
+      "precio": 0,
+      "descripcion": "",
+      "items": [],
+      "activo": true
+    },
+    {
+      "nombre": "Combo Premium",
+      "precio": 0,
+      "descripcion": "",
+      "items": [],
+      "activo": true
+    },
+    {
+      "nombre": "Combo Vegetariano",
+      "precio": 0,
+      "descripcion": "",
+      "items": [],
+      "activo": true
+    },
+    {
+      "nombre": "Combo Mensual",
+      "precio": 0,
+      "descripcion": "",
+      "items": [],
+      "activo": true
+    }
   ]
 }
