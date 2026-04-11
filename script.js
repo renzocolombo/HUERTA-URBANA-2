@@ -275,14 +275,14 @@ function updateCartModalContent() {
                         <span class="cart-modal-item-name">${item.name}</span>
                         <span class="cart-modal-item-qty">${item.qty}${item.unit || ''}</span>
                     </div>
-                    <span class="cart-modal-item-price">$${Math.round(subtotal).toLocaleString('es-AR')}</span>
+                    <span class="cart-modal-item-price">$${Math.floor(subtotal).toLocaleString('es-AR')}</span>
                 </div>
             `;
         });
     }
 
     modalItems.innerHTML = html;
-    modalTotal.innerText = `$${Math.round(total).toLocaleString('es-AR')}`;
+    modalTotal.innerText = `$${Math.floor(total).toLocaleString('es-AR')}`;
 }
 
 function switchCategory(cat) {
@@ -303,7 +303,7 @@ function renderCombos() {
                 <h3>${combo.name}</h3>
                 <p>${combo.desc}</p>
                 <div class="combo-price-row">
-                    <span class="price">$${combo.price.toLocaleString('es-AR')}</span>
+                    <span class="price">$${Math.floor(combo.price).toLocaleString('es-AR')}</span>
                     <div class="qty-control" onclick="event.stopPropagation()">
                         <button type="button" class="qty-btn" onclick="updateComboQty('${combo.id}', -1)"><ion-icon name="remove-circle-outline"></ion-icon></button>
                         <span class="qty-val" id="qty-combo-${combo.id}">0</span>
@@ -331,7 +331,7 @@ function renderCustomProducts() {
             <div class="product-item">
                 <div class="product-details">
                     <h4>${prod.name}</h4>
-                    <span>$${prod.price.toLocaleString('es-AR')} / ${prod.unit}</span>
+                    <span>$${Math.floor(prod.price).toLocaleString('es-AR')} / ${prod.unit}</span>
                 </div>
                 <div class="qty-control">
                     <button type="button" class="qty-btn" onclick="updateCustomQty('${prod.id}', -1, '${activeCategory}')"><ion-icon name="remove-outline"></ion-icon></button>
@@ -420,7 +420,7 @@ function updateSummary() {
             total += subtotal;
             const unitLabel = item.unit === 'g' ? 'g' : (item.unit === 'un' ? ' un.' : (item.unit || ''));
             const itemText = `${item.name} (${item.qty}${unitLabel})`;
-            const subtotalText = `$${Math.round(subtotal).toLocaleString('es-AR')}`;
+            const subtotalText = `$${Math.floor(subtotal).toLocaleString('es-AR')}`;
 
             itemsHtml += `
                 <div class="summary-item">
@@ -432,15 +432,15 @@ function updateSummary() {
     }
 
     summaryItems.innerHTML = itemsHtml;
-    summaryTotal.innerText = `$${Math.round(total).toLocaleString('es-AR')}`;
-    headerTotal.innerText = `$${Math.round(total).toLocaleString('es-AR')}`;
+    summaryTotal.innerText = `$${Math.floor(total).toLocaleString('es-AR')}`;
+    headerTotal.innerText = `$${Math.floor(total).toLocaleString('es-AR')}`;
 
     // Sincronizar con campo de producto para el JSON de Make
     const hiddenDetails = document.getElementById('hidden-details');
 
     if (hiddenDetails) {
         const textSummary = Object.values(cart).map(item => {
-            const sub = Math.round(item.unit === 'g' ? (item.price / 1000) * item.qty : item.price * item.qty);
+            const sub = Math.floor(item.unit === 'g' ? (item.price / 1000) * item.qty : item.price * item.qty);
             const unitLabel = item.unit === 'g' ? 'g' : (item.unit === 'un' ? ' un.' : 'kg');
             return `${item.name.toUpperCase()} (${item.qty}${unitLabel})`;
         }).join(', ');
