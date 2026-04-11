@@ -84,12 +84,67 @@ const PRODUCTS = {
     }
 };
 
-const MIN_PURCHASE = 100;
+let MIN_PURCHASE = 100;
 let cart = {};
 let activeCategory = 'verduras';
 
+const PRECIOS_URL = 'https://huerta-urbana-dashboard.vercel.app/precios.json'
+
+async function cargarPrecios() {
+  try {
+    const response = await fetch(PRECIOS_URL)
+    const data = await response.json()
+    
+    // Aplicar monto minimo
+    if (data.monto_minimo) MIN_PURCHASE = data.monto_minimo
+    
+    // Aplicar combos
+    if (data.combos && data.combos.length > 0) {
+      PRODUCTS.combos = data.combos
+        .filter(c => c.activo)
+        .map(c => ({
+          id: c.nombre.toLowerCase().replace(/ /g, '-'),
+          name: c.nombre,
+          price: c.precio,
+          desc: c.descripcion,
+          items: c.items || []
+        }))
+    }
+    
+    // Aplicar productos individuales
+    if (data.productos && data.productos.length > 0) {
+      // Actualizar precios de productos existentes por nombre
+      data.productos.forEach(p => {
+        if (!p.activo) return
+        Object.keys(PRODUCTS.individual).forEach(cat => {
+          PRODUCTS.individual[cat].forEach(prod => {
+            if (prod.name.toLowerCase().includes(p.nombre.toLowerCase())) {
+              prod.price = p.precio
+            }
+          })
+        })
+      })
+    }
+    
+    // Actualizar textos de monto minimo en el HTML
+    document.querySelectorAll('.shipping-info, #min-purchase-msg, .footer-info p').forEach(el => {
+      el.innerHTML = el.innerHTML.replace(/\$[\d\.]+/g, `$${MIN_PURCHASE.toLocaleString('es-AR')}`)
+    })
+    
+    // Re-renderizar combos y productos con los nuevos datos
+    renderCombos()
+    renderCustomProducts()
+    updateSummary()
+    
+    console.log('[PRECIOS] Cargados desde dashboard:', data.ultima_actualizacion)
+  } catch (error) {
+    console.log('[PRECIOS] Usando datos locales — no se pudo conectar al dashboard')
+  }
+}
+
 // Inicialización
-document.addEventListener('DOMContentLoaded', () => {
+document.addEventListener('DOMContentLoaded', async () => {
+    await cargarPrecios();
     initUI();
     renderCombos();
     renderCustomProducts();
