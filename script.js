@@ -128,9 +128,12 @@ function actualizarProductos(productosData) {
     const n = p.nombre.toLowerCase()
     if (n.includes('huevo')) { unit = 'dz'; step = 1; min = 1 }
     else if (n.includes('arandano') || n.includes('arándano')) { unit = 'un'; step = 1; min = 1 }
+    const nombreCrudo = p.nombre.toLowerCase()
+    const nombreCapitalizado = nombreCrudo.charAt(0).toUpperCase() + nombreCrudo.slice(1)
+    
     PRODUCTS.individual[categoria].push({
       id: 'p' + i,
-      name: p.nombre.toLowerCase(),
+      name: nombreCapitalizado,
       price: p.precio,
       unit, step, min
     })
