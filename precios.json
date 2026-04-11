@@ -1,7 +1,7 @@
 {
   "accion": "publicarPrecios",
-  "monto_minimo": 37000,
-  "mensaje_minimo": "El pedido mínimo es de $37.000",
+  "monto_minimo": 66000,
+  "mensaje_minimo": "El pedido mínimo es de $66.000",
   "productos": [
     {
       "nombre": "Papa",
