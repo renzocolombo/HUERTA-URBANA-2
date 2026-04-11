@@ -319,6 +319,12 @@ function renderCustomProducts() {
     const container = document.getElementById('custom-products-container');
     const prods = PRODUCTS.individual[activeCategory];
 
+    // Verificación defensiva: la categoría puede estar vacía si el fetch aún no terminó
+    if (!prods || prods.length === 0) {
+        container.innerHTML = '<p class="empty-msg" style="padding:20px;text-align:center;">Cargando productos...</p>';
+        return;
+    }
+
     container.innerHTML = prods.map(prod => {
         const cartItem = cart[prod.id] || { qty: 0 };
         return `
