@@ -94,25 +94,26 @@ async function cargarPrecios() {
   }
 }
 
-// Listas de nombres para clasificar productos por categoría
+// Listas de palabras clave para clasificar productos (sin tildes, la función normaliza)
 const NOMBRES_VERDURAS = [
-  'papa', 'cebolla', 'tomate', 'zanahoria', 'lechuga', 'zapallito',
-  'zapallo', 'morron', 'morrón', 'rucula', 'rúcula', 'espinaca',
-  'remolacha', 'pepino', 'brocoli', 'brócoli', 'cabutia', 'ajo',
-  'berenjena', 'calabaza'
+  'papa', 'cebolla comun', 'cebolla morada', 'tomate cherry', 'tomate',
+  'zanahoria', 'lechuga', 'zapallito', 'zapallo blanco', 'zapallo',
+  'morron', 'rucula', 'espinaca', 'remolacha', 'pepino',
+  'brocoli', 'cabutia', 'ajo', 'berenjena'
 ]
 const NOMBRES_FRUTAS = [
-  'palta', 'manzana', 'banana', 'naranja', 'limon', 'limón', 'durazno',
-  'pomelo', 'uva', 'arandano', 'arándano', 'choclo', 'mandarina'
+  'palta', 'manzana roja', 'manzana verde', 'manzana',
+  'banana', 'naranja', 'limon', 'durazno', 'pomelo',
+  'uva', 'arandano', 'choclo'
 ]
-const NOMBRES_EXTRAS = ['huevo', 'miel']
 
 function clasificarProducto(nombre) {
+  // Normalizar: minúsculas y sin tildes para comparar sin importar encoding
   const n = nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-  if (NOMBRES_EXTRAS.some(k => n.includes(k))) return 'extras'
-  if (NOMBRES_FRUTAS.some(k => n.includes(k))) return 'frutas'
+  // Buscar primero en verduras, luego frutas; todo lo demás va a Extras
   if (NOMBRES_VERDURAS.some(k => n.includes(k))) return 'verduras'
-  return 'extras' // Si no coincide con nada, va a extras
+  if (NOMBRES_FRUTAS.some(k => n.includes(k))) return 'frutas'
+  return 'extras'
 }
 
 function actualizarProductos(productosData) {
