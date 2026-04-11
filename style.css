@@ -1384,4 +1384,44 @@ select option {
         grid-template-columns: repeat(2, 1fr);
         gap: 8px;
     }
+
+    /* Ajustes para evitar que la info se tape en móvil */
+    .product-item {
+        flex-direction: column;
+        height: auto;
+        min-height: 110px;
+        padding: 12px 8px;
+        align-items: center;
+        text-align: center;
+        justify-content: center;
+        gap: 10px;
+    }
+
+    .product-details {
+        width: 100%;
+    }
+
+    .product-details h4 {
+        white-space: normal; /* Permitir que el nombre use varias líneas */
+        font-size: 0.85rem;
+        line-height: 1.2;
+        margin-bottom: 5px;
+        display: block;
+        overflow: visible;
+        text-overflow: clip;
+    }
+
+    .product-details span {
+        white-space: normal;
+        display: block;
+        margin-bottom: 5px;
+        font-size: 0.8rem;
+    }
+
+    .qty-control {
+        width: 100%;
+        justify-content: center;
+        padding: 4px 8px;
+        gap: 10px;
+    }
 }
