@@ -52,35 +52,9 @@ const PRODUCTS = {
         }
     ],
     individual: {
-        'verduras': [
-            { id: 'v1', name: 'tomate', price: 3500, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v2', name: 'lechuga mantecosa', price: 2800, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v3', name: 'papa blanca', price: 100, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v4', name: 'cebolla blanca', price: 1800, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v5', name: 'cebolla morada', price: 2100, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v6', name: 'zanahoria', price: 1600, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v7', name: 'morrón', price: 4500, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v8', name: 'pepino', price: 2200, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v9', name: 'calabaza cabutia', price: 1900, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v10', name: 'calabaza anco', price: 1700, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v11', name: 'acelga', price: 2400, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'v13', name: 'cabeza de remolacha', price: 2600, unit: 'kg', step: 0.5, min: 1 }
-        ],
-        'frutas': [
-            { id: 'f1', name: 'manzana roja', price: 4200, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'f2', name: 'manzana verde', price: 4600, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'f3', name: 'banana', price: 3800, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'f4', name: 'naranja', price: 3200, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'f5', name: 'limón', price: 2500, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'f6', name: 'mandarina', price: 3000, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'f8', name: 'durazno', price: 5500, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'f9', name: 'pomelo', price: 3400, unit: 'kg', step: 0.5, min: 1 },
-            { id: 'f7', name: 'bandeja de arándanos', price: 3500, unit: 'un', step: 1, min: 1 }
-        ],
-        'frutos-secos-extras': [
-            { id: 's1', name: 'frutos secos', price: 18000, unit: 'g', step: 100, min: 100, max: 1000 },
-            { id: 'ex1', name: 'miel pura', price: 7500, unit: 'kg', step: 0.5, min: 1 }
-        ]
+        'verduras': [],
+        'frutas': [],
+        'extras': []
     }
 };
 
@@ -109,6 +83,9 @@ async function cargarPrecios() {
       if (data.productos && data.productos.length > 0) actualizarProductos(data.productos)
       if (data.combos && data.combos.length > 0) actualizarCombos(data.combos)
       
+      // Re-renderizar la UI con los datos actualizados
+      renderCombos()
+      renderCustomProducts()
       updateSummary()
       console.log('[PRECIOS] Cargados desde Apps Script. Monto minimo:', MIN_PURCHASE)
     }
@@ -117,16 +94,51 @@ async function cargarPrecios() {
   }
 }
 
+// Listas de nombres para clasificar productos por categoría
+const NOMBRES_VERDURAS = [
+  'papa', 'cebolla', 'tomate', 'zanahoria', 'lechuga', 'zapallito',
+  'zapallo', 'morron', 'morrón', 'rucula', 'rúcula', 'espinaca',
+  'remolacha', 'pepino', 'brocoli', 'brócoli', 'cabutia', 'ajo',
+  'berenjena', 'calabaza'
+]
+const NOMBRES_FRUTAS = [
+  'palta', 'manzana', 'banana', 'naranja', 'limon', 'limón', 'durazno',
+  'pomelo', 'uva', 'arandano', 'arándano', 'choclo', 'mandarina'
+]
+const NOMBRES_EXTRAS = ['huevo', 'miel']
+
+function clasificarProducto(nombre) {
+  const n = nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+  if (NOMBRES_EXTRAS.some(k => n.includes(k))) return 'extras'
+  if (NOMBRES_FRUTAS.some(k => n.includes(k))) return 'frutas'
+  if (NOMBRES_VERDURAS.some(k => n.includes(k))) return 'verduras'
+  return 'extras' // Si no coincide con nada, va a extras
+}
+
 function actualizarProductos(productosData) {
-  productosData.forEach(p => {
+  // Resetear las tres categorías
+  PRODUCTS.individual = { 'verduras': [], 'frutas': [], 'extras': [] }
+
+  productosData.forEach((p, i) => {
     if (p.activo === false) return
-    Object.keys(PRODUCTS.individual).forEach(cat => {
-      PRODUCTS.individual[cat].forEach(prod => {
-        if (prod.name.toLowerCase().trim() === p.nombre.toLowerCase().trim()) {
-          prod.price = p.precio
-        }
-      })
+    const categoria = clasificarProducto(p.nombre)
+    // Detectar unidad: huevos van por docena, arándanos por bandeja, resto por kg
+    let unit = 'kg', step = 0.5, min = 0.5
+    const n = p.nombre.toLowerCase()
+    if (n.includes('huevo')) { unit = 'dz'; step = 1; min = 1 }
+    else if (n.includes('arandano') || n.includes('arándano')) { unit = 'un'; step = 1; min = 1 }
+    PRODUCTS.individual[categoria].push({
+      id: 'p' + i,
+      name: p.nombre.toLowerCase(),
+      price: p.precio,
+      unit, step, min
     })
+  })
+
+  console.log('[PRODUCTOS] Clasificados:', {
+    verduras: PRODUCTS.individual.verduras.length,
+    frutas: PRODUCTS.individual.frutas.length,
+    extras: PRODUCTS.individual.extras.length
   })
 }
 
