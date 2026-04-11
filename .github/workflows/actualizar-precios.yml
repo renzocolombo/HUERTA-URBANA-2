@@ -1,0 +1,19 @@
+name: Actualizar Precios
+on:
+  push:
+    paths:
+      - 'precios.json'
+jobs:
+  actualizar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Actualizar precios en HTML
+        run: node scripts/actualizar-precios.js
+      - name: Commit y push
+        run: |
+          git config user.email "action@github.com"
+          git config user.name "GitHub Action"
+          git add index.html
+          git diff --staged --quiet || git commit -m "feat: actualizar precios automáticamente"
+          git push

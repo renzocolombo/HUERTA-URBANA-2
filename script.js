@@ -62,35 +62,37 @@ let MIN_PURCHASE = 100;
 let cart = {};
 let activeCategory = 'verduras';
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyAIskGdqV0hg5xhsh7ieZiCekbWBBR-bmDEjBR1-4_Ah3vSrORRaqVnRqhBXRX1AA/exec'
-
-async function cargarPrecios() {
+// Lee precios directamente desde los data attributes inyectados por GitHub Actions
+// (sin fetch, sin delay — carga instantánea)
+function cargarPrecios() {
   try {
-    const response = await fetch(APPS_SCRIPT_URL + '?accion=getPreciosWeb')
-    const data = await response.json()
-    if (data.success) {
-      if (data.monto_minimo) {
-        MIN_PURCHASE = data.monto_minimo
-        // Actualizar los spans dinámicos con el monto mínimo
-        const montoFormateado = '$' + MIN_PURCHASE.toLocaleString('es-AR')
-        const spanEnvio = document.getElementById('envio-gratis-monto')
-        const spanMinimo = document.getElementById('compra-minima-monto')
-        const spanFooter = document.getElementById('footer-minima-monto')
-        if (spanEnvio) spanEnvio.textContent = montoFormateado
-        if (spanMinimo) spanMinimo.textContent = montoFormateado
-        if (spanFooter) spanFooter.textContent = montoFormateado
-      }
-      if (data.productos && data.productos.length > 0) actualizarProductos(data.productos)
-      if (data.combos && data.combos.length > 0) actualizarCombos(data.combos)
-      
-      // Re-renderizar la UI con los datos actualizados
-      renderCombos()
-      renderCustomProducts()
-      updateSummary()
-      console.log('[PRECIOS] Cargados desde Apps Script. Monto minimo:', MIN_PURCHASE)
+    const montoMinimo = parseInt(document.body.dataset.montoMinimo)
+    const preciosRaw  = document.body.dataset.precios
+
+    if (!preciosRaw) {
+      console.log('[PRECIOS] data-precios no encontrado — usando datos del código fuente.')
+      return
     }
+
+    const data = JSON.parse(preciosRaw)
+
+    if (montoMinimo && !isNaN(montoMinimo)) {
+      MIN_PURCHASE = montoMinimo
+      const montoFormateado = '$' + MIN_PURCHASE.toLocaleString('es-AR')
+      const spanEnvio  = document.getElementById('envio-gratis-monto')
+      const spanMinimo = document.getElementById('compra-minima-monto')
+      const spanFooter = document.getElementById('footer-minima-monto')
+      if (spanEnvio)  spanEnvio.textContent  = montoFormateado
+      if (spanMinimo) spanMinimo.textContent = montoFormateado
+      if (spanFooter) spanFooter.textContent = montoFormateado
+    }
+
+    if (data.productos && data.productos.length > 0) actualizarProductos(data.productos)
+    if (data.combos   && data.combos.length   > 0) actualizarCombos(data.combos)
+
+    console.log('[PRECIOS] Cargados desde data attributes HTML. Monto mínimo:', MIN_PURCHASE)
   } catch (error) {
-    console.log('[PRECIOS] Usando datos locales — error:', error)
+    console.log('[PRECIOS] Error al leer data attributes — usando datos del código fuente:', error)
   }
 }
 
@@ -168,8 +170,8 @@ function actualizarCombos(combosData) {
 }
 
 // Inicialización
-document.addEventListener('DOMContentLoaded', async () => {
-    await cargarPrecios();
+document.addEventListener('DOMContentLoaded', () => {
+    cargarPrecios();       // Síncrono: lee data attributes del HTML (sin fetch)
     initUI();
     renderCombos();
     renderCustomProducts();
