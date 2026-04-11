@@ -8,6 +8,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          token: ${{ secrets.GH_TOKEN }}
       - name: Actualizar precios en HTML
         run: node scripts/actualizar-precios.js
       - name: Commit y push
