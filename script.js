@@ -153,14 +153,18 @@ function actualizarCombos(combosData) {
 
   PRODUCTS.combos = combosData
     .filter(c => c.activo !== false)
-    .map(c => ({
-      id: c.nombre.toLowerCase().replace(/ /g, '-'),
-      name: c.nombre,
-      price: c.precio,
-      desc: c.descripcion || '',
-      img: c.img || currentImages[c.nombre.toLowerCase()] || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=300',
-      items: Array.isArray(c.items) ? c.items : (c.items ? c.items.split(',').map(i => i.trim()) : [])
-    }))
+    .map(c => {
+      const nombreCrudo = c.nombre.toLowerCase()
+      const nombreCapitalizado = nombreCrudo.charAt(0).toUpperCase() + nombreCrudo.slice(1)
+      return {
+        id: c.nombre.toLowerCase().replace(/ /g, '-'),
+        name: nombreCapitalizado,
+        price: c.precio,
+        desc: c.descripcion || '',
+        img: c.img || currentImages[c.nombre.toLowerCase()] || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=300',
+        items: Array.isArray(c.items) ? c.items : (c.items ? c.items.split(',').map(i => i.trim()) : [])
+      }
+    })
 }
 
 // Inicialización
