@@ -95,16 +95,25 @@ async function cargarPrecios() {
     const response = await fetch(APPS_SCRIPT_URL + '?accion=getPreciosWeb')
     const data = await response.json()
     if (data.success) {
-      if (data.monto_minimo) MIN_PURCHASE = data.monto_minimo
+      if (data.monto_minimo) {
+        MIN_PURCHASE = data.monto_minimo
+        // Actualizar todos los textos con el monto mínimo
+        const montoFormateado = '$' + MIN_PURCHASE.toLocaleString('es-AR')
+        document.querySelectorAll('#min-purchase-msg').forEach(el => {
+          el.textContent = 'Compra mínima: ' + montoFormateado
+        })
+        document.querySelectorAll('.shipping-info').forEach(el => {
+          el.innerHTML = el.innerHTML.replace(/\$[\d\.,]+/, montoFormateado)
+        })
+        document.querySelectorAll('.footer-info p').forEach(el => {
+          el.innerHTML = el.innerHTML.replace(/\$[\d\.,]+/, montoFormateado)
+        })
+      }
       if (data.productos && data.productos.length > 0) actualizarProductos(data.productos)
       if (data.combos && data.combos.length > 0) actualizarCombos(data.combos)
       
-      // Actualizar textos de monto minimo en el HTML
-      document.querySelectorAll('.shipping-info, #min-purchase-msg, .footer-info p').forEach(el => {
-        el.innerHTML = el.innerHTML.replace(/\$[\d\.]+/g, `$${MIN_PURCHASE.toLocaleString('es-AR')}`)
-      })
-
-      console.log('[PRECIOS] Cargados desde Apps Script:', data.ultima_actualizacion)
+      updateSummary()
+      console.log('[PRECIOS] Cargados desde Apps Script. Monto minimo:', MIN_PURCHASE)
     }
   } catch (error) {
     console.log('[PRECIOS] Usando datos locales — error:', error)
