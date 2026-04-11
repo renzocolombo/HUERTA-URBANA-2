@@ -88,58 +88,57 @@ let MIN_PURCHASE = 100;
 let cart = {};
 let activeCategory = 'verduras';
 
-const PRECIOS_URL = 'https://huerta-urbana-dashboard.vercel.app/precios.json'
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyAIskGdqV0hg5xhsh7ieZiCekbWBBR-bmDEjBR1-4_Ah3vSrORRaqVnRqhBXRX1AA/exec'
 
 async function cargarPrecios() {
   try {
-    const response = await fetch(PRECIOS_URL)
+    const response = await fetch(APPS_SCRIPT_URL + '?accion=getPreciosWeb')
     const data = await response.json()
-    
-    // Aplicar monto minimo
-    if (data.monto_minimo) MIN_PURCHASE = data.monto_minimo
-    
-    // Aplicar combos
-    if (data.combos && data.combos.length > 0) {
-      PRODUCTS.combos = data.combos
-        .filter(c => c.activo)
-        .map(c => ({
-          id: c.nombre.toLowerCase().replace(/ /g, '-'),
-          name: c.nombre,
-          price: c.precio,
-          desc: c.descripcion,
-          items: c.items || []
-        }))
-    }
-    
-    // Aplicar productos individuales
-    if (data.productos && data.productos.length > 0) {
-      // Actualizar precios de productos existentes por nombre
-      data.productos.forEach(p => {
-        if (!p.activo) return
-        Object.keys(PRODUCTS.individual).forEach(cat => {
-          PRODUCTS.individual[cat].forEach(prod => {
-            if (prod.name.toLowerCase().includes(p.nombre.toLowerCase())) {
-              prod.price = p.precio
-            }
-          })
-        })
+    if (data.success) {
+      if (data.monto_minimo) MIN_PURCHASE = data.monto_minimo
+      if (data.productos && data.productos.length > 0) actualizarProductos(data.productos)
+      if (data.combos && data.combos.length > 0) actualizarCombos(data.combos)
+      
+      // Actualizar textos de monto minimo en el HTML
+      document.querySelectorAll('.shipping-info, #min-purchase-msg, .footer-info p').forEach(el => {
+        el.innerHTML = el.innerHTML.replace(/\$[\d\.]+/g, `$${MIN_PURCHASE.toLocaleString('es-AR')}`)
       })
+
+      console.log('[PRECIOS] Cargados desde Apps Script:', data.ultima_actualizacion)
     }
-    
-    // Actualizar textos de monto minimo en el HTML
-    document.querySelectorAll('.shipping-info, #min-purchase-msg, .footer-info p').forEach(el => {
-      el.innerHTML = el.innerHTML.replace(/\$[\d\.]+/g, `$${MIN_PURCHASE.toLocaleString('es-AR')}`)
-    })
-    
-    // Re-renderizar combos y productos con los nuevos datos
-    renderCombos()
-    renderCustomProducts()
-    updateSummary()
-    
-    console.log('[PRECIOS] Cargados desde dashboard:', data.ultima_actualizacion)
   } catch (error) {
-    console.log('[PRECIOS] Usando datos locales — no se pudo conectar al dashboard')
+    console.log('[PRECIOS] Usando datos locales — error:', error)
   }
+}
+
+function actualizarProductos(productosData) {
+  productosData.forEach(p => {
+    if (p.activo === false) return
+    Object.keys(PRODUCTS.individual).forEach(cat => {
+      PRODUCTS.individual[cat].forEach(prod => {
+        if (prod.name.toLowerCase().trim() === p.nombre.toLowerCase().trim()) {
+          prod.price = p.precio
+        }
+      })
+    })
+  })
+}
+
+function actualizarCombos(combosData) {
+  // Guardar imágenes actuales para no perderlas si la API no las trae
+  const currentImages = {}
+  PRODUCTS.combos.forEach(c => { currentImages[c.name.toLowerCase()] = c.img })
+
+  PRODUCTS.combos = combosData
+    .filter(c => c.activo !== false)
+    .map(c => ({
+      id: c.nombre.toLowerCase().replace(/ /g, '-'),
+      name: c.nombre,
+      price: c.precio,
+      desc: c.descripcion || '',
+      img: c.img || currentImages[c.nombre.toLowerCase()] || 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=300',
+      items: Array.isArray(c.items) ? c.items : (c.items ? c.items.split(',').map(i => i.trim()) : [])
+    }))
 }
 
 // Inicialización
