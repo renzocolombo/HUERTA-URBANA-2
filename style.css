@@ -534,20 +534,25 @@ header {
 .custom-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
+    grid-auto-rows: 1fr; /* todas las filas con la misma altura */
     gap: 12px;
     margin-top: 20px;
+    align-items: stretch;
 }
 
 /* Custom Product Items Enhancements */
 .product-item {
     background: white;
-    padding: 15px;
+    padding: 10px 12px; /* reducido para que las 5 filas entren en pantalla */
     border-radius: 12px;
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 10px;
     box-shadow: var(--shadow-sm);
     transition: var(--transition);
+    height: 100%; /* ocupa toda la celda de la fila */
+    box-sizing: border-box;
+    justify-content: space-between;
 }
 
 .product-item:hover {
