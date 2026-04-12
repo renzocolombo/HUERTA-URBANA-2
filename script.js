@@ -213,6 +213,17 @@ function actualizarProductos(productosData) {
     frutas: PRODUCTS.individual.frutas.length,
     extras: PRODUCTS.individual.extras.length
   })
+
+  // Ocultar pestaña Extras si no hay productos
+  const tabExtras = document.getElementById('tab-extras');
+  if (tabExtras) {
+    if (PRODUCTS.individual.extras.length === 0) {
+      tabExtras.style.display = 'none';
+      if (activeCategory === 'extras') switchCategory('verduras');
+    } else {
+      tabExtras.style.display = 'inline-block';
+    }
+  }
 }
 
 function actualizarCombos(combosData) {
@@ -458,9 +469,6 @@ function updateCustomQty(id, delta, category) {
         }
     }
 
-    // Limit max for nuts
-    if (prod.max && cart[id].qty > prod.max) cart[id].qty = prod.max;
-
     document.getElementById(`qty-prod-${id}`).innerText = cart[id].qty;
     if (cart[id].qty === 0) delete cart[id];
 
@@ -483,15 +491,8 @@ function updateSummary() {
         itemsHtml = '<p class="empty-msg">Tu carrito está vacío</p>';
     } else {
         cartEntries.forEach(item => {
-            // Precio para frutos secos es por kg en la BD, pero se vende en g
             let itemPrice = item.price;
-            let subtotal = 0;
-
-            if (item.unit === 'g') {
-                subtotal = (itemPrice / 1000) * item.qty;
-            } else {
-                subtotal = itemPrice * item.qty;
-            }
+            let subtotal = itemPrice * item.qty;
 
             total += subtotal;
             const unitLabel = item.unit === 'g' ? 'g' : (item.unit === 'un' ? ' un.' : (item.unit || ''));
