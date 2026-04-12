@@ -125,66 +125,34 @@ const PRODUCTS = {
     }
 };
 
-let MIN_PURCHASE = 100;
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyAIskGdqV0hg5xhsh7ieZiCekbWBBR-bmDEjBR1-4_Ah3vSrORRaqVnRqhBXRX1AA/exec'
+
+let MIN_PURCHASE = 35000;
 let cart = {};
 let activeCategory = 'verduras';
 
-// Lee precios directamente desde los data attributes inyectados por GitHub Actions
-// (sin fetch, sin delay — carga instantánea)
-function cargarPrecios() {
+async function cargarPrecios() {
   try {
-    const montoMinimo = parseInt(document.body.dataset.montoMinimo)
-    const preciosRaw  = document.body.dataset.precios
-
-    if (montoMinimo && !isNaN(montoMinimo)) {
-      MIN_PURCHASE = montoMinimo
-      const montoFormateado = '$' + MIN_PURCHASE.toLocaleString('es-AR')
-      const spanEnvio  = document.getElementById('envio-gratis-monto')
-      const spanMinimo = document.getElementById('compra-minima-monto')
-      const spanFooter = document.getElementById('footer-minima-monto')
-      if (spanEnvio)  spanEnvio.textContent  = montoFormateado
-      if (spanMinimo) spanMinimo.textContent = montoFormateado
-      if (spanFooter) spanFooter.textContent = montoFormateado
+    const response = await fetch(APPS_SCRIPT_URL + '?accion=getPreciosWeb')
+    const data = await response.json()
+    if (data.success) {
+      MIN_PURCHASE = data.monto_minimo || 35000
+      if (data.productos) actualizarProductos(data.productos)
+      if (data.combos) actualizarCombos(data.combos)
+      actualizarTextos()
     }
-
-    // 1. Prioridad: Usar PRODUCTOS_DATA si está definido (inyectado por GitHub Action)
-    if (typeof PRODUCTOS_DATA !== 'undefined' && (PRODUCTOS_DATA.verduras || PRODUCTOS_DATA.frutas)) {
-      PRODUCTS.individual = PRODUCTOS_DATA;
-      console.log('[PRECIOS] PRODUCTOS_DATA detectado y cargado.');
-      
-      // Cargar combos desde data attribute si existen
-      if (preciosRaw) {
-        const data = JSON.parse(preciosRaw);
-        if (data.combos && data.combos.length > 0) actualizarCombos(data.combos);
-      }
-      
-      // Sincronizar UI de la pestaña extras
-      const tabExtras = document.getElementById('tab-extras');
-      if (tabExtras) {
-        if (!PRODUCTS.individual.extras || PRODUCTS.individual.extras.length === 0) {
-          tabExtras.style.display = 'none';
-          if (activeCategory === 'extras') switchCategory('verduras');
-        } else {
-          tabExtras.style.display = 'inline-block';
-        }
-      }
-      return;
-    }
-
-    // 2. Fallback: Usar data-precios (lógica anterior)
-    if (!preciosRaw) {
-      console.log('[PRECIOS] Ni PRODUCTOS_DATA ni data-precios encontrados.')
-      return
-    }
-
-    const data = JSON.parse(preciosRaw)
-    if (data.productos && data.productos.length > 0) actualizarProductos(data.productos)
-    if (data.combos   && data.combos.length   > 0) actualizarCombos(data.combos)
-
-    console.log('[PRECIOS] Cargados desde data attributes HTML. Monto mínimo:', MIN_PURCHASE)
-  } catch (error) {
-    console.log('[PRECIOS] Error al cargar precios:', error)
+  } catch (e) {
+    console.log('[PRECIOS] Usando datos locales')
   }
+}
+
+function actualizarTextos() {
+  const monto = '$' + MIN_PURCHASE.toLocaleString('es-AR')
+  const ids = ['envio-gratis-monto', 'compra-minima-monto', 'footer-minima-monto']
+  ids.forEach(id => {
+    const el = document.getElementById(id)
+    if (el) el.textContent = monto
+  })
 }
 
 // Listas de palabras clave para clasificar productos (sin tildes, la función normaliza)
@@ -272,13 +240,12 @@ function actualizarCombos(combosData) {
 }
 
 // Inicialización
-document.addEventListener('DOMContentLoaded', () => {
-    cargarPrecios();       // Síncrono: lee data attributes del HTML (sin fetch)
+document.addEventListener('DOMContentLoaded', async () => {
+    await cargarPrecios();
     initUI();
     renderCombos();
     renderCustomProducts();
     updateSummary();
-    // loadCustomerData(); // Eliminado para que el formulario inicie vacío
 });
 
 function loadCustomerData() {
@@ -744,16 +711,3 @@ function closeComboModal() {
     document.getElementById('combo-modal').style.display = 'none';
 }
 
-// Verificar precios cuando la página vuelve a estar activa
-document.addEventListener('visibilitychange', async () => {
-  if (document.visibilityState === 'visible') {
-    try {
-      const response = await fetch('precios.json?t=' + Date.now())
-      const data = await response.json()
-      if (data.monto_minimo && data.monto_minimo !== MIN_PURCHASE) {
-        // Los precios cambiaron — recargar la página
-        window.location.reload()
-      }
-    } catch (e) {}
-  }
-})
