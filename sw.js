@@ -1,4 +1,4 @@
-const CACHE_NAME = 'huerta-urbana-1776031276971'
+const CACHE_NAME = 'huerta-urbana-1776032494598'
 const ARCHIVOS_CACHE = ['/style.css', '/script.js', '/img/favicon.png']
 
 self.addEventListener('install', e => {
