@@ -25,8 +25,11 @@ jobs:
         run: |
           git config user.email "action@github.com"
           git config user.name "GitHub Action"
-          git add index.html precios.json
+          git fetch origin main
+          git checkout main
+          git merge origin/main --no-edit
+          node scripts/actualizar-precios.js
+          git add index.html
           git diff --staged --quiet || git commit -m "feat: actualizar precios automáticamente"
-          git pull origin main --rebase
           git push origin main
           sleep 5
