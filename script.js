@@ -1,5 +1,74 @@
 /* HUERTA URBANA - LOGIC & CART SYSTEM (Catalogo Extendido) */
 
+/* ── PWA: Service Worker ─────────────────────────────── */
+if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js')
+            .then(() => console.log('[SW] Registrado correctamente'))
+            .catch(err => console.warn('[SW] Error al registrar:', err))
+    })
+}
+
+/* ── PWA: Banner de instalación ──────────────────────── */
+;(function initPWABanner() {
+    // Solo mobile
+    if (window.innerWidth > 768) return
+    // Si ya fue descartado o instalado, no mostrar
+    if (localStorage.getItem('pwa-banner-dismissed')) return
+    // Si ya está corriendo como standalone (instalada), no mostrar
+    if (window.matchMedia('(display-mode: standalone)').matches) return
+
+    let deferredPrompt = null
+
+    window.addEventListener('beforeinstallprompt', e => {
+        e.preventDefault()
+        deferredPrompt = e
+    })
+
+    function showBanner() {
+        const banner = document.getElementById('pwa-banner')
+        if (!banner) return
+        banner.style.display = 'block'
+        // Forzar reflow para que la transición funcione
+        void banner.offsetWidth
+        banner.classList.add('pwa-visible')
+    }
+
+    function hideBanner(store) {
+        const banner = document.getElementById('pwa-banner')
+        if (!banner) return
+        banner.classList.add('pwa-hiding')
+        banner.classList.remove('pwa-visible')
+        setTimeout(() => { banner.style.display = 'none' }, 420)
+        if (store) localStorage.setItem('pwa-banner-dismissed', '1')
+    }
+
+    // Mostrar después de 3 segundos
+    setTimeout(showBanner, 3000)
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const installBtn  = document.getElementById('pwa-install-btn')
+        const dismissBtn  = document.getElementById('pwa-dismiss-btn')
+
+        if (installBtn) {
+            installBtn.addEventListener('click', async () => {
+                hideBanner(true)
+                if (deferredPrompt) {
+                    deferredPrompt.prompt()
+                    const { outcome } = await deferredPrompt.userChoice
+                    console.log('[PWA] Resultado instalación:', outcome)
+                    deferredPrompt = null
+                }
+            })
+        }
+
+        if (dismissBtn) {
+            dismissBtn.addEventListener('click', () => hideBanner(true))
+        }
+    })
+})()
+
+
 const PRODUCTS = {
     combos: [
         {
