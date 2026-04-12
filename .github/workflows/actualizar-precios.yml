@@ -1,4 +1,7 @@
 name: Actualizar Precios
+concurrency:
+  group: actualizar-precios
+  cancel-in-progress: false
 on:
   push:
     paths:
@@ -22,8 +25,8 @@ jobs:
         run: |
           git config user.email "action@github.com"
           git config user.name "GitHub Action"
-          git pull origin main --rebase
           git add index.html precios.json
           git diff --staged --quiet || git commit -m "feat: actualizar precios automáticamente"
-          git push
+          git pull origin main --rebase
+          git push origin main
           sleep 5
