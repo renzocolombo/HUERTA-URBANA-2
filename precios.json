@@ -4,74 +4,14 @@
   "mensaje_minimo": "El pedido mínimo es de $49.000",
   "productos": [
     {
-      "nombre": "Papa",
-      "precio": 1020,
-      "unidad": "kg",
-      "activo": true
-    },
-    {
-      "nombre": "Cebolla ",
-      "precio": 850,
-      "unidad": "kg",
-      "activo": true
-    },
-    {
-      "nombre": "Tomate",
-      "precio": 1888.8888888888887,
-      "unidad": "kg",
-      "activo": true
-    },
-    {
-      "nombre": "Zanahoria",
-      "precio": 1700,
-      "unidad": "kg",
-      "activo": true
-    },
-    {
-      "nombre": "Lechuga",
-      "precio": 3400,
-      "unidad": "kg",
-      "activo": true
-    },
-    {
-      "nombre": "Zapallito",
-      "precio": 1275,
-      "unidad": "kg",
-      "activo": true
-    },
-    {
       "nombre": "Zapallo blanco",
       "precio": 1360,
       "unidad": "kg",
       "activo": true
     },
     {
-      "nombre": "Morrón rojo",
-      "precio": 4675,
-      "unidad": "kg",
-      "activo": true
-    },
-    {
-      "nombre": "Rúcula",
-      "precio": 708.3333333333334,
-      "unidad": "kg",
-      "activo": true
-    },
-    {
-      "nombre": "Espinaca",
-      "precio": 1700,
-      "unidad": "kg",
-      "activo": true
-    },
-    {
       "nombre": "Remolacha",
       "precio": 4250,
-      "unidad": "kg",
-      "activo": true
-    },
-    {
-      "nombre": "Pepino",
-      "precio": 1360,
       "unidad": "kg",
       "activo": true
     },
@@ -96,18 +36,6 @@
     {
       "nombre": "Ajo",
       "precio": 952,
-      "unidad": "kg",
-      "activo": true
-    },
-    {
-      "nombre": "Tomate cherry",
-      "precio": 6071.428571428572,
-      "unidad": "kg",
-      "activo": true
-    },
-    {
-      "nombre": "Berenjena",
-      "precio": 2040,
       "unidad": "kg",
       "activo": true
     },
