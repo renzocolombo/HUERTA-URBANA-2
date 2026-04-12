@@ -4,12 +4,6 @@
   "mensaje_minimo": "El pedido mínimo es de $243",
   "productos": [
     {
-      "nombre": "Papa",
-      "precio": 1020,
-      "unidad": "kg",
-      "activo": true
-    },
-    {
       "nombre": "Cebolla ",
       "precio": 850,
       "unidad": "kg",
