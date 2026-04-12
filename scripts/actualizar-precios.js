@@ -56,15 +56,15 @@ const monto = Math.floor(precios.monto_minimo).toLocaleString('es-AR')
 
 html = html.replace(
   /(<span id="envio-gratis-monto">)[^<]*/,
-  `$1$${monto}`
+  (_, p1) => `${p1}$${monto}`
 )
 html = html.replace(
   /(<span id="compra-minima-monto">)[^<]*/,
-  `$1$${monto}`
+  (_, p1) => `${p1}$${monto}`
 )
 html = html.replace(
   /(<span id="footer-minima-monto">)[^<]*/,
-  `$1$${monto}`
+  (_, p1) => `${p1}$${monto}`
 )
 
 fs.writeFileSync('index.html', html)
