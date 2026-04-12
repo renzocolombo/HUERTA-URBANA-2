@@ -165,21 +165,21 @@ function cargarPrecios() {
 
 // Listas de palabras clave para clasificar productos (sin tildes, la función normaliza)
 const NOMBRES_VERDURAS = [
-  'papa', 'cebolla comun', 'cebolla morada', 'cebolla', 'tomate cherry', 'tomate',
-  'zanahoria', 'lechuga', 'zapallito', 'zapallo blanco', 'zapallo',
-  'morron', 'rucula', 'espinaca', 'remolacha', 'pepino',
-  'brocoli', 'cabutia', 'ajo', 'berenjena'
+  'papa', 'cebolla comun', 'cebolla', 'cebolla morada', 'tomate', 'tomate cherry', 
+  'zanahoria', 'lechuga', 'zapallito', 'zapallo blanco', 'morron', 'morron rojo',
+  'rucula', 'espinaca', 'remolacha', 'pepino', 'brocoli', 'cabutia', 
+  'ajo', 'berenjena'
 ]
 const NOMBRES_FRUTAS = [
-  'palta', 'manzana roja', 'manzana verde', 'manzana',
-  'banana', 'naranja', 'limon', 'durazno', 'pomelo',
-  'uva', 'arandano', 'choclo'
+  'palta', 'manzana roja', 'manzana verde', 'banana', 'naranja', 
+  'limon', 'durazno', 'pomelo', 'uva', 'arandano', 'choclo'
 ]
 
 function clasificarProducto(nombre) {
   // Normalizar: minúsculas y sin tildes para comparar sin importar encoding
-  const n = nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-  // Buscar primero en verduras, luego frutas; todo lo demás va a Extras
+  const n = nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim()
+  
+  // Buscar coincidencia en verduras y frutas; si no, Extras
   if (NOMBRES_VERDURAS.some(k => n.includes(k))) return 'verduras'
   if (NOMBRES_FRUTAS.some(k => n.includes(k))) return 'frutas'
   return 'extras'
