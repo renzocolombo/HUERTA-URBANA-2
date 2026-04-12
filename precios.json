@@ -16,8 +16,20 @@
       "activo": true
     },
     {
+      "nombre": "Tomate",
+      "precio": 1888.8888888888887,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
       "nombre": "Zanahoria",
       "precio": 1700,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Lechuga",
+      "precio": 3400,
       "unidad": "kg",
       "activo": true
     },
@@ -36,6 +48,12 @@
     {
       "nombre": "Morron rojo",
       "precio": 4675,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
+      "nombre": "Rucula",
+      "precio": 708.3333333333334,
       "unidad": "kg",
       "activo": true
     },
