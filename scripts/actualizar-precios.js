@@ -52,7 +52,20 @@ const nuevoProductos = `const PRODUCTS = {
 html = html.replace(productsRegex, nuevoProductos)
 
 // Actualizar monto mínimo
-html = html.replace(/const MIN_PURCHASE\s*=\s*\d+/, `const MIN_PURCHASE = ${precios.monto_minimo}`)
+const monto = Math.floor(precios.monto_minimo).toLocaleString('es-AR')
+
+html = html.replace(
+  /(<span id="envio-gratis-monto">)[^<]*/,
+  `$1$${monto}`
+)
+html = html.replace(
+  /(<span id="compra-minima-monto">)[^<]*/,
+  `$1$${monto}`
+)
+html = html.replace(
+  /(<span id="footer-minima-monto">)[^<]*/,
+  `$1$${monto}`
+)
 
 fs.writeFileSync('index.html', html)
 console.log(`✅ Productos actualizados: ${verduras.length} verduras, ${frutas.length} frutas, ${extras.length} extras`)
