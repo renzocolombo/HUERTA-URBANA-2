@@ -136,13 +136,6 @@ function cargarPrecios() {
     const montoMinimo = parseInt(document.body.dataset.montoMinimo)
     const preciosRaw  = document.body.dataset.precios
 
-    if (!preciosRaw) {
-      console.log('[PRECIOS] data-precios no encontrado — usando datos del código fuente.')
-      return
-    }
-
-    const data = JSON.parse(preciosRaw)
-
     if (montoMinimo && !isNaN(montoMinimo)) {
       MIN_PURCHASE = montoMinimo
       const montoFormateado = '$' + MIN_PURCHASE.toLocaleString('es-AR')
@@ -154,12 +147,43 @@ function cargarPrecios() {
       if (spanFooter) spanFooter.textContent = montoFormateado
     }
 
+    // 1. Prioridad: Usar PRODUCTOS_DATA si está definido (inyectado por GitHub Action)
+    if (typeof PRODUCTOS_DATA !== 'undefined' && (PRODUCTOS_DATA.verduras || PRODUCTOS_DATA.frutas)) {
+      PRODUCTS.individual = PRODUCTOS_DATA;
+      console.log('[PRECIOS] PRODUCTOS_DATA detectado y cargado.');
+      
+      // Cargar combos desde data attribute si existen
+      if (preciosRaw) {
+        const data = JSON.parse(preciosRaw);
+        if (data.combos && data.combos.length > 0) actualizarCombos(data.combos);
+      }
+      
+      // Sincronizar UI de la pestaña extras
+      const tabExtras = document.getElementById('tab-extras');
+      if (tabExtras) {
+        if (!PRODUCTS.individual.extras || PRODUCTS.individual.extras.length === 0) {
+          tabExtras.style.display = 'none';
+          if (activeCategory === 'extras') switchCategory('verduras');
+        } else {
+          tabExtras.style.display = 'inline-block';
+        }
+      }
+      return;
+    }
+
+    // 2. Fallback: Usar data-precios (lógica anterior)
+    if (!preciosRaw) {
+      console.log('[PRECIOS] Ni PRODUCTOS_DATA ni data-precios encontrados.')
+      return
+    }
+
+    const data = JSON.parse(preciosRaw)
     if (data.productos && data.productos.length > 0) actualizarProductos(data.productos)
     if (data.combos   && data.combos.length   > 0) actualizarCombos(data.combos)
 
     console.log('[PRECIOS] Cargados desde data attributes HTML. Monto mínimo:', MIN_PURCHASE)
   } catch (error) {
-    console.log('[PRECIOS] Error al leer data attributes — usando datos del código fuente:', error)
+    console.log('[PRECIOS] Error al cargar precios:', error)
   }
 }
 
