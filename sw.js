@@ -1,25 +1,29 @@
-const CACHE = 'huerta-urbana-v1'
+const CACHE_NAME = 'huerta-urbana-v2'
+const ARCHIVOS_CACHE = ['/style.css', '/script.js', '/img/favicon.png']
 
 self.addEventListener('install', e => {
-  self.skipWaiting() // Activar inmediatamente
+  self.skipWaiting()
+  e.waitUntil(
+    caches.open(CACHE_NAME).then(c => c.addAll(ARCHIVOS_CACHE))
+  )
 })
 
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.map(key => caches.delete(key))) // Borrar todo el caché viejo
+      Promise.all(keys.filter(k => k !== CACHE_NAME).map(k => caches.delete(k)))
     )
   )
   self.clients.claim()
 })
 
 self.addEventListener('fetch', e => {
-  // Para el index.html — siempre buscar la versión nueva de la red
-  if (e.request.url.includes('index.html') || e.request.mode === 'navigate') {
+  // index.html — SIEMPRE desde la red, nunca desde caché
+  if (e.request.mode === 'navigate' || e.request.url.endsWith('index.html') || e.request.url.endsWith('/')) {
     e.respondWith(fetch(e.request))
     return
   }
-  // Para otros archivos — usar caché
+  // Otros archivos — desde caché
   e.respondWith(
     caches.match(e.request).then(r => r || fetch(e.request))
   )
