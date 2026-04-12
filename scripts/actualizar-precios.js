@@ -25,6 +25,11 @@ const extras = productosActivos
             && !FRUTAS.some(f => f.toLowerCase() === p.nombre.toLowerCase().trim()))
   .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'))
 
+console.log('📦 Verduras:', verduras.map(v => v.nombre))
+console.log('🍎 Frutas:', frutas.map(f => f.nombre))
+console.log('➕ Extras:', extras.map(e => e.nombre))
+console.log('💰 Monto mínimo:', precios.monto_minimo)
+
 const capitalizar = str => str.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
 
 const generarProductos = (productos) => productos.map(p => ({
@@ -42,14 +47,15 @@ const todosProductos = {
   extras: generarProductos(extras)
 }
 
-// Reemplazar el objeto PRODUCTS.individual en el HTML
-const productsRegex = /const PRODUCTS\s*=\s*\{[\s\S]*?individual:\s*\{[\s\S]*?\}\s*\}/
-const nuevoProductos = `const PRODUCTS = {
-  combos: PRODUCTS_COMBOS,
-  individual: ${JSON.stringify(todosProductos, null, 2)}
-}`
+// Reemplazar SOLO el individual, no tocar los combos
+const individualRegex = /individual:\s*\{[\s\S]*?(?=\s\};\s*(?:\/\/|const|let|var|function|$))/
+const nuevoIndividual = `individual: ${JSON.stringify(todosProductos, null, 2)}`
 
-html = html.replace(productsRegex, nuevoProductos)
+if (individualRegex.test(html)) {
+  html = html.replace(individualRegex, nuevoIndividual)
+} else {
+  console.log('⚠️ No se encontró el objeto individual en el HTML')
+}
 
 // Actualizar monto mínimo
 const monto = Math.floor(precios.monto_minimo).toLocaleString('es-AR')
