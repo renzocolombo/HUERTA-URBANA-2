@@ -3,6 +3,11 @@ on:
   push:
     paths:
       - 'precios.json'
+    branches:
+      - main
+  workflow_dispatch:
+  repository_dispatch:
+    types: [actualizar-precios]
 jobs:
   actualizar:
     runs-on: ubuntu-latest
