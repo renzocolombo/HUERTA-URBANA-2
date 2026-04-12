@@ -13,9 +13,7 @@ if ('serviceWorker' in navigator) {
 ;(function initPWABanner() {
     // Solo mobile
     if (window.innerWidth > 768) return
-    // Si ya fue descartado o instalado, no mostrar
-    if (localStorage.getItem('pwa-banner-dismissed')) return
-    // Si ya está corriendo como standalone (instalada), no mostrar
+    // Solo NO mostrar si ya está instalada como app standalone
     if (window.matchMedia('(display-mode: standalone)').matches) return
 
     let deferredPrompt = null
@@ -34,25 +32,25 @@ if ('serviceWorker' in navigator) {
         banner.classList.add('pwa-visible')
     }
 
-    function hideBanner(store) {
+    function hideBanner() {
         const banner = document.getElementById('pwa-banner')
         if (!banner) return
         banner.classList.add('pwa-hiding')
         banner.classList.remove('pwa-visible')
         setTimeout(() => { banner.style.display = 'none' }, 420)
-        if (store) localStorage.setItem('pwa-banner-dismissed', '1')
+        // No guardar en localStorage — el banner vuelve a aparecer en cada visita
     }
 
     // Mostrar después de 3 segundos
     setTimeout(showBanner, 3000)
 
     document.addEventListener('DOMContentLoaded', () => {
-        const installBtn  = document.getElementById('pwa-install-btn')
-        const dismissBtn  = document.getElementById('pwa-dismiss-btn')
+        const installBtn = document.getElementById('pwa-install-btn')
+        const dismissBtn = document.getElementById('pwa-dismiss-btn')
 
         if (installBtn) {
             installBtn.addEventListener('click', async () => {
-                hideBanner(true)
+                hideBanner()
                 if (deferredPrompt) {
                     deferredPrompt.prompt()
                     const { outcome } = await deferredPrompt.userChoice
@@ -63,7 +61,7 @@ if ('serviceWorker' in navigator) {
         }
 
         if (dismissBtn) {
-            dismissBtn.addEventListener('click', () => hideBanner(true))
+            dismissBtn.addEventListener('click', () => hideBanner())
         }
     })
 })()
