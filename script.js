@@ -743,3 +743,17 @@ function showComboDetails(id) {
 function closeComboModal() {
     document.getElementById('combo-modal').style.display = 'none';
 }
+
+// Verificar precios cuando la página vuelve a estar activa
+document.addEventListener('visibilitychange', async () => {
+  if (document.visibilityState === 'visible') {
+    try {
+      const response = await fetch('precios.json?t=' + Date.now())
+      const data = await response.json()
+      if (data.monto_minimo && data.monto_minimo !== MIN_PURCHASE) {
+        // Los precios cambiaron — recargar la página
+        window.location.reload()
+      }
+    } catch (e) {}
+  }
+})
