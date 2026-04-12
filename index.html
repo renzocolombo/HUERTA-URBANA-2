@@ -145,8 +145,8 @@
                                     <span>Total:</span>
                                     <span id="summary-total">$0</span>
                                 </div>
-                                <p class="shipping-info"><ion-icon name="bicycle-outline"></ion-icon> Envíos gratis a partir de <span id="envio-gratis-monto">$765</span></p>
-                                <p id="min-purchase-msg" class="warning-text">Compra mínima: <span id="compra-minima-monto">$765</span></p>
+                                <p class="shipping-info"><ion-icon name="bicycle-outline"></ion-icon> Envíos gratis a partir de <span id="envio-gratis-monto">$99</span></p>
+                                <p id="min-purchase-msg" class="warning-text">Compra mínima: <span id="compra-minima-monto">$99</span></p>
                             </div>
                         </div>
 
@@ -268,7 +268,7 @@
                     <ion-icon name="leaf" class="logo-icon"></ion-icon>
                     <span>HUERTA URBANA</span>
                 </div>
-                <p>Calidad premium y frescura garantizada en cada entrega. <br> Compra mínima: <span id="footer-minima-monto">$765</span></p>
+                <p>Calidad premium y frescura garantizada en cada entrega. <br> Compra mínima: <span id="footer-minima-monto">$99</span></p>
                 <a href="mailto:huertaurbana.market@gmail.com" class="footer-email">huertaurbana.market@gmail.com</a>
             </div>
             <div class="social-links">
@@ -368,8 +368,263 @@
 
     <script>
         // PRODUCTOS_START
-        const PRODUCTOS_DATA = {};
-        // PRODUCTOS_END
+const PRODUCTOS_DATA = {
+  "verduras": [
+    {
+      "id": "ajo",
+      "name": "Ajo",
+      "price": 952,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "berenjena",
+      "name": "Berenjena",
+      "price": 2040,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "brócoli",
+      "name": "Brócoli",
+      "price": 2185,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "cabutia",
+      "name": "Cabutia",
+      "price": 1275,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "cebolla-morada",
+      "name": "Cebolla Morada",
+      "price": 2077,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "espinaca",
+      "name": "Espinaca",
+      "price": 1700,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "lechuga",
+      "name": "Lechuga",
+      "price": 3400,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "morrón-rojo",
+      "name": "Morrón Rojo",
+      "price": 4675,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "papa",
+      "name": "Papa",
+      "price": 1020,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "pepino",
+      "name": "Pepino",
+      "price": 1360,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "remolacha",
+      "name": "Remolacha",
+      "price": 4250,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "rúcula",
+      "name": "Rúcula",
+      "price": 708,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "tomate",
+      "name": "Tomate",
+      "price": 1888,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "tomate-cherry",
+      "name": "Tomate Cherry",
+      "price": 6071,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "zanahoria",
+      "name": "Zanahoria",
+      "price": 1700,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "zapallito",
+      "name": "Zapallito",
+      "price": 1275,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "zapallo-blanco",
+      "name": "Zapallo Blanco",
+      "price": 1360,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    }
+  ],
+  "frutas": [
+    {
+      "id": "arándano",
+      "name": "Arándano",
+      "price": 3541,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "banana",
+      "name": "Banana",
+      "price": 3570,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "choclo",
+      "name": "Choclo",
+      "price": 765,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "durazno",
+      "name": "Durazno",
+      "price": 5409,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "limón",
+      "name": "Limón",
+      "price": 3173,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "manzana-roja",
+      "name": "Manzana Roja",
+      "price": 5950,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "manzana-verde",
+      "name": "Manzana Verde",
+      "price": 3825,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "naranja",
+      "name": "Naranja",
+      "price": 3740,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "palta",
+      "name": "Palta",
+      "price": 2210,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "pomelo",
+      "name": "Pomelo",
+      "price": 3187,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "uva",
+      "name": "Uva",
+      "price": 5100,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    }
+  ],
+  "extras": [
+    {
+      "id": "cebolla-",
+      "name": "Cebolla ",
+      "price": 850,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "huevos-nº1",
+      "name": "Huevos Nº1",
+      "price": 6500,
+      "unit": "maples",
+      "step": 0.5,
+      "min": 0.5
+    },
+    {
+      "id": "miel-pura",
+      "name": "Miel Pura",
+      "price": 11000,
+      "unit": "kg",
+      "step": 0.5,
+      "min": 0.5
+    }
+  ]
+};
+// PRODUCTOS_END
     </script>
     <script src="script.js?v=30.0"></script>
 </body>
