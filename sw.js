@@ -2,7 +2,7 @@
 // Service worker minimal — sin caché
 self.addEventListener('install', () => self.skipWaiting())
 =======
-const CACHE_NAME = 'huerta-urbana-1776032679022'
+const CACHE_NAME = 'huerta-urbana-1776032966454'
 const ARCHIVOS_CACHE = ['/style.css', '/script.js', '/img/favicon.png']
 
 self.addEventListener('install', e => {
