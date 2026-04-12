@@ -1,7 +1,7 @@
 {
   "accion": "publicarPrecios",
-  "monto_minimo": 777,
-  "mensaje_minimo": "El pedido mínimo es de $777",
+  "monto_minimo": 6668,
+  "mensaje_minimo": "El pedido mínimo es de $6.668",
   "productos": [
     {
       "nombre": "Papa",
@@ -46,13 +46,13 @@
       "activo": true
     },
     {
-      "nombre": "Morron rojo",
+      "nombre": "Morrón rojo",
       "precio": 4675,
       "unidad": "kg",
       "activo": true
     },
     {
-      "nombre": "Rucula",
+      "nombre": "Rúcula",
       "precio": 708.3333333333334,
       "unidad": "kg",
       "activo": true
@@ -76,7 +76,7 @@
       "activo": true
     },
     {
-      "nombre": "Brocoli",
+      "nombre": "Brócoli",
       "precio": 2185.714285714286,
       "unidad": "kg",
       "activo": true
@@ -142,7 +142,7 @@
       "activo": true
     },
     {
-      "nombre": "Limon",
+      "nombre": "Limón",
       "precio": 3173.3333333333335,
       "unidad": "kg",
       "activo": true
@@ -166,7 +166,7 @@
       "activo": true
     },
     {
-      "nombre": "Arandano",
+      "nombre": "Arándano",
       "precio": 3541.666666666667,
       "unidad": "kg",
       "activo": true
@@ -178,15 +178,15 @@
       "activo": true
     },
     {
-      "nombre": "Huevos",
-      "precio": 6500,
+      "nombre": "Miel pura",
+      "precio": 11000,
       "unidad": "kg",
       "activo": true
     },
     {
-      "nombre": "Miel pura",
-      "precio": 11000,
-      "unidad": "kg",
+      "nombre": "Huevos Nº1",
+      "precio": 6500,
+      "unidad": "maples",
       "activo": true
     }
   ],
