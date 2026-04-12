@@ -1,82 +1,58 @@
-/**
- * actualizar-precios.js
- * 
- * Lee precios.json y actualiza los data attributes en index.html:
- *   - data-monto-minimo en <body>
- *   - data-precios      en <body>  (JSON serializado)
- * 
- * GitHub Actions ejecuta este script cada vez que precios.json cambia.
- */
+const fs = require('fs')
 
-const fs = require('fs');
-const path = require('path');
+const precios = JSON.parse(fs.readFileSync('precios.json', 'utf8'))
+let html = fs.readFileSync('index.html', 'utf8')
 
-const ROOT = path.join(__dirname, '..');
-const preciosPath = path.join(ROOT, 'precios.json');
-const htmlPath = path.join(ROOT, 'index.html');
+const VERDURAS = ['Papa', 'Cebolla común', 'Cebolla morada', 'Tomate', 'Tomate cherry', 
+  'Zanahoria', 'Lechuga', 'Zapallito', 'Zapallo blanco', 'Morrón rojo', 'Rúcula', 
+  'Espinaca', 'Remolacha', 'Pepino', 'Brócoli', 'Cabutia', 'Ajo', 'Berenjena']
 
-// --- Leer precios.json ---
-if (!fs.existsSync(preciosPath)) {
-  console.error('[ERROR] precios.json no encontrado en:', preciosPath);
-  process.exit(1);
+const FRUTAS = ['Palta', 'Manzana roja', 'Manzana verde', 'Banana', 'Naranja', 
+  'Limón', 'Durazno', 'Pomelo', 'Uva', 'Arándano', 'Choclo']
+
+const productosActivos = precios.productos.filter(p => p.activo)
+
+const verduras = productosActivos
+  .filter(p => VERDURAS.some(v => v.toLowerCase() === p.nombre.toLowerCase().trim()))
+  .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'))
+
+const frutas = productosActivos
+  .filter(p => FRUTAS.some(f => f.toLowerCase() === p.nombre.toLowerCase().trim()))
+  .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'))
+
+const extras = productosActivos
+  .filter(p => !VERDURAS.some(v => v.toLowerCase() === p.nombre.toLowerCase().trim()) 
+            && !FRUTAS.some(f => f.toLowerCase() === p.nombre.toLowerCase().trim()))
+  .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'))
+
+const capitalizar = str => str.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
+
+const generarProductos = (productos) => productos.map(p => ({
+  id: p.nombre.toLowerCase().replace(/ /g, '-'),
+  name: capitalizar(p.nombre),
+  price: Math.floor(p.precio),
+  unit: p.unidad,
+  step: 0.5,
+  min: 0.5
+}))
+
+const todosProductos = {
+  verduras: generarProductos(verduras),
+  frutas: generarProductos(frutas),
+  extras: generarProductos(extras)
 }
 
-const data = JSON.parse(fs.readFileSync(preciosPath, 'utf-8'));
+// Reemplazar el objeto PRODUCTS.individual en el HTML
+const productsRegex = /const PRODUCTS\s*=\s*\{[\s\S]*?individual:\s*\{[\s\S]*?\}\s*\}/
+const nuevoProductos = `const PRODUCTS = {
+  combos: PRODUCTS_COMBOS,
+  individual: ${JSON.stringify(todosProductos, null, 2)}
+}`
 
-// --- Procesar Productos ---
-if (data.productos) {
-  data.productos = data.productos
-    .filter(p => p.activo !== false) // Filtrar inactivos
-    .map(p => {
-      // Capitalizar primera letra
-      const nombre = p.nombre.trim();
-      p.nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase();
-      return p;
-    })
-    .sort((a, b) => a.nombre.localeCompare(b.nombre)); // Ordenar A-Z
-}
+html = html.replace(productsRegex, nuevoProductos)
 
-// --- Procesar Combos ---
-if (data.combos) {
-  data.combos = data.combos
-    .filter(c => c.activo !== false) // Filtrar inactivos
-    .map(c => {
-      const nombre = c.nombre.trim();
-      c.nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase();
-      return c;
-    });
-}
+// Actualizar monto mínimo
+html = html.replace(/const MIN_PURCHASE\s*=\s*\d+/, `const MIN_PURCHASE = ${precios.monto_minimo}`)
 
-const precios = data;
-const montoMinimo = precios.monto_minimo || 35000;
-const preciosJSON = JSON.stringify(precios).replace(/'/g, '&apos;').replace(/"/g, '&quot;');
-
-// --- Leer index.html ---
-if (!fs.existsSync(htmlPath)) {
-  console.error('[ERROR] index.html no encontrado en:', htmlPath);
-  process.exit(1);
-}
-
-let html = fs.readFileSync(htmlPath, 'utf-8');
-
-// --- Reemplazar / insertar data attributes en <body> ---
-// Patrón: <body ... data-monto-minimo="..." data-precios="...">
-// Si ya existen, los actualiza. Si no, los inserta.
-
-// Eliminar atributos viejos si existen
-html = html.replace(/\s*data-monto-minimo="[^"]*"/, '');
-html = html.replace(/\s*data-precios="[^"]*"/, '');
-
-// Insertar los nuevos data attributes en la etiqueta <body>
-html = html.replace(
-  /<body([^>]*)>/,
-  `<body$1 data-monto-minimo="${montoMinimo}" data-precios="${preciosJSON}">`
-);
-
-// --- Guardar index.html actualizado ---
-fs.writeFileSync(htmlPath, html, 'utf-8');
-
-console.log(`[OK] index.html actualizado:`);
-console.log(`     → monto_minimo : ${montoMinimo}`);
-console.log(`     → combos       : ${(precios.combos || []).length}`);
-console.log(`     → productos    : ${(precios.productos || []).length}`);
+fs.writeFileSync('index.html', html)
+console.log(`✅ Productos actualizados: ${verduras.length} verduras, ${frutas.length} frutas, ${extras.length} extras`)
