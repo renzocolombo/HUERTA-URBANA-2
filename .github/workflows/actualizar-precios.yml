@@ -1,7 +1,4 @@
 name: Actualizar Precios
-concurrency:
-  group: actualizar-precios
-  cancel-in-progress: false
 on:
   push:
     paths:
@@ -10,8 +7,8 @@ on:
       - main
   workflow_dispatch:
   repository_dispatch:
-    types:
-      - 'actualizar-precios'
+    types: [actualizar-precios]
+
 jobs:
   actualizar:
     runs-on: ubuntu-latest
@@ -19,17 +16,25 @@ jobs:
       - uses: actions/checkout@v4
         with:
           token: ${{ secrets.GH_TOKEN }}
-      - name: Actualizar precios en HTML
-        run: node scripts/actualizar-precios.js
-      - name: Commit y push
+          fetch-depth: 0
+          ref: main
+
+      - name: Configurar git
         run: |
           git config user.email "action@github.com"
           git config user.name "GitHub Action"
+          git remote set-url origin https://x-access-token:${{ secrets.GH_TOKEN }}@github.com/renzocolombo/HUERTA-URBANA-2.git
+
+      - name: Sincronizar con remoto
+        run: |
           git fetch origin main
-          git checkout main
-          git merge origin/main --no-edit
-          node scripts/actualizar-precios.js
+          git reset --hard origin/main
+
+      - name: Actualizar precios en HTML
+        run: node scripts/actualizar-precios.js
+
+      - name: Commit y push
+        run: |
           git add index.html
           git diff --staged --quiet || git commit -m "feat: actualizar precios automáticamente"
           git push origin main
-          sleep 5
