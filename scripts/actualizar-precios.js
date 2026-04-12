@@ -21,7 +21,33 @@ if (!fs.existsSync(preciosPath)) {
   process.exit(1);
 }
 
-const precios = JSON.parse(fs.readFileSync(preciosPath, 'utf-8'));
+const data = JSON.parse(fs.readFileSync(preciosPath, 'utf-8'));
+
+// --- Procesar Productos ---
+if (data.productos) {
+  data.productos = data.productos
+    .filter(p => p.activo !== false) // Filtrar inactivos
+    .map(p => {
+      // Capitalizar primera letra
+      const nombre = p.nombre.trim();
+      p.nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase();
+      return p;
+    })
+    .sort((a, b) => a.nombre.localeCompare(b.nombre)); // Ordenar A-Z
+}
+
+// --- Procesar Combos ---
+if (data.combos) {
+  data.combos = data.combos
+    .filter(c => c.activo !== false) // Filtrar inactivos
+    .map(c => {
+      const nombre = c.nombre.trim();
+      c.nombre = nombre.charAt(0).toUpperCase() + nombre.slice(1).toLowerCase();
+      return c;
+    });
+}
+
+const precios = data;
 const montoMinimo = precios.monto_minimo || 35000;
 const preciosJSON = JSON.stringify(precios).replace(/'/g, '&apos;').replace(/"/g, '&quot;');
 
