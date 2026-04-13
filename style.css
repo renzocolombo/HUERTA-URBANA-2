@@ -116,7 +116,7 @@ header {
     /* Un poco más opaco */
     backdrop-filter: blur(10px);
     z-index: 1000;
-    padding: 16px 0;
+    padding: 13px 0; /* 26px total arriba y abajo */
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
     /* Sombra solo hacia abajo */
     transition: var(--transition);
@@ -1416,8 +1416,9 @@ select option {
 
     .cart-controls-wrapper {
         display: flex;
-        align-items: center;
-        gap: 10px;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 2px;
     }
 
     .cart-total-header {
@@ -1433,13 +1434,10 @@ select option {
         font-size: 0.95rem !important;
     }
 
-    .shipping-header-msg {
-        display: block !important;
-        font-size: 0.72rem;
-        margin-top: 2px;
-        font-weight: 600;
-        min-height: 16px; /* Espacio reservado para evitar saltos verticales */
+    #shipping-header-msg {
+        font-size: 10px;
         text-align: right;
+        display: block;
     }
 
     #desktop-help {
