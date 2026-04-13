@@ -3,7 +3,7 @@
 /* ── PWA: Service Worker (Dummy para Instalabilidad) ── */
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', () => {
-    navigator.serviceWorker.register('/sw.js')
+    navigator.serviceWorker.register('sw.js')
       .then(reg => console.log('[SW] Dummy SW registrado'))
       .catch(err => console.error('[SW] Error registrando Dummy SW', err));
   });
