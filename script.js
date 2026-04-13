@@ -15,12 +15,39 @@ let deferredPrompt = null
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault()
   deferredPrompt = e
-  // Mostrar el banner después de 3 segundos
-  setTimeout(() => {
-    const banner = document.getElementById('pwa-banner')
-    if (banner) banner.style.display = 'flex'
-  }, 3000)
 })
+
+// Mostrar el banner según el dispositivo (esperamos 3s)
+setTimeout(() => {
+  const banner = document.getElementById('pwa-banner')
+  const btnInstalar = document.getElementById('pwa-install-btn')
+  if (!banner || !btnInstalar) return
+
+  // Si ya está en modo app, no mostramos nada
+  if (window.matchMedia('(display-mode: standalone)').matches) return
+
+  const esIOS = /iphone|ipad|ipod/i.test(navigator.userAgent)
+  const esSafari = /safari/i.test(navigator.userAgent) && !/chrome/i.test(navigator.userAgent)
+
+  if (esIOS && esSafari) {
+    // Modo iOS Manual
+    btnInstalar.textContent = 'Ver cómo instalar'
+    btnInstalar.addEventListener('click', () => {
+      alert('Para instalar:\n1. Apretá el botón ⬆️ compartir\n2. Seleccioná "Agregar a pantalla de inicio"\n3. Apretá "Agregar"')
+    })
+    banner.style.display = 'flex'
+  } else if (!deferredPrompt) {
+    // Modo Android Manual (no hubo beforeinstallprompt automático)
+    btnInstalar.textContent = 'Ver cómo instalar'
+    btnInstalar.addEventListener('click', () => {
+      alert('Para instalar:\n1. Apretá los 3 puntitos del navegador (arriba a la derecha)\n2. Seleccioná "Instalar aplicación" o "Agregar a la pantalla principal"')
+    })
+    banner.style.display = 'flex'
+  } else {
+    // Modo Automático (Chrome Android, etc)
+    banner.style.display = 'flex'
+  }
+}, 3000)
 
 document.addEventListener('DOMContentLoaded', () => {
   document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
