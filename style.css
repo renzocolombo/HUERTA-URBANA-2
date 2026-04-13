@@ -1333,10 +1333,52 @@ select option {
         box-shadow: none;
         border-left: none;
         border-right: none;
+        padding: 15px !important;
+    }
+
+    .order-form-container h3 {
+        font-size: 1rem !important;
+        margin-bottom: 8px !important;
+    }
+
+    .form-group {
+        margin-bottom: 8px !important;
+    }
+
+    .form-group label {
+        font-size: 0.8rem !important;
+        margin-bottom: 2px !important;
+    }
+
+    .form-group input, 
+    .form-group select, 
+    .form-group textarea {
+        padding: 8px 10px !important;
+        font-size: 0.85rem !important;
+    }
+
+    .cupon-group {
+        padding: 10px !important;
+        margin-bottom: 12px !important;
+    }
+
+    .cupon-input-wrapper {
+        gap: 6px !important;
+    }
+
+    .cupon-input-wrapper input {
+        padding: 8px 10px !important;
+        font-size: 0.85rem !important;
+    }
+
+    #btn-aplicar-cupon {
+        padding: 0 15px !important;
+        height: 38px !important; /* Altura consistente con el input */
+        font-size: 0.85rem !important;
     }
 
     .order-summary-wrapper {
-        margin-bottom: 30px;
+        margin-bottom: 20px;
     }
 
     .order-summary {
