@@ -106,16 +106,15 @@ section {
 header {
     position: fixed;
     top: -1px;
-    /* Sellar borde superior */
     left: 0;
     width: 100%;
     background: rgba(255, 255, 255, 0.98);
-    /* Un poco más opaco */
     backdrop-filter: blur(10px);
     z-index: 1000;
-    padding: 13px 0; /* 26px total arriba y abajo */
+    height: 85px; /* Altura fija total solicitada */
+    display: flex;
+    align-items: center;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-    /* Sombra solo hacia abajo */
     transition: var(--transition);
 }
 
@@ -129,6 +128,7 @@ header {
     display: flex;
     align-items: center;
     gap: 12px;
+    flex: 1; /* Toma espacio igual a la derecha para centrar el menú */
 }
 
 .logo-icon {
@@ -158,6 +158,10 @@ header {
     letter-spacing: 0.2px;
 }
 
+.desktop-nav {
+    flex: 0 0 auto; /* No crece, permite que los laterales lo centren */
+}
+
 .desktop-nav ul {
     display: flex;
     gap: 30px;
@@ -179,7 +183,7 @@ header {
     align-items: flex-end;
     gap: 2px;
     justify-content: center;
-    min-height: 54px; /* Estabiliza altura del bloque de carrito */
+    flex: 1; /* Toma espacio igual a la izquierda para centrar el menú */
 }
 
 .cart-controls-wrapper {
@@ -1321,7 +1325,16 @@ select option {
 
 @media (max-width: 768px) {
     header {
+        height: auto !important; /* Resetea altura fija de escritorio */
         padding: 8px 0 !important;
+    }
+
+    .desktop-nav {
+        display: none !important; /* Oculta navegación de escritorio en móvil */
+    }
+
+    .logo, .header-cart-info {
+        flex: none !important; /* Evita simetría de escritorio en móvil */
     }
 
     .logo-icon {
