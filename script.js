@@ -16,28 +16,34 @@ let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
-  
-  // Mostrar banner después de 3s si no está instalada
-  setTimeout(() => {
-    const banner = document.getElementById('pwa-banner');
-    if (banner && !window.matchMedia('(display-mode: standalone)').matches) {
-      banner.style.display = 'flex';
-    }
-  }, 3000);
+  // Si el evento llega, ya no necesitamos esperar más para saber que es instalable
+  console.log('[PWA] Evento beforeinstallprompt capturado');
 });
 
-// 2. Manejo de iOS (Safari) que no dispara beforeinstallprompt
+// 2. Disparador Universal de Banner (Mobile)
 setTimeout(() => {
-  const esIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
-  const esSafari = /safari/i.test(navigator.userAgent) && !/chrome/i.test(navigator.userAgent);
   const banner = document.getElementById('pwa-banner');
   const btnInstalar = document.getElementById('pwa-install-btn');
+  if (!banner || !btnInstalar) return;
 
-  if (esIOS && esSafari && banner && btnInstalar) {
-    if (!window.matchMedia('(display-mode: standalone)').matches) {
+  // Si ya está en modo app, no mostramos nada
+  if (window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true) return;
+
+  const esIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const esSafari = /safari/i.test(navigator.userAgent) && !/chrome/i.test(navigator.userAgent);
+  const esMobile = /android|iphone|ipad|ipod/i.test(navigator.userAgent);
+
+  if (esMobile) {
+    if (esIOS && esSafari) {
       btnInstalar.textContent = 'Ver cómo instalar';
-      banner.style.display = 'flex';
+    } else if (!deferredPrompt) {
+      // Android sin evento automático (ej: Brave, Samsung Browser)
+      btnInstalar.textContent = 'Ver cómo instalar';
+    } else {
+      // Chrome Android con evento capturado
+      btnInstalar.textContent = 'Instalar App';
     }
+    banner.style.display = 'flex';
   }
 }, 3000);
 
