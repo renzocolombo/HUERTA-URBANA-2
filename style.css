@@ -1565,51 +1565,56 @@ select option {
    CUPÓN STYLING
    ===================================================== */
 .cupon-group {
-    margin-bottom: 20px;
-    background: #fdfdfd;
-    padding: 15px;
-    border-radius: 10px;
-    border: 1px solid #eaeaea;
+  margin-bottom: 16px;
 }
 
 .cupon-input-wrapper {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
 }
 
 .cupon-input-wrapper input {
-    flex: 1;
-    margin-bottom: 0;
-    text-transform: uppercase;
+  flex: 1;
+  padding: 10px 14px;
+  border: 2px solid #ddd;
+  border-radius: 8px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
-.cupon-input-wrapper button {
-    background-color: var(--primary);
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 0 20px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: all 0.2s ease;
-    white-space: nowrap;
+.cupon-input-wrapper input:focus {
+  border-color: var(--primary);
+  outline: none;
 }
 
-.cupon-input-wrapper button:hover {
-    background-color: var(--primary-dark);
+#btn-aplicar-cupon {
+  padding: 10px 18px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#btn-aplicar-cupon:hover {
+  background: var(--primary-light);
 }
 
 .cupon-mensaje {
-    margin-top: 8px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    min-height: 20px;
+  font-size: 13px;
+  margin-top: 6px;
+  font-weight: 500;
 }
 
 .cupon-mensaje.exito {
-    color: #22c55e;
+  color: var(--success);
 }
 
 .cupon-mensaje.error {
-    color: #ef4444;
+  color: var(--danger);
 }
