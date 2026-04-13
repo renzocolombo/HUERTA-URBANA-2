@@ -182,6 +182,12 @@
       "precio": 6500,
       "unidad": "maples",
       "activo": true
+    },
+    {
+      "nombre": "Huevos Nº2",
+      "precio": 0,
+      "unidad": "maples",
+      "activo": true
     }
   ],
   "combos": [
