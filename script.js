@@ -10,62 +10,31 @@ if ('serviceWorker' in navigator) {
 }
 
 /* ── PWA: Banner de instalación ──────────────────────── */
-;(function initPWABanner() {
-    // Solo mobile
-    if (window.innerWidth > 768) return
-    // Solo NO mostrar si ya está instalada como app standalone
-    if (window.matchMedia('(display-mode: standalone)').matches) return
+let deferredPrompt = null
 
-    let deferredPrompt = null
+window.addEventListener('beforeinstallprompt', (e) => {
+  e.preventDefault()
+  deferredPrompt = e
+  // Mostrar el banner después de 3 segundos
+  setTimeout(() => {
+    const banner = document.getElementById('pwa-banner')
+    if (banner) banner.style.display = 'flex'
+  }, 3000)
+})
 
-    window.addEventListener('beforeinstallprompt', e => {
-        e.preventDefault()
-        deferredPrompt = e
-    })
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
+    if (!deferredPrompt) return
+    deferredPrompt.prompt()
+    const result = await deferredPrompt.userChoice
+    deferredPrompt = null
+    document.getElementById('pwa-banner').style.display = 'none'
+  })
 
-    function showBanner() {
-        const banner = document.getElementById('pwa-banner')
-        if (!banner) return
-        banner.style.display = 'block'
-        // Forzar reflow para que la transición funcione
-        void banner.offsetWidth
-        banner.classList.add('pwa-visible')
-    }
-
-    function hideBanner() {
-        const banner = document.getElementById('pwa-banner')
-        if (!banner) return
-        banner.classList.add('pwa-hiding')
-        banner.classList.remove('pwa-visible')
-        setTimeout(() => { banner.style.display = 'none' }, 420)
-        // No guardar en localStorage — el banner vuelve a aparecer en cada visita
-    }
-
-    // Mostrar después de 3 segundos
-    setTimeout(showBanner, 3000)
-
-    document.addEventListener('DOMContentLoaded', () => {
-        const installBtn = document.getElementById('pwa-install-btn')
-        const dismissBtn = document.getElementById('pwa-dismiss-btn')
-
-        if (installBtn) {
-            installBtn.addEventListener('click', async () => {
-                hideBanner()
-                if (deferredPrompt) {
-                    deferredPrompt.prompt()
-                    const { outcome } = await deferredPrompt.userChoice
-                    console.log('[PWA] Resultado instalación:', outcome)
-                    deferredPrompt = null
-                }
-            })
-        }
-
-        if (dismissBtn) {
-            dismissBtn.addEventListener('click', () => hideBanner())
-        }
-    })
-})()
-
+  document.getElementById('pwa-dismiss-btn')?.addEventListener('click', () => {
+    document.getElementById('pwa-banner').style.display = 'none'
+  })
+})
 
 const PRODUCTS = {
     combos: [
@@ -148,6 +117,13 @@ async function cargarPrecios() {
 
 function actualizarTextos() {
   const monto = '$' + MIN_PURCHASE.toLocaleString('es-AR')
+  
+  console.log('[MOBILE] spans encontrados:', 
+    document.getElementById('envio-gratis-monto'),
+    document.getElementById('compra-minima-monto'),
+    document.getElementById('footer-minima-monto')
+  )
+
   const ids = ['envio-gratis-monto', 'compra-minima-monto', 'footer-minima-monto']
   ids.forEach(id => {
     const el = document.getElementById(id)
