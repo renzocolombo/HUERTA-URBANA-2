@@ -1,12 +1,12 @@
 /* HUERTA URBANA - LOGIC & CART SYSTEM (Catalogo Extendido) */
 
-/* ── Desregistrar Service Workers (PWA desactivada) ── */
+/* ── PWA: Service Worker (Dummy para Instalabilidad) ── */
 if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(registrations => {
-        for (let registration of registrations) {
-            registration.unregister();
-        }
-    });
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/sw.js')
+      .then(reg => console.log('[SW] Dummy SW registrado'))
+      .catch(err => console.error('[SW] Error registrando Dummy SW', err));
+  });
 }
 
 /* ── PWA: Banner de instalación ──────────────────────── */
