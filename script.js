@@ -33,7 +33,8 @@ setTimeout(() => {
     // Modo iOS Manual
     btnInstalar.textContent = 'Ver cómo instalar'
     btnInstalar.addEventListener('click', () => {
-      alert('Para instalar:\n1. Apretá el botón ⬆️ compartir\n2. Seleccioná "Agregar a pantalla de inicio"\n3. Apretá "Agregar"')
+      document.getElementById('ios-install-modal').style.display = 'flex'
+      document.getElementById('pwa-banner').style.display = 'none'
     })
     banner.style.display = 'flex'
   } else if (!deferredPrompt) {
