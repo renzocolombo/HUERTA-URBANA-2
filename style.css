@@ -1318,6 +1318,24 @@ select option {
 }
 
 @media (max-width: 768px) {
+    header {
+        padding: 8px 0 !important;
+    }
+
+    .logo-icon {
+        font-size: 1.8rem !important;
+    }
+
+    .logo-main-text {
+        font-size: 1.2rem !important;
+    }
+
+    .logo-subtitle {
+        font-size: 0.6rem !important;
+        line-height: 1.1 !important;
+        margin-top: 0 !important;
+    }
+
     #formulario .container {
         padding: 0;
         max-width: 100%;
@@ -1419,7 +1437,6 @@ select option {
         display: block !important;
         font-size: 0.72rem;
         margin-top: 2px;
-        color: #e74c3c !important; /* Rojo premium solicitado */
         font-weight: 600;
         min-height: 16px; /* Espacio reservado para evitar saltos verticales */
         text-align: right;
