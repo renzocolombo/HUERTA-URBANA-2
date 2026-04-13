@@ -73,7 +73,7 @@ img {
 }
 
 section {
-    padding: 0 0 60px;
+    padding: 0.5cm 0 60px;
     min-height: calc(100vh - 75px);
     display: flex;
     flex-direction: column;
