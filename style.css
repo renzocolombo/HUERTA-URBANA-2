@@ -32,7 +32,7 @@
 
 html {
     scroll-behavior: smooth;
-    scroll-padding-top: 75px;
+    scroll-padding-top: 0;
 }
 
 body {
@@ -73,15 +73,12 @@ img {
 }
 
 section {
-    padding: 0.5cm 0 60px;
+    padding: 100px 0 60px;
     min-height: calc(100vh - 75px);
     display: flex;
     flex-direction: column;
 }
 
-#formulario {
-    scroll-margin-top: 0;
-}
 
 .section-alt {
     background-color: var(--bg-alt);
