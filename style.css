@@ -1560,4 +1560,56 @@ select option {
         display: none !important;
     }
 }
-
+
+/* =====================================================
+   CUPÓN STYLING
+   ===================================================== */
+.cupon-group {
+    margin-bottom: 20px;
+    background: #fdfdfd;
+    padding: 15px;
+    border-radius: 10px;
+    border: 1px solid #eaeaea;
+}
+
+.cupon-input-wrapper {
+    display: flex;
+    gap: 10px;
+}
+
+.cupon-input-wrapper input {
+    flex: 1;
+    margin-bottom: 0;
+    text-transform: uppercase;
+}
+
+.cupon-input-wrapper button {
+    background-color: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 0 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+}
+
+.cupon-input-wrapper button:hover {
+    background-color: var(--primary-dark);
+}
+
+.cupon-mensaje {
+    margin-top: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    min-height: 20px;
+}
+
+.cupon-mensaje.exito {
+    color: #22c55e;
+}
+
+.cupon-mensaje.error {
+    color: #ef4444;
+}

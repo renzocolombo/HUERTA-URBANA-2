@@ -128,6 +128,11 @@ let MIN_PURCHASE = 35000;
 let cart = {};
 let activeCategory = 'verduras';
 
+const CUPONES_VALIDOS = {
+  'BIENVENIDO10': { tipo: 'porcentaje', valor: 10, descripcion: '10% de descuento de bienvenida' }
+}
+let cuponAplicado = null;
+
 async function cargarPrecios() {
   try {
     const response = await fetch(APPS_SCRIPT_URL + '?accion=getPreciosWeb')
@@ -250,6 +255,39 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderCombos();
     renderCustomProducts();
     updateSummary();
+
+    // Lógica de Cupón
+    document.getElementById('btn-aplicar-cupon')?.addEventListener('click', () => {
+      const codigo = document.getElementById('cupon-input').value.trim().toUpperCase()
+      const mensaje = document.getElementById('cupon-mensaje')
+      
+      if (!codigo) {
+        mensaje.textContent = 'Ingresá un código de cupón'
+        mensaje.className = 'cupon-mensaje error'
+        return
+      }
+      
+      if (CUPONES_VALIDOS[codigo]) {
+        cuponAplicado = { codigo, ...CUPONES_VALIDOS[codigo] }
+        mensaje.textContent = `✅ Cupón aplicado — ${cuponAplicado.descripcion}`
+        mensaje.className = 'cupon-mensaje exito'
+        updateSummary()
+        return
+      }
+      
+      if (/^[A-Z]{3,}[0-9]{4,}$/.test(codigo)) {
+        cuponAplicado = { codigo, tipo: 'porcentaje', valor: 10, descripcion: '10% de descuento por referido' }
+        mensaje.textContent = `✅ Código de referido válido — 10% de descuento`
+        mensaje.className = 'cupon-mensaje exito'
+        updateSummary()
+        return
+      }
+      
+      cuponAplicado = null
+      mensaje.textContent = '❌ Cupón inválido o expirado'
+      mensaje.className = 'cupon-mensaje error'
+      updateSummary()
+    })
 });
 
 function loadCustomerData() {
@@ -504,8 +542,22 @@ function updateSummary() {
     }
 
     summaryItems.innerHTML = itemsHtml;
-    summaryTotal.innerText = `$${Math.floor(total).toLocaleString('es-AR')}`;
-    headerTotal.innerText = `$${Math.floor(total).toLocaleString('es-AR')}`;
+
+    let descuento = 0;
+    if (cuponAplicado && cuponAplicado.tipo === 'porcentaje') {
+        descuento = Math.floor(total * cuponAplicado.valor / 100);
+        itemsHtml += `
+            <div class="summary-item discount-item" style="color: #22c55e; font-weight: 600;">
+                <span>Descuento (${cuponAplicado.codigo})</span>
+                <span>-$${descuento.toLocaleString('es-AR')}</span>
+            </div>
+        `;
+        summaryItems.innerHTML = itemsHtml;
+    }
+
+    const totalFinal = total - descuento;
+    summaryTotal.innerText = `$${Math.floor(totalFinal).toLocaleString('es-AR')}`;
+    headerTotal.innerText = `$${Math.floor(totalFinal).toLocaleString('es-AR')}`;
 
     // Sincronizar con campo de producto para el JSON de Make
     const hiddenDetails = document.getElementById('hidden-details');
@@ -604,6 +656,12 @@ async function handleOrderSubmit(e) {
 
     console.log("Método de pago detectado:", metodoPago);
 
+    const totalNum = parseFloat(formData.get("total"));
+    let descuentoValor = 0;
+    if (cuponAplicado && cuponAplicado.tipo === 'porcentaje') {
+        descuentoValor = Math.floor(totalNum * cuponAplicado.valor / 100);
+    }
+
     const orderData = {
         "numero_pedido": formData.get("numero_pedido"),
         "fecha": formData.get("fecha"),
@@ -617,12 +675,13 @@ async function handleOrderSubmit(e) {
         "metodo_pago": metodoPago,
         "producto": formData.get("producto"),
         "cantidad": formData.get("cantidad"),
-        "total": formData.get("total"),
+        "total": totalNum - descuentoValor,
+        "cupon": cuponAplicado ? cuponAplicado.codigo : '',
+        "descuento": descuentoValor,
         "estado": formData.get("estado"),
         "observaciones": formData.get("observaciones") || 'Sin observaciones',
         "fecha_entrega": formData.get("fecha_entrega"),
         "ficha_entrega": formData.get("ficha_entrega"),
-        // Campos adicionales para integración de notificaciones Mercado Pago vía Make
         "external_reference": formData.get("numero_pedido"),
         "notification_url": "https://hook.us2.make.com/uwcvtbynbitqnxvm5ekx75by8jyuljxr"
     };
