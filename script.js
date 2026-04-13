@@ -9,60 +9,68 @@ if ('serviceWorker' in navigator) {
   });
 }
 
-/* ── PWA: Banner de instalación ──────────────────────── */
-let deferredPrompt = null
+/* ── PWA: Sistema de Instalación ─────────────────────── */
+let deferredPrompt = null;
 
+// 1. Capturar el evento nativo de Chrome/Android
 window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault()
-  deferredPrompt = e
-})
+  e.preventDefault();
+  deferredPrompt = e;
+  
+  // Mostrar banner después de 3s si no está instalada
+  setTimeout(() => {
+    const banner = document.getElementById('pwa-banner');
+    if (banner && !window.matchMedia('(display-mode: standalone)').matches) {
+      banner.style.display = 'flex';
+    }
+  }, 3000);
+});
 
-// Mostrar el banner según el dispositivo (esperamos 3s)
+// 2. Manejo de iOS (Safari) que no dispara beforeinstallprompt
 setTimeout(() => {
-  const banner = document.getElementById('pwa-banner')
-  const btnInstalar = document.getElementById('pwa-install-btn')
-  if (!banner || !btnInstalar) return
+  const esIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+  const esSafari = /safari/i.test(navigator.userAgent) && !/chrome/i.test(navigator.userAgent);
+  const banner = document.getElementById('pwa-banner');
+  const btnInstalar = document.getElementById('pwa-install-btn');
 
-  // Si ya está en modo app, no mostramos nada
-  if (window.matchMedia('(display-mode: standalone)').matches) return
-
-  const esIOS = /iphone|ipad|ipod/i.test(navigator.userAgent)
-  const esSafari = /safari/i.test(navigator.userAgent) && !/chrome/i.test(navigator.userAgent)
-
-  if (esIOS && esSafari) {
-    // Modo iOS Manual
-    btnInstalar.textContent = 'Ver cómo instalar'
-    btnInstalar.addEventListener('click', () => {
-      document.getElementById('ios-install-modal').style.display = 'flex'
-      document.getElementById('pwa-banner').style.display = 'none'
-    })
-    banner.style.display = 'flex'
-  } else if (!deferredPrompt) {
-    // Modo Android Manual (no hubo beforeinstallprompt automático)
-    btnInstalar.textContent = 'Ver cómo instalar'
-    btnInstalar.addEventListener('click', () => {
-      alert('Para instalar:\n1. Apretá los 3 puntitos del navegador (arriba a la derecha)\n2. Seleccioná "Instalar aplicación" o "Agregar a la pantalla principal"')
-    })
-    banner.style.display = 'flex'
-  } else {
-    // Modo Automático (Chrome Android, etc)
-    banner.style.display = 'flex'
+  if (esIOS && esSafari && banner && btnInstalar) {
+    if (!window.matchMedia('(display-mode: standalone)').matches) {
+      btnInstalar.textContent = 'Ver cómo instalar';
+      banner.style.display = 'flex';
+    }
   }
-}, 3000)
+}, 3000);
 
+// 3. Listeners de los botones del banner
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
-    if (!deferredPrompt) return
-    deferredPrompt.prompt()
-    const result = await deferredPrompt.userChoice
-    deferredPrompt = null
-    document.getElementById('pwa-banner').style.display = 'none'
-  })
+  const btnInstalar = document.getElementById('pwa-install-btn');
+  const btnDismiss = document.getElementById('pwa-dismiss-btn');
+  const banner = document.getElementById('pwa-banner');
 
-  document.getElementById('pwa-dismiss-btn')?.addEventListener('click', () => {
-    document.getElementById('pwa-banner').style.display = 'none'
-  })
-})
+  btnInstalar?.addEventListener('click', async () => {
+    if (deferredPrompt) {
+      // Caso Android/Chrome: Abrir prompt nativo
+      deferredPrompt.prompt();
+      const { outcome } = await deferredPrompt.userChoice;
+      console.log(`[PWA] Resultado de instalación: ${outcome}`);
+      deferredPrompt = null;
+      banner.style.display = 'none';
+    } else {
+      // Caso iOS o Manual: Mostrar instrucciones
+      const esIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+      if (esIOS) {
+        document.getElementById('ios-install-modal').style.display = 'flex';
+      } else {
+        alert('Para instalar:\n1. Apretá los 3 puntitos del navegador\n2. Seleccioná "Instalar aplicación"');
+      }
+      banner.style.display = 'none';
+    }
+  });
+
+  btnDismiss?.addEventListener('click', () => {
+    banner.style.display = 'none';
+  });
+});
 
 const PRODUCTS = {
     combos: [
