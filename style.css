@@ -592,7 +592,7 @@ header {
     grid-template-columns: 1fr 1.2fr;
     /* Dos columnas (Resumen a la izq, Form a la der v2.9) */
     gap: 40px;
-    margin-top: 30px;
+    margin-top: 10px;
     /* Separación extra del header para centrar visualmente el bloque */
     align-items: start;
 }
@@ -741,14 +741,14 @@ header {
 }
 
 .order-form-container h3 {
-    margin-bottom: 4px;
+    margin-bottom: 2px;
     font-size: 1.15rem;
     color: var(--primary);
 }
 
 .form-group {
     flex: 1;
-    margin-bottom: 20px;
+    margin-bottom: 10px;
 }
 
 .form-group.full-width-group {
@@ -789,7 +789,7 @@ header {
     color: var(--text-dark);
     font-size: 0.85rem;
     width: 100%;
-    min-height: 45px;
+    min-height: 35px;
 }
 
 .form-row {
@@ -800,7 +800,7 @@ header {
 
 label {
     display: block;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
     font-weight: 500;
     font-size: 0.9rem;
 }
@@ -809,7 +809,7 @@ input,
 select,
 textarea {
     width: 100%;
-    padding: 10px 12px;
+    padding: 8px 10px;
     background-color: #f9f9f9;
     border: 1px solid #eee;
     border-radius: 10px;
@@ -821,7 +821,7 @@ textarea {
 
 textarea {
     resize: none;
-    min-height: 60px;
+    min-height: 30px;
 }
 
 input:focus,
@@ -842,7 +842,7 @@ select option {
 #submit-btn {
     width: 100%;
     margin-top: 3px;
-    padding: 12px !important;
+    padding: 10px !important;
     background-color: #0088cc !important;
     /* Azul fuerte cuando está activo */
     color: #ffffff !important;
@@ -1565,7 +1565,7 @@ select option {
    CUPÓN STYLING
    ===================================================== */
 .cupon-group {
-  margin-bottom: 16px;
+  margin-bottom: 10px;
 }
 
 .cupon-input-wrapper {
