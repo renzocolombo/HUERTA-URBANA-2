@@ -1454,8 +1454,8 @@ select option {
         font-weight: 800 !important;
         color: white !important;
         margin-right: 10px;
-        min-width: auto !important;
-        text-align: left !important;
+        min-width: 65px !important; /* Espacio fijo para evitar saltos del botón */
+        text-align: center !important;
     }
 
     .btn-ver-pedido {
