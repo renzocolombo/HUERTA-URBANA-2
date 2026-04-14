@@ -1434,35 +1434,34 @@ select option {
     .header-cart-info {
         flex-direction: column !important;
         align-items: flex-end !important;
-        gap: 4px !important;
+        gap: 6px !important;
         flex: none !important;
     }
 
     .cart-controls-wrapper {
         display: flex;
-        flex-direction: row !important;
-        align-items: center !important;
-        gap: 0 !important;
-        background: var(--primary);
-        padding: 2px 4px 2px 14px;
-        border-radius: 50px;
-        box-shadow: 0 4px 12px rgba(45, 90, 39, 0.2);
+        flex-direction: column !important; /* Stack Vertical: Monto arriba */
+        align-items: flex-end !important;
+        gap: 4px !important;
+        background: transparent !important;
+        padding: 0 !important;
+        box-shadow: none !important;
     }
 
     .cart-total-header {
-        font-size: 0.95rem !important;
+        font-size: 1.1rem !important;
         font-weight: 800 !important;
-        color: white !important;
-        margin-right: 10px;
-        min-width: 65px !important; /* Espacio fijo para evitar saltos del botón */
-        text-align: center !important;
+        color: var(--primary) !important; /* Vuelve a verde */
+        margin-right: 0 !important;
+        min-width: auto !important;
+        text-align: right !important;
     }
 
     .btn-ver-pedido {
-        padding: 8px 14px !important;
-        font-size: 0.9rem !important;
-        background: rgba(255, 255, 255, 0.15) !important;
-        box-shadow: none !important;
+        padding: 10px 18px !important;
+        font-size: 0.95rem !important;
+        background: var(--primary) !important; /* Vuelve a bloque sólido */
+        box-shadow: 0 4px 15px rgba(45, 90, 39, 0.15) !important;
     }
 
 
