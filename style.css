@@ -1330,6 +1330,11 @@ select option {
         padding: 8px 0 !important;
     }
 
+    .header-container {
+        display: flex !important; /* Vuelve a flex en móvil */
+        justify-content: space-between !important;
+    }
+
     .desktop-nav {
         display: none !important; /* Oculta navegación de escritorio en móvil */
     }
@@ -1424,17 +1429,17 @@ select option {
     }
 
     .header-cart-info {
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 2px;
+        flex-direction: row-reverse !important; /* Vuelve a horizontal */
+        align-items: center !important;
+        gap: 10px !important;
         flex-shrink: 0;
     }
 
     .cart-controls-wrapper {
         display: flex;
-        flex-direction: column;
-        align-items: flex-end;
-        gap: 2px;
+        flex-direction: row !important; /* Vuelve a horizontal */
+        align-items: center !important;
+        gap: 8px !important;
     }
 
     .cart-total-header {
