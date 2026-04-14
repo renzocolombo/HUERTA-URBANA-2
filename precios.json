@@ -4,6 +4,12 @@
   "mensaje_minimo": "El pedido mínimo es de $35.000",
   "productos": [
     {
+      "nombre": "Papa",
+      "precio": 1020,
+      "unidad": "kg",
+      "activo": true
+    },
+    {
       "nombre": "Cebolla ",
       "precio": 850,
       "unidad": "kg",
@@ -24,7 +30,7 @@
     {
       "nombre": "Lechuga",
       "precio": 3400,
-      "unidad": "kg",
+      "unidad": "unidad",
       "activo": true
     },
     {
@@ -48,7 +54,7 @@
     {
       "nombre": "Rúcula",
       "precio": 708.3333333333334,
-      "unidad": "kg",
+      "unidad": "atado",
       "activo": true
     },
     {
@@ -60,7 +66,7 @@
     {
       "nombre": "Remolacha",
       "precio": 4250,
-      "unidad": "kg",
+      "unidad": "unidad",
       "activo": true
     },
     {
@@ -72,7 +78,7 @@
     {
       "nombre": "Brócoli",
       "precio": 2185.714285714286,
-      "unidad": "kg",
+      "unidad": "unidad",
       "activo": true
     },
     {
@@ -90,7 +96,7 @@
     {
       "nombre": "Ajo",
       "precio": 952,
-      "unidad": "kg",
+      "unidad": "cabeza",
       "activo": true
     },
     {
@@ -108,7 +114,7 @@
     {
       "nombre": "Palta",
       "precio": 2210,
-      "unidad": "kg",
+      "unidad": "unidad",
       "activo": true
     },
     {
@@ -168,6 +174,12 @@
     {
       "nombre": "Choclo",
       "precio": 765,
+      "unidad": "unidad",
+      "activo": true
+    },
+    {
+      "nombre": "Miel pura",
+      "precio": 11000,
       "unidad": "kg",
       "activo": true
     },
