@@ -207,11 +207,11 @@ function actualizarProductos(productosData) {
   productosData.forEach((p, i) => {
     if (p.activo === false) return
     const categoria = clasificarProducto(p.nombre)
-    // Detectar unidad: huevos van por docena, arándanos por bandeja, resto por kg
-    let unit = 'kg', step = 0.5, min = 0.5
-    const n = p.nombre.toLowerCase()
-    if (n.includes('huevo')) { unit = 'dz'; step = 1; min = 1 }
-    else if (n.includes('arandano') || n.includes('arándano')) { unit = 'un'; step = 1; min = 1 }
+    // Detectar unidad dinámica v4.1
+    let unit = p.unit || p.unidad || 'kg'
+    let step = (unit === 'kg') ? 0.5 : 1
+    let min = (unit === 'kg') ? 0.5 : 1
+
     const nombreCrudo = p.nombre.toLowerCase()
     const nombreCapitalizado = nombreCrudo.charAt(0).toUpperCase() + nombreCrudo.slice(1)
     
@@ -407,7 +407,7 @@ function updateCartModalContent() {
                 <div class="cart-modal-item">
                     <div class="cart-modal-item-info">
                         <span class="cart-modal-item-name">${item.name}</span>
-                        <span class="cart-modal-item-qty">${item.qty}${item.unit || ''}</span>
+                        <span class="cart-modal-item-qty">${item.qty} ${item.unit || ''}</span>
                     </div>
                     <span class="cart-modal-item-price">$${Math.floor(subtotal).toLocaleString('es-AR')}</span>
                 </div>
@@ -465,7 +465,7 @@ function renderCustomProducts() {
             <div class="product-item">
                 <div class="product-details">
                     <h4>${prod.name}</h4>
-                    <span>$${Math.floor(prod.price).toLocaleString('es-AR')} / ${prod.unit}</span>
+                    <span>$${Math.floor(prod.price).toLocaleString('es-AR')} / ${prod.unit || prod.unidad || 'kg'}</span>
                 </div>
                 <div class="qty-control">
                     <button type="button" class="qty-btn" onclick="updateCustomQty('${prod.id}', -1, '${activeCategory}')"><ion-icon name="remove-outline"></ion-icon></button>
@@ -542,8 +542,8 @@ function updateSummary() {
             let subtotal = itemPrice * item.qty;
 
             total += subtotal;
-            const unitLabel = item.unit === 'g' ? 'g' : (item.unit === 'un' ? ' un.' : (item.unit || ''));
-            const itemText = `${item.name} (${item.qty}${unitLabel})`;
+            const unitLabel = item.unit || item.unidad || 'kg';
+            const itemText = `${item.name} (${item.qty} ${unitLabel})`;
             const subtotalText = `$${Math.floor(subtotal).toLocaleString('es-AR')}`;
 
             itemsHtml += `
@@ -579,8 +579,8 @@ function updateSummary() {
     if (hiddenDetails) {
         const textSummary = Object.values(cart).map(item => {
             const sub = Math.floor(item.unit === 'g' ? (item.price / 1000) * item.qty : item.price * item.qty);
-            const unitLabel = item.unit === 'g' ? 'g' : (item.unit === 'un' ? ' un.' : 'kg');
-            return `${item.name.toUpperCase()} (${item.qty}${unitLabel})`;
+            const unitLabel = item.unit || item.unidad || 'kg';
+            return `${item.name.toUpperCase()} (${item.qty} ${unitLabel})`;
         }).join(', ');
 
         hiddenDetails.value = textSummary;
