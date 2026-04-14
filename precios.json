@@ -172,12 +172,6 @@
       "activo": true
     },
     {
-      "nombre": "Miel pura",
-      "precio": 11000,
-      "unidad": "kg",
-      "activo": true
-    },
-    {
       "nombre": "Huevos Nº1",
       "precio": 6500,
       "unidad": "maple x30 uds",
