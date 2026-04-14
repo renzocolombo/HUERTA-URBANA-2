@@ -1327,12 +1327,15 @@ select option {
 @media (max-width: 768px) {
     header {
         height: auto !important; /* Resetea altura fija de escritorio */
-        padding: 8px 0 !important;
+        padding: 10px 0 !important;
     }
 
     .header-container {
-        display: flex !important; /* Vuelve a flex en móvil */
+        display: flex !important;
+        flex-direction: row !important;
         justify-content: space-between !important;
+        align-items: center !important;
+        width: 100% !important;
     }
 
     .desktop-nav {
@@ -1429,31 +1432,40 @@ select option {
     }
 
     .header-cart-info {
-        flex-direction: row-reverse !important; /* Vuelve a horizontal */
-        align-items: center !important;
-        gap: 10px !important;
-        flex-shrink: 0;
+        flex-direction: column !important;
+        align-items: flex-end !important;
+        gap: 4px !important;
+        flex: none !important;
     }
 
     .cart-controls-wrapper {
         display: flex;
-        flex-direction: row !important; /* Vuelve a horizontal */
+        flex-direction: row !important;
         align-items: center !important;
-        gap: 8px !important;
+        gap: 0 !important;
+        background: var(--primary);
+        padding: 2px 4px 2px 14px;
+        border-radius: 50px;
+        box-shadow: 0 4px 12px rgba(45, 90, 39, 0.2);
     }
 
     .cart-total-header {
-        font-size: 1.05rem !important;
+        font-size: 0.95rem !important;
         font-weight: 800 !important;
-        color: var(--primary);
-        min-width: 75px; /* Espacio fijo para evitar saltos del botón */
-        text-align: right;
+        color: white !important;
+        margin-right: 10px;
+        min-width: auto !important;
+        text-align: left !important;
     }
 
     .btn-ver-pedido {
-        padding: 10px 18px !important;
-        font-size: 0.95rem !important;
+        padding: 8px 14px !important;
+        font-size: 0.9rem !important;
+        background: rgba(255, 255, 255, 0.15) !important;
+        box-shadow: none !important;
     }
+
+
 
     #shipping-header-msg {
         font-size: 10px;
