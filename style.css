@@ -243,6 +243,190 @@ header {
     box-shadow: 0 4px 12px rgba(45, 90, 39, 0.2);
 }
 
+/* Terms & Conditions Modal Corregido */
+#terms-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 9999;
+    display: none; /* Controlado por JS */
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    backdrop-filter: blur(5px);
+}
+
+.terms-modal-content {
+    background: white;
+    border-radius: 16px;
+    border-top: 4px solid #2d5a27;
+    width: 100%;
+    max-width: 520px;
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+    text-align: left !important;
+}
+
+.terms-header {
+    padding: 20px 24px;
+    background: #f9fbf9;
+    border-bottom: 1px solid #eee;
+}
+
+.terms-header h2 {
+    color: #2d5a27;
+    font-size: 1.3rem;
+    margin-bottom: 15px;
+    margin-top: 0;
+}
+
+.terms-tabs {
+    display: flex;
+    gap: 15px;
+}
+
+.terms-tab-btn {
+    background: none;
+    border: none;
+    padding: 8px 0;
+    font-weight: 600;
+    font-size: 0.9rem;
+    color: #888;
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.terms-tab-btn.active {
+    color: #2d5a27;
+    border-bottom-color: #2d5a27;
+}
+
+.terms-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px 24px;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #444;
+}
+
+.terms-text-content ol {
+    padding-left: 18px;
+    margin: 0;
+}
+
+.terms-text-content li {
+    margin-bottom: 12px;
+}
+
+.terms-footer {
+    padding: 16px 24px;
+    border-top: 1px solid #eee;
+    background: #f9fbf9;
+}
+
+.terms-check-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.terms-checkbox-label {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    font-size: 0.82rem;
+    cursor: pointer;
+    line-height: 1.3;
+}
+
+.terms-checkbox-label input {
+    width: 16px;
+    height: 16px;
+    margin-top: 1px;
+    accent-color: #2d5a27;
+}
+
+.terms-checkbox-label .highlight {
+    color: #2d5a27;
+    font-weight: 700;
+}
+
+.terms-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 12px;
+}
+
+.btn-cancel {
+    background: #eee;
+    color: #666;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-confirm {
+    background: #2d5a27;
+    color: white;
+    border: none;
+    padding: 10px 24px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.btn-confirm.btn-disabled {
+    background: #bdc3c7;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Aviso en el formulario */
+.terms-warning-box {
+    background: #fff8f1;
+    border: 1px solid #ffe8cc;
+    padding: 12px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+    font-size: 0.85rem;
+    color: #a0522d;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.terms-warning-box button {
+    background: none;
+    border: none;
+    color: #2d5a27;
+    font-weight: 700;
+    text-decoration: underline;
+    cursor: pointer;
+    padding: 0;
+    font-size: inherit;
+}
+
+@media (max-width: 480px) {
+    .terms-modal-content {
+        max-height: 90vh;
+    }
+    .terms-header h2 {
+        font-size: 1.1rem;
+    }
+    .terms-tab-btn {
+        font-size: 0.8rem;
+    }
+}
+
 /* Cart Modal Styles */
 .cart-modal-header {
     padding: 30px 25px 20px;

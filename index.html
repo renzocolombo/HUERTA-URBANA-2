@@ -273,8 +273,10 @@
                                 </div>
                                 <p id="cupon-mensaje" class="cupon-mensaje"></p>
                             </div>
-                            <button type="submit" id="submit-btn" class="btn btn-full btn-disabled" disabled>Confirmar
-                                Pedido</button>
+                            <div id="terms-requirement-msg" class="terms-warning-box">
+                                <p><ion-icon name="information-circle-outline"></ion-icon> Debes <button type="button" onclick="openTermsModalManual()">aceptar los Términos y Condiciones</button> para poder confirmar tu pedido.</p>
+                            </div>
+                            <button type="submit" id="submit-btn" class="btn btn-full btn-disabled" disabled>Confirmar Pedido</button>
                         </form>
                     </div>
                 </div>
@@ -419,13 +421,14 @@
     <!-- Modal Términos y Condiciones -->
     <div id="terms-modal" class="modal">
         <div class="modal-content terms-modal-content">
-            <div class="terms-header">
+            <header class="terms-header">
                 <h2>Antes de confirmar tu pedido</h2>
-            </div>
-            <div class="terms-tabs">
-                <button type="button" class="terms-tab-btn active" onclick="switchTermsTab('terminos')">Términos y Condiciones</button>
-                <button type="button" class="terms-tab-btn" onclick="switchTermsTab('privacidad')">Política de Privacidad</button>
-            </div>
+                <div class="terms-tabs">
+                    <button type="button" class="terms-tab-btn active" onclick="switchTermsTab('terminos')">Términos y Condiciones</button>
+                    <button type="button" class="terms-tab-btn" onclick="switchTermsTab('privacidad')">Política de Privacidad</button>
+                </div>
+            </header>
+            
             <div id="terms-body" class="terms-body">
                 <div id="terms-text-terminos" class="terms-text-content">
                     <ol>
@@ -450,22 +453,23 @@
                     </ol>
                 </div>
             </div>
-            <div class="terms-footer">
+
+            <footer class="terms-footer">
                 <div class="terms-check-group">
                     <label class="terms-checkbox-label">
                         <input type="checkbox" id="check-terms-obligatorio">
-                        <span>He leído y acepto los <span class="highlight">Términos y Condiciones</span> y la <span class="highlight">Política de Privacidad</span> de Huerta Urbana.</span>
+                        <span>He leído y acepto los <span class="highlight">Términos y Condiciones</span> y la <span class="highlight">Política de Privacidad</span>.</span>
                     </label>
                     <label class="terms-checkbox-label">
                         <input type="checkbox" id="check-terms-novedades">
-                        <span>Acepto recibir novedades, ofertas y promociones de Huerta Urbana por WhatsApp y email.</span>
+                        <span>Acepto recibir novedades y ofertas por WhatsApp y email.</span>
                     </label>
                 </div>
                 <div class="terms-actions">
-                    <button type="button" onclick="closeTermsModal()" class="btn btn-secondary">Cancelar</button>
-                    <button type="button" id="btn-confirmar-pedido-final" class="btn btn-primary btn-disabled" disabled>Confirmar pedido</button>
+                    <button type="button" onclick="closeTermsModal()" class="btn-cancel">Cancelar</button>
+                    <button type="button" id="btn-confirmar-pedido-final" class="btn-confirm btn-disabled" disabled>Confirmar pedido</button>
                 </div>
-            </div>
+            </footer>
         </div>
     </div>
 

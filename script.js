@@ -616,19 +616,30 @@ function updateSummary() {
 
     // Actualizar indicador de envío en el header (v4.0)
     const headerMsg = document.getElementById('shipping-header-msg');
+    const yaAcepto = localStorage.getItem('huerta_terms_accepted') === 'true';
+    const termsWarning = document.getElementById('terms-requirement-msg');
 
     if (total >= MIN_PURCHASE) {
-        // Estado: Éxito
+        // Estado: Éxito con monto
         if (headerMsg) {
             headerMsg.innerText = '¡Envío gratis!';
             headerMsg.className = 'shipping-header-msg status-green';
         }
         minMsg.style.color = '#27ae60';
         minMsg.innerText = '✅ Cupo mínimo alcanzado';
-        submitBtn.disabled = false;
-        submitBtn.classList.remove('btn-disabled');
+        
+        // Pero solo habilitar si aceptó términos
+        if (yaAcepto) {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('btn-disabled');
+            if (termsWarning) termsWarning.style.display = 'none';
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.classList.add('btn-disabled');
+            if (termsWarning) termsWarning.style.display = 'flex';
+        }
     } else {
-        // Estado: Pendiente
+        // Estado: Pendiente de monto
         if (headerMsg) {
             headerMsg.innerText = `Envío gratis a partir de $${MIN_PURCHASE.toLocaleString('es-AR')}`;
             headerMsg.className = 'shipping-header-msg status-red';
@@ -637,6 +648,7 @@ function updateSummary() {
         minMsg.innerText = `Compra mínima: $${MIN_PURCHASE.toLocaleString('es-AR')}`;
         submitBtn.disabled = true;
         submitBtn.classList.add('btn-disabled');
+        if (termsWarning) termsWarning.style.display = 'none';
     }
 }
 
@@ -668,10 +680,7 @@ async function handleOrderSubmit(e) {
     if (yaAcepto) {
         processOrder(e.target);
     } else {
-        // Guardar referencia al formulario para procesarlo después
-        window.pendingOrderForm = e.target;
-        document.getElementById('terms-modal').style.display = 'flex';
-        document.body.style.overflow = 'hidden';
+        openTermsModalManual();
     }
 }
 
@@ -852,6 +861,11 @@ function closeTermsModal() {
     document.body.style.overflow = 'auto';
 }
 
+function openTermsModalManual() {
+    document.getElementById('terms-modal').style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+}
+
 async function confirmarPedidoFinal() {
     const novedades = document.getElementById('check-terms-novedades').checked;
     
@@ -863,7 +877,10 @@ async function confirmarPedidoFinal() {
     }
 
     closeTermsModal();
-    // Ejecutar el envío real del formulario capturado
+    // Re-ejecutar resumen para habilitar botón principal
+    updateSummary();
+    
+    // Si veníamos de un intento de envío, procesar
     if (window.pendingOrderForm) {
         processOrder(window.pendingOrderForm);
     }
