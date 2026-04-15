@@ -426,53 +426,68 @@ header {
 
 @media (max-width: 480px) {
     #terms-modal {
-        padding: 20px 15px;
+        padding: 10px; /* Menos espacio exterior para mayor ancho del modal v4.4 */
     }
     .terms-modal-content {
+        max-height: 95vh;
         border-radius: 24px;
+        width: 100%; /* Ocupar todo el ancho disponible */
     }
     .terms-header {
-        padding: 28px 20px 20px;
+        padding: 24px 16px 20px;
         gap: 12px;
     }
     .terms-header h2 {
-        font-size: 1.3rem;
+        font-size: 1.15rem;
     }
     .terms-tab-btn {
-        padding: 8px 16px;
-        font-size: 0.8rem;
+        padding: 8px 14px;
+        font-size: 0.75rem;
     }
     .terms-body {
-        padding: 24px;
+        padding: 20px;
     }
     .terms-footer {
-        padding: 24px 24px 28px;
+        padding: 16px 20px 24px;
     }
 }
 
-/* Aviso en el formulario */
-.terms-legal-note {
-    font-size: 12px;
-    color: #888;
+/* Rediseño de la nota legal (v4.4 centralizado) */
+.terms-legal-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 6px;
+    margin-top: 14px;
+    color: #999;
     text-align: center;
-    margin-top: 12px;
-    line-height: 1.4;
+}
+
+.terms-legal-container span {
+    font-size: 11px;
+    font-weight: 500;
 }
 
 .btn-link-terms {
-    background: none;
+    background: #2d5a27;
+    color: white !important;
     border: none;
-    color: #2d5a27;
+    padding: 5px 14px;
+    border-radius: 20px;
+    font-size: 10px;
     font-weight: 700;
     cursor: pointer;
-    padding: 0;
-    font-size: inherit;
-    text-decoration: underline;
-    transition: color 0.2s ease;
+    transition: all 0.2s ease;
+    text-decoration: none !important;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    box-shadow: 0 2px 6px rgba(45, 90, 39, 0.2);
 }
 
 .btn-link-terms:hover {
-    color: #1a3a14;
+    background: #3e7a36;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(45, 90, 39, 0.3);
 }
 
 @media (max-width: 480px) {
