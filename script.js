@@ -751,6 +751,8 @@ async function processOrder(form) {
         "total": totalNum - descuentoValor,
         "cupon": cuponAplicado ? cuponAplicado.codigo : '',
         "descuento": descuentoValor,
+        "acepto_tyc": localStorage.getItem('huerta_tyc_val') || 'SI',
+        "acepto_publicidad": localStorage.getItem('huerta_pub_val') || 'NO',
         "estado": formData.get("estado"),
         "observaciones": formData.get("observaciones") || 'Sin observaciones',
         "fecha_entrega": formData.get("fecha_entrega"),
@@ -867,13 +869,20 @@ function openTermsModalManual() {
 }
 
 async function confirmarPedidoFinal() {
+    const checkObligatorio = document.getElementById('check-terms-obligatorio').checked;
     const novedades = document.getElementById('check-terms-novedades').checked;
     
-    try {
-        localStorage.setItem('huerta_terms_accepted', 'true');
-        if (novedades) localStorage.setItem('huerta_novedades_accepted', 'true');
-    } catch (e) {
-        console.warn('LocalStorage no disponible');
+    if (checkObligatorio) {
+        const now = new Date();
+        const fechaTyC = `${now.getDate().toString().padStart(2, '0')}/${(now.getMonth() + 1).toString().padStart(2, '0')}/${now.getFullYear()}`;
+        
+        try {
+            localStorage.setItem('huerta_terms_accepted', 'true');
+            localStorage.setItem('huerta_tyc_val', `SI ${fechaTyC}`);
+            localStorage.setItem('huerta_pub_val', novedades ? 'SI' : 'NO');
+        } catch (e) {
+            console.warn('LocalStorage no disponible');
+        }
     }
 
     closeTermsModal();
