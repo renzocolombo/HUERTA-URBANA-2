@@ -452,13 +452,13 @@ header {
     }
 }
 
-/* Rediseño de la nota legal (v4.4 centralizado) */
+/* Rediseño de la nota legal (v4.5 optimizado espacio) */
 .terms-legal-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 6px;
-    margin-top: 14px;
+    gap: 4px;
+    margin-top: 10px;
     color: #999;
     text-align: center;
 }
@@ -1634,21 +1634,21 @@ select option {
         box-shadow: none;
         border-left: none;
         border-right: none;
-        padding: 15px !important;
+        padding: 12px 15px !important; /* v4.5 más compacto */
     }
 
     .order-form-container h3 {
-        font-size: 1rem !important;
-        margin-bottom: 8px !important;
+        font-size: 0.95rem !important;
+        margin-bottom: 6px !important;
     }
 
     .form-group {
-        margin-bottom: 8px !important;
+        margin-bottom: 6px !important;
     }
 
     .form-group label {
-        font-size: 0.8rem !important;
-        margin-bottom: 2px !important;
+        font-size: 0.75rem !important;
+        margin-bottom: 1px !important;
     }
 
     .form-group input, 
@@ -1673,9 +1673,9 @@ select option {
     }
 
     #btn-aplicar-cupon {
-        padding: 0 15px !important;
-        height: 38px !important; /* Altura consistente con el input */
-        font-size: 0.85rem !important;
+        padding: 0 12px !important;
+        height: 36px !important; /* Ajuste v4.5 */
+        font-size: 0.8rem !important;
     }
 
     .order-summary-wrapper {
