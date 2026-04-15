@@ -426,15 +426,15 @@ header {
 
 @media (max-width: 480px) {
     #terms-modal {
-        padding: 10px; /* Menos espacio exterior para mayor ancho del modal v4.4 */
+        padding: 40px 15px; /* Espacio simétrico arriba y abajo v4.6 */
     }
     .terms-modal-content {
-        max-height: 95vh;
-        border-radius: 24px;
-        width: 100%; /* Ocupar todo el ancho disponible */
+        max-height: 100%; /* El padding del padre controla el aire v4.6 */
+        border-radius: 28px;
+        width: 100%;
     }
     .terms-header {
-        padding: 24px 16px 20px;
+        padding: 24px 20px; /* Padding unificado para simetría v4.6 */
         gap: 12px;
     }
     .terms-header h2 {
@@ -445,10 +445,10 @@ header {
         font-size: 0.75rem;
     }
     .terms-body {
-        padding: 20px;
+        padding: 24px 20px;
     }
     .terms-footer {
-        padding: 16px 20px 24px;
+        padding: 24px 20px; /* Simetría perfecta con el header v4.6 */
     }
 }
 
