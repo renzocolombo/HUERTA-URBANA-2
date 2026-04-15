@@ -416,6 +416,59 @@
       </div>
     </div>
 
+    <!-- Modal Términos y Condiciones -->
+    <div id="terms-modal" class="modal">
+        <div class="modal-content terms-modal-content">
+            <div class="terms-header">
+                <h2>Antes de confirmar tu pedido</h2>
+            </div>
+            <div class="terms-tabs">
+                <button type="button" class="terms-tab-btn active" onclick="switchTermsTab('terminos')">Términos y Condiciones</button>
+                <button type="button" class="terms-tab-btn" onclick="switchTermsTab('privacidad')">Política de Privacidad</button>
+            </div>
+            <div id="terms-body" class="terms-body">
+                <div id="terms-text-terminos" class="terms-text-content">
+                    <ol>
+                        <li><strong>SERVICIO:</strong> Venta y entrega de frutas y verduras en el Partido de Pilar.</li>
+                        <li><strong>ZONA DE ENTREGA:</strong> Del Viso, Fátima, La Lonja, Manuel Alberti, Manzanares, Manzone, Pilar, Presidente Derqui, Villa Astolfi, Villa Rosa y Zelaya.</li>
+                        <li><strong>PEDIDOS:</strong> Monto mínimo $35.000. Precios sujetos a variaciones del mercado.</li>
+                        <li><strong>PAGOS:</strong> A través de Mercado Pago. El pedido se confirma al acreditarse el pago.</li>
+                        <li><strong>CUPONES:</strong> Uso personal e intransferible. El crédito por referidos no es canjeable por dinero.</li>
+                        <li><strong>CALIDAD:</strong> Productos frescos garantizados. Reclamos dentro de las 24hs al WhatsApp 11 6177-1376.</li>
+                        <li><strong>CANCELACIONES:</strong> Hasta 24hs antes de la entrega al WhatsApp 11 6177-1376.</li>
+                        <li><strong>CONTACTO:</strong> WhatsApp 11 6177-1376 y huertaurbana.market@gmail.com</li>
+                    </ol>
+                </div>
+                <div id="terms-text-privacidad" class="terms-text-content" style="display:none;">
+                    <ol>
+                        <li><strong>DATOS QUE RECOPILAMOS:</strong> Nombre, teléfono, email y dirección de entrega.</li>
+                        <li><strong>USO:</strong> Para procesar pedidos, coordinar entregas y gestionar cupones y referidos.</li>
+                        <li><strong>COMPARTIMOS CON:</strong> Mercado Pago, Make.com, Google y Meta. Nunca vendemos tus datos.</li>
+                        <li><strong>COOKIES:</strong> Usamos localStorage para el carrito, Google Analytics y Meta Pixel para analítica.</li>
+                        <li><strong>SEGURIDAD:</strong> Datos en Google Sheets con acceso restringido. No guardamos datos de tarjetas.</li>
+                        <li><strong>TUS DERECHOS:</strong> Podés solicitar acceso, rectificación o eliminación de tus datos al WhatsApp 11 6177-1376.</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="terms-footer">
+                <div class="terms-check-group">
+                    <label class="terms-checkbox-label">
+                        <input type="checkbox" id="check-terms-obligatorio">
+                        <span>He leído y acepto los <span class="highlight">Términos y Condiciones</span> y la <span class="highlight">Política de Privacidad</span> de Huerta Urbana.</span>
+                    </label>
+                    <label class="terms-checkbox-label">
+                        <input type="checkbox" id="check-terms-novedades">
+                        <span>Acepto recibir novedades, ofertas y promociones de Huerta Urbana por WhatsApp y email.</span>
+                    </label>
+                </div>
+                <div class="terms-actions">
+                    <button type="button" onclick="closeTermsModal()" class="btn btn-secondary">Cancelar</button>
+                    <button type="button" id="btn-confirmar-pedido-final" class="btn btn-primary btn-disabled" disabled>Confirmar pedido</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js?v=1.2"></script>
 </body>
 

@@ -365,7 +365,24 @@ function initUI() {
         if (e.target === cartModal) closeCartModal();
         if (e.target === comboModal) closeComboModal();
         if (e.target === successModal) closeModal();
+        if (e.target === document.getElementById('terms-modal')) closeTermsModal();
     });
+
+    // Listener para checkbox obligatorio de términos
+    const checkObligatorio = document.getElementById('check-terms-obligatorio');
+    const btnFinal = document.getElementById('btn-confirmar-pedido-final');
+    
+    checkObligatorio?.addEventListener('change', function() {
+        if (this.checked) {
+            btnFinal.disabled = false;
+            btnFinal.classList.remove('btn-disabled');
+        } else {
+            btnFinal.disabled = true;
+            btnFinal.classList.add('btn-disabled');
+        }
+    });
+
+    btnFinal?.addEventListener('click', confirmarPedidoFinal);
 }
 
 function showCartModal() {
@@ -625,7 +642,40 @@ function updateSummary() {
 
 async function handleOrderSubmit(e) {
     e.preventDefault();
-    const form = e.target;
+    
+    // Validación de seguridad adicional
+    if (Object.keys(cart).length === 0) {
+        alert('El carrito está vacío');
+        return;
+    }
+
+    // Capturar campos obligatorios y validar
+    const nombre = document.querySelector('[name="nombre"]').value.trim();
+    const telefono = document.querySelector('[name="telefono"]').value.trim();
+    const direccion = document.querySelector('[name="direccion"]').value.trim();
+
+    if (!nombre || !telefono || !direccion) {
+        alert("Por favor, completa los campos de nombre, teléfono y dirección.");
+        return;
+    }
+
+    // Verificar si ya aceptó términos
+    let yaAcepto = false;
+    try {
+        yaAcepto = localStorage.getItem('huerta_terms_accepted') === 'true';
+    } catch(err) {}
+
+    if (yaAcepto) {
+        processOrder(e.target);
+    } else {
+        // Guardar referencia al formulario para procesarlo después
+        window.pendingOrderForm = e.target;
+        document.getElementById('terms-modal').style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+async function processOrder(form) {
     const submitBtn = document.getElementById('submit-btn');
     const originalBtnText = submitBtn.innerText;
 
@@ -786,5 +836,36 @@ function showComboDetails(id) {
 
 function closeComboModal() {
     document.getElementById('combo-modal').style.display = 'none';
+}
+
+/* ── Términos y Condiciones ────────────────────────── */
+function switchTermsTab(tab) {
+    document.querySelectorAll('.terms-tab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('onclick').includes(tab));
+    });
+    document.getElementById('terms-text-terminos').style.display = (tab === 'terminos' ? 'block' : 'none');
+    document.getElementById('terms-text-privacidad').style.display = (tab === 'privacidad' ? 'block' : 'none');
+}
+
+function closeTermsModal() {
+    document.getElementById('terms-modal').style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+async function confirmarPedidoFinal() {
+    const novedades = document.getElementById('check-terms-novedades').checked;
+    
+    try {
+        localStorage.setItem('huerta_terms_accepted', 'true');
+        if (novedades) localStorage.setItem('huerta_novedades_accepted', 'true');
+    } catch (e) {
+        console.warn('LocalStorage no disponible');
+    }
+
+    closeTermsModal();
+    // Ejecutar el envío real del formulario capturado
+    if (window.pendingOrderForm) {
+        processOrder(window.pendingOrderForm);
+    }
 }
 
