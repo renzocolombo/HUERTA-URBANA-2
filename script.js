@@ -616,8 +616,6 @@ function updateSummary() {
 
     // Actualizar indicador de envío en el header (v4.0)
     const headerMsg = document.getElementById('shipping-header-msg');
-    const yaAcepto = localStorage.getItem('huerta_terms_accepted') === 'true';
-    const termsWarning = document.getElementById('terms-requirement-msg');
 
     if (total >= MIN_PURCHASE) {
         // Estado: Éxito con monto
@@ -628,16 +626,9 @@ function updateSummary() {
         minMsg.style.color = '#27ae60';
         minMsg.innerText = '✅ Cupo mínimo alcanzado';
         
-        // Pero solo habilitar si aceptó términos
-        if (yaAcepto) {
-            submitBtn.disabled = false;
-            submitBtn.classList.remove('btn-disabled');
-            if (termsWarning) termsWarning.style.display = 'none';
-        } else {
-            submitBtn.disabled = true;
-            submitBtn.classList.add('btn-disabled');
-            if (termsWarning) termsWarning.style.display = 'flex';
-        }
+        // Habilitar botón de envío
+        submitBtn.disabled = false;
+        submitBtn.classList.remove('btn-disabled');
     } else {
         // Estado: Pendiente de monto
         if (headerMsg) {
@@ -648,7 +639,6 @@ function updateSummary() {
         minMsg.innerText = `Compra mínima: $${MIN_PURCHASE.toLocaleString('es-AR')}`;
         submitBtn.disabled = true;
         submitBtn.classList.add('btn-disabled');
-        if (termsWarning) termsWarning.style.display = 'none';
     }
 }
 
@@ -680,6 +670,8 @@ async function handleOrderSubmit(e) {
     if (yaAcepto) {
         processOrder(e.target);
     } else {
+        // Guardar el formulario para procesarlo después de aceptar términos
+        window.pendingOrderForm = e.target;
         openTermsModalManual();
     }
 }
