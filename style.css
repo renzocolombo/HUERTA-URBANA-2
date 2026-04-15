@@ -451,28 +451,28 @@ header {
 }
 
 /* Aviso en el formulario */
-.terms-warning-box {
-    background: #fff8f1;
-    border: 1px solid #ffe8cc;
-    padding: 12px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    font-size: 0.85rem;
-    color: #a0522d;
-    display: flex;
-    align-items: center;
-    gap: 8px;
+.terms-legal-note {
+    font-size: 12px;
+    color: #888;
+    text-align: center;
+    margin-top: 12px;
+    line-height: 1.4;
 }
 
-.terms-warning-box button {
+.btn-link-terms {
     background: none;
     border: none;
     color: #2d5a27;
     font-weight: 700;
-    text-decoration: underline;
     cursor: pointer;
     padding: 0;
     font-size: inherit;
+    text-decoration: underline;
+    transition: color 0.2s ease;
+}
+
+.btn-link-terms:hover {
+    color: #1a3a14;
 }
 
 @media (max-width: 480px) {

@@ -275,6 +275,7 @@
                             </div>
 
                             <button type="submit" id="submit-btn" class="btn btn-full btn-disabled" disabled>Confirmar Pedido</button>
+                            <p class="terms-legal-note">Al confirmar aceptás nuestros <button type="button" class="btn-link-terms" onclick="openTermsModalManual()">Ver T&C y Privacidad</button></p>
                         </form>
                     </div>
                 </div>
@@ -420,7 +421,7 @@
     <div id="terms-modal" class="modal">
         <div class="modal-content terms-modal-content">
             <header class="terms-header">
-                <h2>Antes de confirmar tu pedido</h2>
+                <h2>Términos, Condiciones y Privacidad</h2>
                 <div class="terms-tabs">
                     <button type="button" class="terms-tab-btn active" onclick="switchTermsTab('terminos')">Términos y Condiciones</button>
                     <button type="button" class="terms-tab-btn" onclick="switchTermsTab('privacidad')">Política de Privacidad</button>
@@ -453,19 +454,8 @@
             </div>
 
             <footer class="terms-footer">
-                <div class="terms-check-group">
-                    <label class="terms-checkbox-label">
-                        <input type="checkbox" id="check-terms-obligatorio">
-                        <span>He leído y acepto los <span class="highlight">Términos y Condiciones</span> y la <span class="highlight">Política de Privacidad</span>.</span>
-                    </label>
-                    <label class="terms-checkbox-label">
-                        <input type="checkbox" id="check-terms-novedades">
-                        <span>Acepto recibir novedades y ofertas por WhatsApp y email.</span>
-                    </label>
-                </div>
                 <div class="terms-actions">
-                    <button type="button" onclick="closeTermsModal()" class="btn-cancel">Cancelar</button>
-                    <button type="button" id="btn-confirmar-pedido-final" class="btn-confirm btn-disabled" disabled>Confirmar pedido</button>
+                    <button type="button" onclick="closeTermsModal()" class="btn btn-primary btn-full">Cerrar</button>
                 </div>
             </footer>
         </div>

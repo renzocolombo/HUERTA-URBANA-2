@@ -661,19 +661,7 @@ async function handleOrderSubmit(e) {
         return;
     }
 
-    // Verificar si ya aceptó términos
-    let yaAcepto = false;
-    try {
-        yaAcepto = localStorage.getItem('huerta_terms_accepted') === 'true';
-    } catch(err) {}
-
-    if (yaAcepto) {
-        processOrder(e.target);
-    } else {
-        // Guardar el formulario para procesarlo después de aceptar términos
-        window.pendingOrderForm = e.target;
-        openTermsModalManual();
-    }
+    processOrder(e.target);
 }
 
 async function processOrder(form) {
