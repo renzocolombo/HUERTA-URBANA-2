@@ -39,11 +39,11 @@ function mostrarBannerPWA(modo = 'fallback') {
     
     // Si tenemos el prompt nativo, el botón es directo.
     if (deferredPrompt) {
-        btnInstalar.textContent = 'Instalar App (Oficial)';
+        btnInstalar.textContent = 'Instalar App';
     } else {
         const esIOS = /iphone|ipad|ipod/i.test(ua) || 
                       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-        btnInstalar.textContent = (esIOS) ? 'Ver cómo instalar' : 'Instalar App (Manual)';
+        btnInstalar.textContent = (esIOS) ? 'Ver cómo instalar' : 'Instalar App';
     }
     
     // Solo lo mostramos si no tiene la clase aún (para evitar resetear animaciones)
@@ -70,10 +70,10 @@ window.addEventListener('appinstalled', (evt) => {
   if (banner) banner.classList.remove('pwa-visible');
 });
 
-// 3. Timeout de respaldo (10s) para dispositivos que no disparan el evento (iOS, etc.)
+// 3. Timeout de respaldo (4s) para dispositivos que no disparan el evento (iOS, etc.)
 setTimeout(() => {
   mostrarBannerPWA('fallback');
-}, 10000);
+}, 4000);
 
 // 4. Listeners de los botones del banner
 document.addEventListener('DOMContentLoaded', () => {
