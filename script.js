@@ -16,8 +16,16 @@ window.addEventListener('beforeinstallprompt', (e) => {
   console.log('[PWA] Evento beforeinstallprompt capturado y guardado');
 });
 
-// 2. Mostrar el banner tras 3 segundos
+// 2. Mostrar el banner tras 3 segundos SOLO en mobile
 setTimeout(() => {
+  // Detección mobile robusta
+  const ua = navigator.userAgent.toLowerCase();
+  const isMobile = /android|iphone|ipad|ipod/i.test(ua) || 
+                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
+                   (window.innerWidth < 800);
+  
+  if (!isMobile) return;
+
   // No mostrar si ya está instalada
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
   const isAlreadyInstalled = localStorage.getItem('huerta_pwa_v3_ready') === 'true';
@@ -26,7 +34,7 @@ setTimeout(() => {
   const banner = document.getElementById('pwa-banner');
   if (banner) {
     banner.classList.add('pwa-visible');
-    console.log('[PWA] Banner mostrado tras 3 segundos');
+    console.log('[PWA] Banner mostrado tras 3 segundos en dispositivo móvil');
   }
 }, 3000);
 
@@ -56,7 +64,7 @@ document.addEventListener('DOMContentLoaded', () => {
       if (esIOS) {
         document.getElementById('ios-install-modal').style.display = 'flex';
       } else {
-        alert('Para instalar:\n1. Apretá los 3 puntitos del navegador\n2. Seleccioná "Instalar aplicación"');
+        alert('Tocá los 3 puntitos arriba a la derecha y seleccioná Instalar aplicación');
       }
       banner.classList.remove('pwa-visible');
     }
