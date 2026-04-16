@@ -6,12 +6,49 @@ if ('serviceWorker' in navigator) {
 
 /* ── PWA: Sistema de Instalación ─────────────────────── */
 let deferredPrompt = null;
+let bannerMostrado = false;
+
+function mostrarBannerPWA(modo = 'fallback') {
+  if (bannerMostrado) return;
+  
+  const banner = document.getElementById('pwa-banner');
+  const btnInstalar = document.getElementById('pwa-install-btn');
+  if (!banner || !btnInstalar) return;
+
+  // Condiciones de bloqueo: ya instalada o modo standalone
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  const isAlreadyInstalled = localStorage.getItem('huerta_pwa_instalada') === 'true';
+  if (isStandalone || isAlreadyInstalled) return;
+
+  // Condiciones de visibilidad: Solo mobile
+  const ua = navigator.userAgent.toLowerCase();
+  const isMobile = /android|iphone|ipad|ipod/i.test(ua) || 
+                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+
+  if (isMobile) {
+    bannerMostrado = true;
+    console.log(`[PWA] Mostrando banner en modo: ${modo}`);
+    
+    // Si tenemos el prompt nativo, el botón es directo. Si no, es informativo.
+    if (deferredPrompt) {
+        btnInstalar.textContent = 'Instalar App';
+    } else {
+        const esIOS = /iphone|ipad|ipod/i.test(ua) || 
+                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+        btnInstalar.textContent = esIOS ? 'Ver cómo instalar' : 'Instalar App';
+    }
+    
+    banner.classList.add('pwa-visible');
+  }
+}
 
 // 1. Capturar el evento nativo de Chrome/Android
 window.addEventListener('beforeinstallprompt', (e) => {
   e.preventDefault();
   deferredPrompt = e;
   console.log('[PWA] Evento beforeinstallprompt capturado');
+  // Disparar banner inmediatamente si el evento llega
+  mostrarBannerPWA('native');
 });
 
 // 2. Escuchar cuando la app se instala correctamente
@@ -22,29 +59,10 @@ window.addEventListener('appinstalled', (evt) => {
   if (banner) banner.classList.remove('pwa-visible');
 });
 
-// 3. Disparador de Banner con lógica solicitada
+// 3. Timeout de respaldo (6s) para dispositivos que no disparan el evento (iOS, etc.)
 setTimeout(() => {
-  const banner = document.getElementById('pwa-banner');
-  const btnInstalar = document.getElementById('pwa-install-btn');
-  if (!banner || !btnInstalar) return;
-
-  // Condiciones para mostrar:
-  // a) No estar instalada (Standalone mode o LocalStorage)
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-  const isAlreadyInstalled = localStorage.getItem('huerta_pwa_instalada') === 'true';
-  
-  if (isStandalone || isAlreadyInstalled) return;
-
-  // b) Ser dispositivo mobile (android o iphone o ipad o ipod)
-  const ua = navigator.userAgent.toLowerCase();
-  const isMobile = /android|iphone|ipad|ipod/i.test(ua) || 
-                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-
-  if (isMobile) {
-    btnInstalar.textContent = 'Instalar App';
-    banner.classList.add('pwa-visible');
-  }
-}, 3000);
+  mostrarBannerPWA('fallback');
+}, 6000);
 
 // 4. Listeners de los botones del banner
 document.addEventListener('DOMContentLoaded', () => {
@@ -54,7 +72,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnInstalar?.addEventListener('click', async () => {
     if (deferredPrompt) {
-      // Caso Android/Chrome: Abrir prompt nativo
+      console.log('[PWA] Ejecutando prompt nativo');
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === 'accepted') {
@@ -63,9 +81,11 @@ document.addEventListener('DOMContentLoaded', () => {
       deferredPrompt = null;
       banner.classList.remove('pwa-visible');
     } else {
-      // Caso iOS o Manual: Mostrar instrucciones
+      console.log('[PWA] Mostrando instrucciones manuales');
       const ua = navigator.userAgent.toLowerCase();
-      const esIOS = /iphone|ipad/i.test(ua);
+      const esIOS = /iphone|ipad|ipod/i.test(ua) || 
+                    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+      
       if (esIOS) {
         document.getElementById('ios-install-modal').style.display = 'flex';
       } else {
@@ -77,7 +97,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnDismiss?.addEventListener('click', () => {
     banner.classList.remove('pwa-visible');
-    // No guardamos nada en localStorage aquí para que vuelva a aparecer
   });
 });
 
