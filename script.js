@@ -9,11 +9,20 @@ let deferredPrompt = null;
 
 // 1. Capturar el evento nativo de Chrome/Android
 window.addEventListener('beforeinstallprompt', (e) => {
-  // Prevenir que Chrome muestre su propio banner automático
   e.preventDefault();
-  // Guardar el evento para dispararlo luego
   deferredPrompt = e;
-  console.log('[PWA] Evento beforeinstallprompt capturado y guardado');
+  console.log('PWA Evento capturado mostrando banner en 3 segundos');
+  setTimeout(() => {
+    const banner = document.getElementById('pwa-banner');
+    if (banner) {
+      banner.style.display = 'flex';
+      banner.style.transform = 'translateY(0)';
+      banner.style.opacity = '1';
+      console.log('PWA Banner mostrado');
+    } else {
+      console.log('PWA ERROR banner no encontrado en el DOM');
+    }
+  }, 3000);
 });
 
 // 2. Mostrar el banner tras 3 segundos SOLO en mobile
