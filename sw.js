@@ -1,12 +1,12 @@
-const CACHE_NAME = 'huerta-urbana-static-v8';
+const CACHE_NAME = 'huerta-urbana-static-v9';
 const ASSETS = [
   './',
   './style.css',
-  './script.js?v=3.0',
+  './script.js?v=3.1',
   './img/favicon.png',
   './manifest.json',
-  './img/icon-192.png',
-  './img/icon-512.png'
+  './img/icon-maskable-192.png',
+  './img/icon-maskable-512.png'
 ];
 
 self.addEventListener('install', (e) => {
