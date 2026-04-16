@@ -892,3 +892,21 @@ async function confirmarPedidoFinal() {
     }
 }
 
+function copyLinkForSafari() {
+    const url = 'https://huertaurbana.com.ar';
+    navigator.clipboard.writeText(url).then(() => {
+        const btn = document.getElementById('btn-copy-link');
+        if (btn) {
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '¡Copiado! ✓';
+            btn.style.background = '#1cb053';
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.style.background = '#333';
+            }, 2000);
+        }
+    }).catch(err => {
+        console.error('Error al copiar:', err);
+    });
+}
+

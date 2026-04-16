@@ -393,32 +393,37 @@
 
     <!-- Modal instrucciones iOS -->
     <div id="ios-install-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9999; align-items:flex-end; justify-content:center;">
-      <div style="background:#1a1a1a; border-radius:20px 20px 0 0; padding:32px 24px; width:100%; max-width:480px; border-top:2px solid #22c55e;">
+      <div style="background:#1a1a1a; border-radius:30px 30px 0 0; padding:32px 24px; width:100%; max-width:480px; border-top:3px solid #22c55e; box-shadow: 0 -10px 40px rgba(0,0,0,0.5);">
         <div style="text-align:center; margin-bottom:24px;">
-          <div style="font-size:40px; margin-bottom:8px;">🌿</div>
-          <h3 style="color:white; font-size:20px; margin-bottom:8px;">Instalá Huerta Urbana</h3>
-          <p style="color:#aaa; font-size:14px; margin-bottom:12px;">Accedé más rápido desde tu pantalla de inicio</p>
-          <div style="background:rgba(231, 76, 60, 0.1); border:1px solid #e74c3c; color:#e74c3c; padding:8px; border-radius:8px; font-size:12px; font-weight:600;">
-             ⚠️ SOLO DISPONIBLE EN NAVEGADOR SAFARI
+          <div style="font-size:45px; margin-bottom:8px;">🌿</div>
+          <h3 style="color:white; font-size:22px; font-family:'Montserrat', sans-serif; margin-bottom:8px;">Instalá la App</h3>
+          <p style="color:#aaa; font-size:14px; margin-bottom:15px;">Para una mejor experiencia, usá **Safari**</p>
+          
+          <div style="display:flex; flex-direction:column; gap:10px;">
+            <button id="btn-copy-link" onclick="copyLinkForSafari()" style="width:100%; padding:12px; background:#333; color:white; border:1px solid #444; border-radius:12px; font-size:14px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition: all 0.3s ease;">
+              <ion-icon name="copy-outline"></ion-icon> Copiar enlace para Safari
+            </button>
           </div>
         </div>
-        <div style="display:flex; flex-direction:column; gap:16px; margin-bottom:24px;">
-          <div style="display:flex; align-items:center; gap:12px;">
-            <div style="background:#22c55e; border-radius:10px; width:40px; height:40px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">1</div>
-            <p style="color:white; font-size:15px;">Abrí este sitio en <strong style="color:#22c55e;">Safari</strong></p>
+
+        <div style="display:flex; flex-direction:column; gap:18px; margin-bottom:28px;">
+          <div style="display:flex; align-items:start; gap:14px;">
+            <div style="background:#22c55e; color:black; border-radius:10px; min-width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px;">1</div>
+            <p style="color:white; font-size:15px; line-height:1.4;">Si no estás en Safari, pegá el link ahí. Si ya estás en Safari, seguí al paso 2.</p>
           </div>
-          <div style="display:flex; align-items:center; gap:12px;">
-            <div style="background:#22c55e; border-radius:10px; width:40px; height:40px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">2</div>
-            <p style="color:white; font-size:15px;">Apretá el botón <strong style="color:#22c55e;">⬆️ Compartir</strong></p>
+          <div style="display:flex; align-items:start; gap:14px;">
+            <div style="background:#22c55e; color:black; border-radius:10px; min-width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px;">2</div>
+            <p style="color:white; font-size:15px; line-height:1.4;">Apretá el botón **Compartir ⬆️** (al lado de la barra de direcciones o abajo).</p>
           </div>
-          <div style="display:flex; align-items:center; gap:12px;">
-            <div style="background:#22c55e; border-radius:10px; width:40px; height:40px; display:flex; align-items:center; justify-content:center; font-size:20px; flex-shrink:0;">3</div>
-            <p style="color:white; font-size:15px;">Seleccioná <strong style="color:#22c55e;">"Agregar a pantalla de inicio"</strong></p>
+          <div style="display:flex; align-items:start; gap:14px;">
+            <div style="background:#22c55e; color:black; border-radius:10px; min-width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px;">3</div>
+            <p style="color:white; font-size:15px; line-height:1.4;">Buscá y tocá en **"Agregar a pantalla de inicio"**.</p>
           </div>
         </div>
+
         <button onclick="document.getElementById('ios-install-modal').style.display='none'" 
-          style="width:100%; padding:14px; background:#22c55e; color:black; border:none; border-radius:12px; font-size:16px; font-weight:700; cursor:pointer;">
-          Entendido ✓
+          style="width:100%; padding:16px; background:#22c55e; color:black; border:none; border-radius:14px; font-size:16px; font-weight:800; cursor:pointer; font-family:'Montserrat', sans-serif;">
+          ENTENDIDO ✓
         </button>
       </div>
     </div>
@@ -468,7 +473,7 @@
         </div>
     </div>
 
-    <script src="script.js?v=3.5"></script>
+    <script src="script.js?v=3.6"></script>
 </body>
 
 </html>
