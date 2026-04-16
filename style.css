@@ -247,26 +247,27 @@ header {
 #terms-modal {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.75);
+    background: rgba(0, 0, 0, 0.82); /* Más oscuro para resaltar el modal blanco v4.7 */
     z-index: 9999;
     display: none; /* Controlado por JS */
     align-items: center;
     justify-content: center; 
-    padding: 40px 20px; /* Garantiza mismo espacio arriba y abajo */
-    backdrop-filter: blur(8px);
+    padding: 20px;
+    backdrop-filter: blur(12px);
 }
 
 .terms-modal-content {
     background: white;
-    border-radius: 32px; /* Bordes más premium v4.3 */
+    border-radius: 32px;
     width: 100%;
     max-width: 550px;
-    max-height: 100%; /* El padding del padre controla el aire */
+    max-height: 90vh;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    box-shadow: 0 30px 60px -12px rgba(0, 0, 0, 0.5);
+    box-shadow: 0 40px 80px -12px rgba(0, 0, 0, 0.6);
     text-align: left !important;
+    position: relative; /* Para el botón de cerrar */
 }
 
 .terms-header {
@@ -449,6 +450,43 @@ header {
     }
     .terms-footer {
         padding: 24px 20px; /* Simetría perfecta con el header v4.6 */
+    }
+}
+
+/* Rediseño Desktop T&C (Dos Columnas Simétricas v4.7) */
+@media (min-width: 769px) {
+    #formulario {
+        padding: 80px 0 !important; /* Simetría perfecta arriba-abajo en desktop v4.7 */
+    }
+
+    .terms-modal-content {
+        max-width: 1000px !important;
+        width: 90%;
+    }
+
+    .terms-header {
+        padding: 40px 40px 30px;
+    }
+
+    .terms-header .terms-tabs {
+        display: none !important; /* Mostramos todo a la vez en desktop */
+    }
+
+    .terms-body {
+        display: grid !important;
+        grid-template-columns: 1fr 1fr;
+        gap: 40px;
+        padding: 40px !important;
+    }
+
+    #terms-text-terminos, 
+    #terms-text-privacidad {
+        display: block !important; /* Ambos visibles v4.7 */
+    }
+
+    #terms-text-privacidad {
+        border-left: 1px solid rgba(45, 90, 39, 0.1);
+        padding-left: 40px;
     }
 }
 
