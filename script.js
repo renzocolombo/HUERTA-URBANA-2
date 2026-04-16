@@ -39,11 +39,11 @@ function mostrarBannerPWA(modo = 'fallback') {
     
     // Si tenemos el prompt nativo, el botón es directo.
     if (deferredPrompt) {
-        btnInstalar.textContent = 'Instalar App';
+        btnInstalar.textContent = 'Instalar App (Oficial)';
     } else {
         const esIOS = /iphone|ipad|ipod/i.test(ua) || 
                       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-        btnInstalar.textContent = (esIOS) ? 'Ver cómo instalar' : 'Instalar App';
+        btnInstalar.textContent = (esIOS) ? 'Ver cómo instalar' : 'Instalar App (Manual)';
     }
     
     // Solo lo mostramos si no tiene la clase aún (para evitar resetear animaciones)

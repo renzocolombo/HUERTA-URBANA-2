@@ -1,4 +1,4 @@
-const CACHE_NAME = 'huerta-urbana-static-v1';
+const CACHE_NAME = 'huerta-urbana-static-v2';
 const ASSETS = [
   '/',
   '/style.css',
@@ -44,7 +44,7 @@ self.addEventListener('fetch', (e) => {
       fetch(e.request)
         .catch(() => {
           console.log('[SW] Modo offline: sirviendo desde caché');
-          return caches.match('/');
+          return caches.match('/', { ignoreSearch: true });
         })
     );
     return;
@@ -58,7 +58,7 @@ self.addEventListener('fetch', (e) => {
 
   // 3. Resto de assets: Cache First (Velocidad para CSS/JS/Iconos)
   e.respondWith(
-    caches.match(e.request).then((response) => {
+    caches.match(e.request, { ignoreSearch: true }).then((response) => {
       return response || fetch(e.request);
     })
   );
