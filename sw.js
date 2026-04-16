@@ -38,19 +38,25 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
 
-  // 1. Navegación e index.html: Siempre red
-  if (e.request.mode === 'navigate' || url.pathname.endsWith('index.html')) {
+  // 1. Navegación e index.html: Network First (Priorizar red para frescura, fallback a caché para PWA)
+  if (e.request.mode === 'navigate' || url.pathname.endsWith('index.html') || url.pathname === '/') {
+    e.respondWith(
+      fetch(e.request)
+        .catch(() => {
+          console.log('[SW] Modo offline: sirviendo desde caché');
+          return caches.match('/');
+        })
+    );
+    return;
+  }
+
+  // 2. Precios: Network Only (Siempre red para datos críticos)
+  if (url.pathname.includes('precios.json') || url.pathname.includes('getPreciosWeb')) {
     e.respondWith(fetch(e.request));
     return;
   }
 
-  // 2. Precios: Siempre red
-  if (url.pathname.includes('precios.json')) {
-    e.respondWith(fetch(e.request));
-    return;
-  }
-
-  // 3. Resto: Cache-first, luego red
+  // 3. Resto de assets: Cache First (Velocidad para CSS/JS/Iconos)
   e.respondWith(
     caches.match(e.request).then((response) => {
       return response || fetch(e.request);

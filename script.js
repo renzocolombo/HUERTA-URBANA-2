@@ -11,6 +11,12 @@ let bannerMostrado = false;
 function mostrarBannerPWA(modo = 'fallback') {
   if (bannerMostrado) return;
   
+  // No intentar mostrar si el DOM aún no está listo
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', () => mostrarBannerPWA(modo));
+    return;
+  }
+  
   const banner = document.getElementById('pwa-banner');
   const btnInstalar = document.getElementById('pwa-install-btn');
   if (!banner || !btnInstalar) return;
