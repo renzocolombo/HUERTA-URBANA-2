@@ -248,11 +248,11 @@ header {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, 0.82); /* Más oscuro para resaltar el modal blanco v4.7 */
-    z-index: 9999;
+    z-index: 99999;
     display: none; /* Controlado por JS */
     align-items: center;
     justify-content: center; 
-    padding: 20px;
+    padding: 16px;
     backdrop-filter: blur(12px);
 }
 
@@ -427,7 +427,7 @@ header {
 
 @media (max-width: 480px) {
     #terms-modal {
-        padding: 40px 15px; /* Espacio simétrico arriba y abajo v4.6 */
+        padding: 16px; /* Espacio solicitado v4.8 */
     }
     .terms-modal-content {
         max-height: 100%; /* El padding del padre controla el aire v4.6 */
@@ -1313,6 +1313,25 @@ select option {
 
     .form-row {
         grid-template-columns: 1fr;
+        gap: 8px; /* Espacio reducido en mobile v4.8 */
+    }
+
+    .order-form-container {
+        padding: 8px 12px; /* Ajuste leve v4.8 */
+    }
+
+    .form-group {
+        margin-bottom: 8px; /* Menos espacio entre campos v4.8 */
+    }
+
+    .order-form-container h3 {
+        font-size: 1.05rem; /* Título un poco más chico v4.8 */
+        margin-bottom: 4px;
+    }
+
+    input, select, textarea {
+        padding: 6px 10px; /* Campos más compactos v4.8 */
+        font-size: 0.9rem;
     }
 
     .hero {
