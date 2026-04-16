@@ -9,7 +9,9 @@ let deferredPrompt = null;
 let bannerMostrado = false;
 
 function mostrarBannerPWA(modo = 'fallback') {
-  if (bannerMostrado) return;
+  // Si ya se mostró y es el modo fallback, no hacemos nada.
+  // Pero si es modo 'native', permitimos que se "actualice" el banner si ya estaba visible.
+  if (bannerMostrado && modo === 'fallback') return;
   
   // No intentar mostrar si el DOM aún no está listo
   if (document.readyState === 'loading') {
@@ -33,18 +35,21 @@ function mostrarBannerPWA(modo = 'fallback') {
 
   if (isMobile) {
     bannerMostrado = true;
-    console.log(`[PWA] Mostrando banner en modo: ${modo}`);
+    console.log(`[PWA] Aplicando lógica de banner en modo: ${modo} (Prompt disponible: ${!!deferredPrompt})`);
     
-    // Si tenemos el prompt nativo, el botón es directo. Si no, es informativo.
+    // Si tenemos el prompt nativo, el botón es directo.
     if (deferredPrompt) {
         btnInstalar.textContent = 'Instalar App';
     } else {
         const esIOS = /iphone|ipad|ipod/i.test(ua) || 
                       (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-        btnInstalar.textContent = esIOS ? 'Ver cómo instalar' : 'Instalar App';
+        btnInstalar.textContent = (esIOS) ? 'Ver cómo instalar' : 'Instalar App';
     }
     
-    banner.classList.add('pwa-visible');
+    // Solo lo mostramos si no tiene la clase aún (para evitar resetear animaciones)
+    if (!banner.classList.contains('pwa-visible')) {
+        banner.classList.add('pwa-visible');
+    }
   }
 }
 
@@ -65,10 +70,10 @@ window.addEventListener('appinstalled', (evt) => {
   if (banner) banner.classList.remove('pwa-visible');
 });
 
-// 3. Timeout de respaldo (6s) para dispositivos que no disparan el evento (iOS, etc.)
+// 3. Timeout de respaldo (10s) para dispositivos que no disparan el evento (iOS, etc.)
 setTimeout(() => {
   mostrarBannerPWA('fallback');
-}, 6000);
+}, 10000);
 
 // 4. Listeners de los botones del banner
 document.addEventListener('DOMContentLoaded', () => {
