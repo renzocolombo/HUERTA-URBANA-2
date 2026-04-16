@@ -25,25 +25,19 @@ window.addEventListener('beforeinstallprompt', (e) => {
   }, 3000);
 });
 
-// 2. Mostrar el banner tras 3 segundos SOLO en mobile
+// 2. Mostrar el banner siempre en mobile si no está instalada (Independiente del evento)
 setTimeout(() => {
-  // Detección mobile robusta
   const ua = navigator.userAgent.toLowerCase();
-  const isMobile = /android|iphone|ipad|ipod/i.test(ua) || 
-                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
-                   (window.innerWidth < 800);
+  const isMobile = ua.includes('android') || ua.includes('iphone') || ua.includes('ipad');
+  const isInstalled = window.matchMedia('(display-mode: standalone)').matches;
+  const wasInstalledBefore = localStorage.getItem('huerta_pwa_instalada') === 'true';
   
-  if (!isMobile) return;
-
-  // No mostrar si ya está instalada
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-  const isAlreadyInstalled = localStorage.getItem('huerta_pwa_v3_ready') === 'true';
-  if (isStandalone || isAlreadyInstalled) return;
-
-  const banner = document.getElementById('pwa-banner');
-  if (banner) {
-    banner.classList.add('pwa-visible');
-    console.log('[PWA] Banner mostrado tras 3 segundos en dispositivo móvil');
+  if (isMobile && !isInstalled && !wasInstalledBefore) {
+    const banner = document.getElementById('pwa-banner');
+    if (banner) {
+      banner.style.display = 'flex';
+      console.log('PWA Banner mostrado en mobile (Fallback manual)');
+    }
   }
 }, 3000);
 
