@@ -41,15 +41,7 @@ setTimeout(() => {
                    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
   if (isMobile) {
-    const esIOS = /iphone|ipad|ipod/i.test(ua) || 
-                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-    if (esIOS) {
-        btnInstalar.textContent = 'Ver cómo instalar';
-    } else if (!deferredPrompt) {
-        btnInstalar.textContent = 'Ver cómo instalar';
-    } else {
-        btnInstalar.textContent = 'Instalar App';
-    }
+    btnInstalar.textContent = 'Instalar App';
     banner.classList.add('pwa-visible');
   }
 }, 3000);
