@@ -35,12 +35,14 @@ setTimeout(() => {
   
   if (isStandalone || isAlreadyInstalled) return;
 
-  // b) Ser dispositivo mobile (android o iphone o ipad)
+  // b) Ser dispositivo mobile (android o iphone o ipad o ipod)
   const ua = navigator.userAgent.toLowerCase();
-  const isMobile = /android|iphone|ipad/i.test(ua);
+  const isMobile = /android|iphone|ipad|ipod/i.test(ua) || 
+                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
 
   if (isMobile) {
-    const esIOS = /iphone|ipad/i.test(ua);
+    const esIOS = /iphone|ipad|ipod/i.test(ua) || 
+                  (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
     if (esIOS) {
         btnInstalar.textContent = 'Ver cómo instalar';
     } else if (!deferredPrompt) {
