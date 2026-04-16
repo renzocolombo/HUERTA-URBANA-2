@@ -1,6 +1,3 @@
-const CACHE_NAME = 'huerta-urbana-dummy-cache-v1';
-
-// Service worker minimal — dummy, no real caching
 self.addEventListener('install', (e) => {
   self.skipWaiting();
 });
@@ -13,6 +10,5 @@ self.addEventListener('activate', (e) => {
 });
 
 self.addEventListener('fetch', (e) => {
-  // Always fetch from network to ensure prices are always updated
   e.respondWith(fetch(e.request));
 });
