@@ -1895,7 +1895,7 @@ select option {
 }
 
 .pwa-banner.pwa-visible {
-    display: block;
+    display: flex !important;
     transform: translateY(0);
 }
 

@@ -9,8 +9,10 @@ let deferredPrompt = null;
 let bannerMostrado = false;
 
 function mostrarBannerPWA(modo = 'fallback') {
+  // Exponer a window para debug manual
+  window.pwa_force_show = () => mostrarBannerPWA('manual_force');
+  
   // Si ya se mostró y es el modo fallback, no hacemos nada.
-  // Pero si es modo 'native', permitimos que se "actualice" el banner si ya estaba visible.
   if (bannerMostrado && modo === 'fallback') return;
   
   // No intentar mostrar si el DOM aún no está listo
@@ -31,14 +33,15 @@ function mostrarBannerPWA(modo = 'fallback') {
     return;
   }
 
-  // Condiciones de visibilidad: Solo mobile
+  // Condiciones de visibilidad: Mobile o Pantalla Pequeña (< 800px)
   const ua = navigator.userAgent.toLowerCase();
   const isMobile = /android|iphone|ipad|ipod/i.test(ua) || 
-                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
+                   (window.innerWidth < 800);
 
   if (isMobile) {
     bannerMostrado = true;
-    console.log(`[PWA] Aplicando lógica de banner en modo: ${modo} (Prompt disponible: ${!!deferredPrompt})`);
+    console.log(`[PWA] Aplicando visualización: ${modo} (Prompt: ${!!deferredPrompt}, Width: ${window.innerWidth})`);
     
     // Si tenemos el prompt nativo, el botón es directo.
     if (deferredPrompt) {
@@ -49,12 +52,11 @@ function mostrarBannerPWA(modo = 'fallback') {
         btnInstalar.textContent = (esIOS) ? 'Ver cómo instalar' : 'Instalar App';
     }
     
-    // Solo lo mostramos si no tiene la clase aún (para evitar resetear animaciones)
-    if (!banner.classList.contains('pwa-visible')) {
-        banner.classList.add('pwa-visible');
-    }
+    // Forzar visibilidad
+    banner.classList.add('pwa-visible');
   }
 }
+window.mostrarBannerPWA = mostrarBannerPWA;
 
 // 1. Capturar el evento nativo de Chrome/Android
 window.addEventListener('beforeinstallprompt', (e) => {
