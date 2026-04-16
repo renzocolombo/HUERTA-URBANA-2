@@ -70,8 +70,23 @@ document.addEventListener('DOMContentLoaded', () => {
       const ua = navigator.userAgent.toLowerCase();
       const esIOS = /iphone|ipad|ipod/i.test(ua) || 
                     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-      
+
       if (esIOS) {
+        const safariView = document.getElementById('ios-safari-view');
+        const chromeView = document.getElementById('ios-chrome-view');
+        
+        // Detección específica Safari vs Chrome iOS
+        const isChromeIOS = ua.includes('crios');
+        const isSafariIOS = ua.includes('safari') && !isChromeIOS;
+
+        if (isChromeIOS) {
+          safariView.style.display = 'none';
+          chromeView.style.display = 'block';
+        } else {
+          safariView.style.display = 'block';
+          chromeView.style.display = 'none';
+        }
+        
         document.getElementById('ios-install-modal').style.display = 'flex';
       } else {
         alert('Tocá los 3 puntitos arriba a la derecha y seleccioná Instalar aplicación');
@@ -893,7 +908,7 @@ async function confirmarPedidoFinal() {
 }
 
 function copyLinkForSafari() {
-    const url = 'https://huertaurbana.com.ar';
+    const url = 'huertaurbana.com.ar';
     navigator.clipboard.writeText(url).then(() => {
         const btn = document.getElementById('btn-copy-link');
         if (btn) {

@@ -394,35 +394,44 @@
     <!-- Modal instrucciones iOS -->
     <div id="ios-install-modal" style="display:none; position:fixed; inset:0; background:rgba(0,0,0,0.7); z-index:9999; align-items:flex-end; justify-content:center;">
       <div style="background:#1a1a1a; border-radius:30px 30px 0 0; padding:32px 24px; width:100%; max-width:480px; border-top:3px solid #22c55e; box-shadow: 0 -10px 40px rgba(0,0,0,0.5);">
-        <div style="text-align:center; margin-bottom:24px;">
-          <div style="font-size:45px; margin-bottom:8px;">🌿</div>
-          <h3 style="color:white; font-size:22px; font-family:'Montserrat', sans-serif; margin-bottom:8px;">Instalá la App</h3>
-          <p style="color:#aaa; font-size:14px; margin-bottom:15px;">Para una mejor experiencia, usá **Safari**</p>
-          
-          <div style="display:flex; flex-direction:column; gap:10px;">
-            <button id="btn-copy-link" onclick="copyLinkForSafari()" style="width:100%; padding:12px; background:#333; color:white; border:1px solid #444; border-radius:12px; font-size:14px; font-weight:600; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:8px; transition: all 0.3s ease;">
-              <ion-icon name="copy-outline"></ion-icon> Copiar enlace para Safari
+        
+        <!-- VISTA SAFARI -->
+        <div id="ios-safari-view" style="display:none;">
+          <div style="text-align:center; margin-bottom:24px;">
+            <div style="font-size:45px; margin-bottom:8px;">🌿</div>
+            <h3 style="color:white; font-size:22px; font-family:'Montserrat', sans-serif; margin-bottom:8px;">Instalá Huerta Urbana en tu iPhone</h3>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:18px; margin-bottom:28px;">
+            <div style="display:flex; align-items:start; gap:14px;">
+              <div style="background:#22c55e; color:black; border-radius:10px; min-width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px;">1</div>
+              <p style="color:white; font-size:15px; line-height:1.4;">Tocá el botón **compartir** con flecha hacia arriba en la barra inferior de Safari.</p>
+            </div>
+            <div style="display:flex; align-items:start; gap:14px;">
+              <div style="background:#22c55e; color:black; border-radius:10px; min-width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px;">2</div>
+              <p style="color:white; font-size:15px; line-height:1.4;">Deslizá y seleccioná **Añadir a pantalla de inicio**.</p>
+            </div>
+            <div style="display:flex; align-items:start; gap:14px;">
+              <div style="background:#22c55e; color:black; border-radius:10px; min-width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px;">3</div>
+              <p style="color:white; font-size:15px; line-height:1.4;">Tocá **Añadir** arriba a la derecha.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- VISTA CHROME (U OTROS) -->
+        <div id="ios-chrome-view" style="display:none;">
+          <div style="text-align:center; margin-bottom:24px;">
+            <div style="font-size:45px; margin-bottom:8px;">⚠️</div>
+            <h3 style="color:white; font-size:20px; font-family:'Montserrat', sans-serif; margin-bottom:12px;">Para instalar Huerta Urbana necesitás abrirla en Safari</h3>
+            <p style="color:#aaa; font-size:15px; margin-bottom:20px; line-height:1.4;">Copiá el link **huertaurbana.com.ar** y pegalo en Safari.</p>
+            
+            <button id="btn-copy-link" onclick="copyLinkForSafari()" style="width:100%; padding:16px; background:#333; color:white; border:1px solid #444; border-radius:14px; font-size:16px; font-weight:700; cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; transition: all 0.3s ease;">
+              <ion-icon name="copy-outline"></ion-icon> Copiar link
             </button>
           </div>
         </div>
 
-        <div style="display:flex; flex-direction:column; gap:18px; margin-bottom:28px;">
-          <div style="display:flex; align-items:start; gap:14px;">
-            <div style="background:#22c55e; color:black; border-radius:10px; min-width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px;">1</div>
-            <p style="color:white; font-size:15px; line-height:1.4;">Si no estás en Safari, pegá el link ahí. Si ya estás en Safari, seguí al paso 2.</p>
-          </div>
-          <div style="display:flex; align-items:start; gap:14px;">
-            <div style="background:#22c55e; color:black; border-radius:10px; min-width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px;">2</div>
-            <p style="color:white; font-size:15px; line-height:1.4;">Apretá el botón **Compartir ⬆️** (al lado de la barra de direcciones o abajo).</p>
-          </div>
-          <div style="display:flex; align-items:start; gap:14px;">
-            <div style="background:#22c55e; color:black; border-radius:10px; min-width:32px; height:32px; display:flex; align-items:center; justify-content:center; font-weight:800; font-size:16px;">3</div>
-            <p style="color:white; font-size:15px; line-height:1.4;">Buscá y tocá en **"Agregar a pantalla de inicio"**.</p>
-          </div>
-        </div>
-
         <button onclick="document.getElementById('ios-install-modal').style.display='none'" 
-          style="width:100%; padding:16px; background:#22c55e; color:black; border:none; border-radius:14px; font-size:16px; font-weight:800; cursor:pointer; font-family:'Montserrat', sans-serif;">
+          style="width:100%; padding:16px; background:#22c55e; color:black; border:none; border-radius:14px; font-size:16px; font-weight:800; cursor:pointer; font-family:'Montserrat', sans-serif; margin-top:10px;">
           ENTENDIDO ✓
         </button>
       </div>
@@ -473,7 +482,7 @@
         </div>
     </div>
 
-    <script src="script.js?v=3.6"></script>
+    <script src="script.js?v=3.7"></script>
 </body>
 
 </html>
