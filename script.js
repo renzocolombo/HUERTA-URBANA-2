@@ -6,81 +6,31 @@ if ('serviceWorker' in navigator) {
 
 /* ── PWA: Sistema de Instalación ─────────────────────── */
 let deferredPrompt = null;
-let bannerMostrado = false;
-
-function mostrarBannerPWA(modo = 'fallback') {
-  // Exponer a window para debug manual
-  window.pwa_force_show = () => mostrarBannerPWA('manual_force');
-  
-  // Si ya se mostró y es el modo fallback, no hacemos nada.
-  if (bannerMostrado && modo === 'fallback') return;
-  
-  // No intentar mostrar si el DOM aún no está listo
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => mostrarBannerPWA(modo));
-    return;
-  }
-  
-  const banner = document.getElementById('pwa-banner');
-  const btnInstalar = document.getElementById('pwa-install-btn');
-  if (!banner || !btnInstalar) return;
-
-  // Condiciones de bloqueo: ya instalada o modo standalone
-  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-  const isAlreadyInstalled = localStorage.getItem('huerta_pwa_v3_ready') === 'true';
-  if (isStandalone || isAlreadyInstalled) {
-    console.log('[PWA] Banner bloqueado: ya instalada o en modo standalone');
-    return;
-  }
-
-  // Condiciones de visibilidad: Mobile o Pantalla Pequeña (< 800px)
-  const ua = navigator.userAgent.toLowerCase();
-  const isMobile = /android|iphone|ipad|ipod/i.test(ua) || 
-                   (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1) ||
-                   (window.innerWidth < 800);
-
-  if (isMobile) {
-    bannerMostrado = true;
-    console.log(`[PWA] Aplicando visualización: ${modo} (Prompt: ${!!deferredPrompt}, Width: ${window.innerWidth})`);
-    
-    // Si tenemos el prompt nativo, el botón es directo.
-    if (deferredPrompt) {
-        btnInstalar.textContent = 'Instalar App';
-    } else {
-        const esIOS = /iphone|ipad|ipod/i.test(ua) || 
-                      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
-        btnInstalar.textContent = (esIOS) ? 'Ver cómo instalar' : 'Instalar App';
-    }
-    
-    // Forzar visibilidad
-    banner.classList.add('pwa-visible');
-  }
-}
-window.mostrarBannerPWA = mostrarBannerPWA;
 
 // 1. Capturar el evento nativo de Chrome/Android
 window.addEventListener('beforeinstallprompt', (e) => {
+  // Prevenir que Chrome muestre su propio banner automático
   e.preventDefault();
+  // Guardar el evento para dispararlo luego
   deferredPrompt = e;
-  console.log('[PWA] Evento beforeinstallprompt capturado');
-  // Disparar banner inmediatamente si el evento llega
-  mostrarBannerPWA('native');
+  console.log('[PWA] Evento beforeinstallprompt capturado y guardado');
 });
 
-// 2. Escuchar cuando la app se instala correctamente
-window.addEventListener('appinstalled', (evt) => {
-  console.log('[PWA] Aplicación instalada con éxito');
-  localStorage.setItem('huerta_pwa_v3_ready', 'true');
-  const banner = document.getElementById('pwa-banner');
-  if (banner) banner.classList.remove('pwa-visible');
-});
-
-// 3. Timeout de respaldo (4s) para dispositivos que no disparan el evento (iOS, etc.)
+// 2. Mostrar el banner tras 3 segundos
 setTimeout(() => {
-  mostrarBannerPWA('fallback');
-}, 4000);
+  // No mostrar si ya está instalada
+  const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+  const isAlreadyInstalled = localStorage.getItem('huerta_pwa_v3_ready') === 'true';
+  if (isStandalone || isAlreadyInstalled) return;
 
-// 4. Listeners de los botones del banner
+  const banner = document.getElementById('pwa-banner');
+  if (banner) {
+    banner.classList.add('pwa-visible');
+    console.log('[PWA] Banner mostrado tras 3 segundos');
+  }
+}, 3000);
+
+// 3. Listeners de los botones del banner
 document.addEventListener('DOMContentLoaded', () => {
   const btnInstalar = document.getElementById('pwa-install-btn');
   const btnDismiss = document.getElementById('pwa-dismiss-btn');
@@ -88,16 +38,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
   btnInstalar?.addEventListener('click', async () => {
     if (deferredPrompt) {
-      console.log('[PWA] Ejecutando prompt nativo');
+      console.log('[PWA] Ejecutando deferredPrompt.prompt()');
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
+      console.log(`[PWA] El usuario eligió: ${outcome}`);
       if (outcome === 'accepted') {
         localStorage.setItem('huerta_pwa_v3_ready', 'true');
       }
       deferredPrompt = null;
       banner.classList.remove('pwa-visible');
     } else {
-      console.log('[PWA] Mostrando instrucciones manuales');
+      console.log('[PWA] deferredPrompt no disponible, mostrando instrucciones manuales');
       const ua = navigator.userAgent.toLowerCase();
       const esIOS = /iphone|ipad|ipod/i.test(ua) || 
                     (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
@@ -114,6 +65,11 @@ document.addEventListener('DOMContentLoaded', () => {
   btnDismiss?.addEventListener('click', () => {
     banner.classList.remove('pwa-visible');
   });
+});
+
+window.addEventListener('appinstalled', () => {
+  console.log('[PWA] Aplicación instalada con éxito');
+  localStorage.setItem('huerta_pwa_v3_ready', 'true');
 });
 
 const PRODUCTS = {
