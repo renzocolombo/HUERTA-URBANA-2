@@ -25,8 +25,11 @@ function mostrarBannerPWA(modo = 'fallback') {
 
   // Condiciones de bloqueo: ya instalada o modo standalone
   const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
-  const isAlreadyInstalled = localStorage.getItem('huerta_pwa_instalada') === 'true';
-  if (isStandalone || isAlreadyInstalled) return;
+  const isAlreadyInstalled = localStorage.getItem('huerta_pwa_v2_installed') === 'true';
+  if (isStandalone || isAlreadyInstalled) {
+    console.log('[PWA] Banner bloqueado: ya instalada o en modo standalone');
+    return;
+  }
 
   // Condiciones de visibilidad: Solo mobile
   const ua = navigator.userAgent.toLowerCase();
@@ -65,7 +68,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
 // 2. Escuchar cuando la app se instala correctamente
 window.addEventListener('appinstalled', (evt) => {
   console.log('[PWA] Aplicación instalada con éxito');
-  localStorage.setItem('huerta_pwa_instalada', 'true');
+  localStorage.setItem('huerta_pwa_v2_installed', 'true');
   const banner = document.getElementById('pwa-banner');
   if (banner) banner.classList.remove('pwa-visible');
 });
@@ -87,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
       deferredPrompt.prompt();
       const { outcome } = await deferredPrompt.userChoice;
       if (outcome === 'accepted') {
-        localStorage.setItem('huerta_pwa_instalada', 'true');
+        localStorage.setItem('huerta_pwa_v2_installed', 'true');
       }
       deferredPrompt = null;
       banner.classList.remove('pwa-visible');
