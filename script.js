@@ -48,6 +48,12 @@ document.addEventListener('DOMContentLoaded', () => {
   const banner = document.getElementById('pwa-banner');
 
   btnInstalar?.addEventListener('click', async () => {
+    // Ocultar banner inmediatamente
+    if (banner) {
+      banner.style.display = 'none';
+      banner.classList.remove('pwa-visible');
+    }
+
     if (deferredPrompt) {
       console.log('[PWA] Ejecutando deferredPrompt.prompt()');
       deferredPrompt.prompt();
@@ -57,8 +63,6 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('huerta_pwa_instalada', 'true');
       }
       deferredPrompt = null;
-      banner.style.display = 'none';
-      banner.classList.remove('pwa-visible');
     } else {
       console.log('[PWA] deferredPrompt no disponible, mostrando instrucciones manuales');
       const ua = navigator.userAgent.toLowerCase();
