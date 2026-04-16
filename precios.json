@@ -1,7 +1,7 @@
 {
   "accion": "publicarPrecios",
-  "monto_minimo": 23,
-  "mensaje_minimo": "El pedido mínimo es de $23",
+  "monto_minimo": 35000,
+  "mensaje_minimo": "El pedido mínimo es de $35.000",
   "productos": [
     {
       "nombre": "Papa",
@@ -192,20 +192,6 @@
   ],
   "combos": [
     {
-      "nombre": "Combo Básico",
-      "precio": 0,
-      "descripcion": "",
-      "items": [],
-      "activo": true
-    },
-    {
-      "nombre": "Combo Fit",
-      "precio": 0,
-      "descripcion": "",
-      "items": [],
-      "activo": true
-    },
-    {
       "nombre": "Combo Familiar",
       "precio": 0,
       "descripcion": "",
@@ -220,14 +206,14 @@
       "activo": true
     },
     {
-      "nombre": "Combo Vegetariano",
+      "nombre": "Combo Básico",
       "precio": 0,
       "descripcion": "",
       "items": [],
       "activo": true
     },
     {
-      "nombre": "Combo Mensual",
+      "nombre": "Combo Fit",
       "precio": 0,
       "descripcion": "",
       "items": [],
