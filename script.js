@@ -19,7 +19,7 @@ window.addEventListener('appinstalled', (evt) => {
   console.log('[PWA] Aplicación instalada con éxito');
   localStorage.setItem('huerta_pwa_instalada', 'true');
   const banner = document.getElementById('pwa-banner');
-  if (banner) banner.style.display = 'none';
+  if (banner) banner.classList.remove('pwa-visible');
 });
 
 // 3. Disparador de Banner con lógica solicitada
@@ -48,7 +48,7 @@ setTimeout(() => {
     } else {
         btnInstalar.textContent = 'Instalar App';
     }
-    banner.style.display = 'flex';
+    banner.classList.add('pwa-visible');
   }
 }, 3000);
 
@@ -67,7 +67,7 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('huerta_pwa_instalada', 'true');
       }
       deferredPrompt = null;
-      banner.style.display = 'none';
+      banner.classList.remove('pwa-visible');
     } else {
       // Caso iOS o Manual: Mostrar instrucciones
       const ua = navigator.userAgent.toLowerCase();
@@ -77,12 +77,12 @@ document.addEventListener('DOMContentLoaded', () => {
       } else {
         alert('Para instalar:\n1. Apretá los 3 puntitos del navegador\n2. Seleccioná "Instalar aplicación"');
       }
-      banner.style.display = 'none';
+      banner.classList.remove('pwa-visible');
     }
   });
 
   btnDismiss?.addEventListener('click', () => {
-    banner.style.display = 'none';
+    banner.classList.remove('pwa-visible');
     // No guardamos nada en localStorage aquí para que vuelva a aparecer
   });
 });
