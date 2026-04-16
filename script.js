@@ -54,9 +54,10 @@ document.addEventListener('DOMContentLoaded', () => {
       const { outcome } = await deferredPrompt.userChoice;
       console.log(`[PWA] El usuario eligió: ${outcome}`);
       if (outcome === 'accepted') {
-        localStorage.setItem('huerta_pwa_v3_ready', 'true');
+        localStorage.setItem('huerta_pwa_instalada', 'true');
       }
       deferredPrompt = null;
+      banner.style.display = 'none';
       banner.classList.remove('pwa-visible');
     } else {
       console.log('[PWA] deferredPrompt no disponible, mostrando instrucciones manuales');
@@ -80,7 +81,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
 window.addEventListener('appinstalled', () => {
   console.log('[PWA] Aplicación instalada con éxito');
-  localStorage.setItem('huerta_pwa_v3_ready', 'true');
+  localStorage.setItem('huerta_pwa_instalada', 'true');
+  const banner = document.getElementById('pwa-banner');
+  if (banner) {
+      banner.style.display = 'none';
+      banner.classList.remove('pwa-visible');
+  }
 });
 
 const PRODUCTS = {
