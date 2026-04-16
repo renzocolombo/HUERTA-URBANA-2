@@ -36,6 +36,8 @@ setTimeout(() => {
     const banner = document.getElementById('pwa-banner');
     if (banner) {
       banner.style.display = 'flex';
+      banner.style.transform = 'translateY(0)';
+      banner.style.opacity = '1';
       console.log('PWA Banner mostrado en mobile (Fallback manual)');
     }
   }
