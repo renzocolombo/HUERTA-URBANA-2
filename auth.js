@@ -49,7 +49,7 @@ btnLogout.addEventListener('click', () => {
 
 btnCloseLoginPopup.addEventListener('click', () => {
     sessionStorage.setItem('login_popup_cerrado', 'true');
-    loginBottomSheet.style.display = 'none';
+    loginBottomSheet.classList.add('hidden');
 });
 
 let popupTimeout;
@@ -76,7 +76,7 @@ onAuthStateChanged(auth, async (user) => {
 
         // Mostrar Interfaz Logueado
         if (popupTimeout) clearTimeout(popupTimeout);
-        loginBottomSheet.style.display = 'none';
+        loginBottomSheet.classList.add('hidden');
         
         userProfile.style.display = 'flex';
         userPic.src = user.photoURL || '';
@@ -93,6 +93,7 @@ onAuthStateChanged(auth, async (user) => {
         // Mostrar Popup Bottom Sheet después de 5 seg
         popupTimeout = setTimeout(() => {
             if (sessionStorage.getItem('login_popup_cerrado') !== 'true') {
+                loginBottomSheet.classList.remove('hidden');
                 loginBottomSheet.style.display = 'flex';
             }
         }, 5000);

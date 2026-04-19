@@ -2073,6 +2073,10 @@ select option {
     justify-content: center;
 }
 
+.login-bottom-sheet-overlay.hidden {
+    display: none !important;
+}
+
 .login-bottom-sheet-content {
     background: #1a1a1a; /* Diseño premium dark mode */
     width: 100%;
