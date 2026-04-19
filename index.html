@@ -80,6 +80,16 @@
             </nav>
             <div class="header-cart-info" id="open-cart">
                 <div class="cart-controls-wrapper">
+                    <!-- Auth Container -->
+                    <div id="auth-container" class="auth-container">
+                        <button id="btn-login-google" class="btn-login" style="display: none;">
+                            <ion-icon name="logo-google"></ion-icon> Ingresar
+                        </button>
+                        <div id="user-profile" class="user-profile" style="display: none;">
+                            <img id="user-pic" src="" alt="Perfil" class="user-pic">
+                        </div>
+                    </div>
+                    
                     <span id="cart-total-header" class="cart-total-header">$0</span>
                     <button class="btn-ver-pedido" id="open-cart-btn">
                         <ion-icon name="cart-outline"></ion-icon>
@@ -482,7 +492,35 @@
         </div>
     </div>
 
+    <!-- Panel Cliente Logueado -->
+    <div id="user-panel" class="user-panel-overlay" style="display: none;">
+        <div class="user-panel-content">
+            <button class="close-panel-btn" id="close-user-panel"><ion-icon name="close-outline"></ion-icon></button>
+            <div class="user-panel-header">
+                <img id="panel-user-pic" src="" alt="Perfil">
+                <div class="user-panel-info">
+                    <h4 id="panel-user-name"></h4>
+                    <p id="panel-user-email"></p>
+                </div>
+            </div>
+            <div class="user-panel-body">
+                <div class="panel-section">
+                    <h5><ion-icon name="wallet-outline"></ion-icon> Crédito acumulado</h5>
+                    <p class="credit-amount">$0</p>
+                </div>
+                <div class="panel-section">
+                    <h5><ion-icon name="receipt-outline"></ion-icon> Historial de pedidos</h5>
+                    <p class="history-empty">Aún no registrás pedidos en la App.</p>
+                </div>
+            </div>
+            <div class="user-panel-footer">
+                <button id="btn-logout" class="btn-logout"><ion-icon name="log-out-outline"></ion-icon> Cerrar sesión</button>
+            </div>
+        </div>
+    </div>
+
     <script src="script.js?v=3.7"></script>
+    <script type="module" src="auth.js?v=1.0"></script>
 </body>
 
 </html>

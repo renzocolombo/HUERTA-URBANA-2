@@ -2051,4 +2051,220 @@ select option {
 
 .cupon-mensaje.error {
   color: var(--danger);
+}
+
+/* =====================================================
+   AUTH & USER PANEL
+   ===================================================== */
+.auth-container {
+    display: flex;
+    align-items: center;
+}
+
+.btn-login {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: white;
+    color: var(--text-dark);
+    padding: 8px 16px;
+    border-radius: 50px;
+    border: 1px solid #ddd;
+    font-family: 'Montserrat', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: var(--transition);
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-login ion-icon {
+    color: #4285F4;
+    font-size: 1.2rem;
+}
+
+.btn-login:hover {
+    background: #f1f5f9;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+}
+
+.user-profile {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    transition: transform 0.2s;
+}
+
+.user-profile:hover {
+    transform: scale(1.05);
+}
+
+.user-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary);
+    box-shadow: var(--shadow-sm);
+}
+
+/* Modal del Panel */
+.user-panel-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    z-index: 10000;
+    display: flex;
+    justify-content: flex-end; /* Aparece en slide desde la derecha en Desktop o centro en Mobile */
+    align-items: center;
+}
+
+.user-panel-content {
+    background: white;
+    width: 100%;
+    max-width: 380px;
+    height: 100%;
+    max-height: 100vh;
+    padding: 30px 25px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    box-shadow: -5px 0 30px rgba(0,0,0,0.1);
+    animation: slideInRight 0.3s ease forwards;
+    overflow-y: auto;
+}
+
+@keyframes slideInRight {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+.close-panel-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    background: none;
+    border: none;
+    font-size: 1.8rem;
+    color: var(--text-muted);
+    cursor: pointer;
+    transition: color 0.2s;
+}
+
+.close-panel-btn:hover {
+    color: var(--danger);
+}
+
+.user-panel-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #eee;
+}
+
+.user-panel-header img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--primary-light);
+}
+
+.user-panel-info h4 {
+    font-size: 1.1rem;
+    color: var(--text-dark);
+    margin-bottom: 4px;
+}
+
+.user-panel-info p {
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.user-panel-body {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.panel-section {
+    background: var(--bg-light);
+    border-radius: 12px;
+    padding: 16px;
+    border: 1px solid #eee;
+}
+
+.panel-section h5 {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.panel-section h5 ion-icon {
+    color: var(--primary);
+    font-size: 1.2rem;
+}
+
+.credit-amount {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--success);
+}
+
+.history-empty {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+    font-style: italic;
+}
+
+.user-panel-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #eee;
+}
+
+.btn-logout {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px;
+    background: #fdf2f2;
+    color: var(--danger);
+    border: 1px solid #fad4d4;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.btn-logout:hover {
+    background: var(--danger);
+    color: white;
+}
+
+@media (max-width: 768px) {
+    .user-panel-overlay {
+        justify-content: center;
+        padding: 20px;
+    }
+    .user-panel-content {
+        height: auto;
+        border-radius: 20px;
+        animation: scaleIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+    @keyframes scaleIn {
+        from { transform: scale(0.9); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
 }
