@@ -15,9 +15,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
   setTimeout(() => {
     const banner = document.getElementById('pwa-banner');
     if (banner) {
-      banner.style.display = 'flex';
-      banner.style.transform = 'translateY(0)';
-      banner.style.opacity = '1';
+      banner.classList.add('pwa-visible');
       console.log('PWA Banner mostrado');
     } else {
       console.log('PWA ERROR banner no encontrado en el DOM');
@@ -35,9 +33,7 @@ setTimeout(() => {
   if (isMobile && !isInstalled && !wasInstalledBefore) {
     const banner = document.getElementById('pwa-banner');
     if (banner) {
-      banner.style.display = 'flex';
-      banner.style.transform = 'translateY(0)';
-      banner.style.opacity = '1';
+      banner.classList.add('pwa-visible');
       console.log('PWA Banner mostrado en mobile (Fallback manual)');
     }
   }
@@ -96,7 +92,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   btnDismiss?.addEventListener('click', () => {
-    banner.classList.remove('pwa-visible');
+    if (banner) {
+      banner.style.display = 'none';
+      banner.classList.remove('pwa-visible');
+    }
   });
 });
 
