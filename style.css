@@ -2065,7 +2065,7 @@ select option {
 .login-bottom-sheet-overlay {
     position: fixed;
     inset: 0;
-    background: rgba(0, 0, 0, 0.7);
+    background: rgba(0, 0, 0, 0.8);
     backdrop-filter: blur(5px);
     z-index: 10000;
     display: flex;
@@ -2074,16 +2074,16 @@ select option {
 }
 
 .login-bottom-sheet-content {
-    background: #ffffff; /* Diseño premium */
+    background: #1a1a1a; /* Diseño premium dark mode */
     width: 100%;
     max-width: 500px;
     height: 75vh;
-    border-radius: 30px 30px 0 0;
+    border-radius: 20px 20px 0 0;
     padding: 35px 30px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    box-shadow: 0 -10px 40px rgba(0,0,0,0.2);
+    box-shadow: 0 -10px 40px rgba(0,0,0,0.4);
     animation: slideUpBottom 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
 }
 
@@ -2100,14 +2100,14 @@ select option {
 .login-title {
     font-family: 'Montserrat', sans-serif;
     font-size: 1.6rem;
-    color: var(--text-dark);
+    color: #ffffff;
     margin-bottom: 8px;
     text-align: center;
 }
 
 .login-subtitle {
     font-size: 0.95rem;
-    color: var(--text-muted);
+    color: #aaaaaa;
     margin-bottom: 30px;
     text-align: center;
 }
@@ -2126,12 +2126,12 @@ select option {
     align-items: center;
     gap: 12px;
     font-size: 1rem;
-    color: var(--text-dark);
+    color: #ffffff;
     font-weight: 500;
 }
 
 .benefit-check {
-    color: var(--success);
+    color: #22c55e;
     font-size: 1.4rem;
     flex-shrink: 0;
 }
@@ -2142,17 +2142,17 @@ select option {
     justify-content: center;
     gap: 12px;
     width: 100%;
-    background: white;
-    color: var(--text-dark);
+    background: #ffffff;
+    color: #1a1a1a;
     padding: 16px;
     border-radius: 16px;
-    border: 2px solid #ddd;
+    border: none;
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
     font-size: 1.1rem;
     cursor: pointer;
     transition: all 0.2s;
-    box-shadow: var(--shadow-sm);
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
     margin-bottom: 20px;
 }
 
@@ -2162,15 +2162,14 @@ select option {
 }
 
 .btn-login-popup:hover {
-    border-color: #ccc;
-    background: #f8fafc;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    background: #f0f0f0;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
 }
 
 .btn-close-popup {
     background: none;
     border: none;
-    color: var(--text-muted);
+    color: #aaaaaa;
     font-size: 0.9rem;
     font-weight: 600;
     cursor: pointer;
@@ -2180,7 +2179,7 @@ select option {
 }
 
 .btn-close-popup:hover {
-    color: var(--text-dark);
+    color: #ffffff;
 }
 
 .user-profile {
