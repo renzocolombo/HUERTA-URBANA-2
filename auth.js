@@ -17,7 +17,6 @@ const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
 // DOM Elements
-const btnLoginGoogle = document.getElementById('btn-login-google');
 const userProfile = document.getElementById('user-profile');
 const userPic = document.getElementById('user-pic');
 const userPanel = document.getElementById('user-panel');
@@ -27,7 +26,12 @@ const panelUserEmail = document.getElementById('panel-user-email');
 const btnLogout = document.getElementById('btn-logout');
 const closePanelBtn = document.getElementById('close-user-panel');
 
-btnLoginGoogle.addEventListener('click', async () => {
+// Bottom Sheet DOM Elements
+const loginBottomSheet = document.getElementById('login-bottom-sheet');
+const btnLoginGooglePopup = document.getElementById('btn-login-google-popup');
+const btnCloseLoginPopup = document.getElementById('btn-close-login-popup');
+
+btnLoginGooglePopup.addEventListener('click', async () => {
     try {
         await signInWithPopup(auth, provider);
     } catch (error) {
@@ -42,6 +46,13 @@ btnLogout.addEventListener('click', () => {
         console.error("Error al cerrar sesión", error);
     });
 });
+
+btnCloseLoginPopup.addEventListener('click', () => {
+    sessionStorage.setItem('login_popup_cerrado', 'true');
+    loginBottomSheet.style.display = 'none';
+});
+
+let popupTimeout;
 
 onAuthStateChanged(auth, async (user) => {
     if (user) {
@@ -64,7 +75,9 @@ onAuthStateChanged(auth, async (user) => {
         }
 
         // Mostrar Interfaz Logueado
-        btnLoginGoogle.style.display = 'none';
+        if (popupTimeout) clearTimeout(popupTimeout);
+        loginBottomSheet.style.display = 'none';
+        
         userProfile.style.display = 'flex';
         userPic.src = user.photoURL || '';
         
@@ -74,9 +87,15 @@ onAuthStateChanged(auth, async (user) => {
         panelUserEmail.innerText = user.email || '';
     } else {
         // Interfaz NO logueada
-        btnLoginGoogle.style.display = 'flex';
         userProfile.style.display = 'none';
         closeUserPanel();
+
+        // Mostrar Popup Bottom Sheet después de 5 seg
+        popupTimeout = setTimeout(() => {
+            if (sessionStorage.getItem('login_popup_cerrado') !== 'true') {
+                loginBottomSheet.style.display = 'flex';
+            }
+        }, 5000);
     }
 });
 

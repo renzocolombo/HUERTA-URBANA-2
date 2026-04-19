@@ -82,9 +82,6 @@
                 <div class="cart-controls-wrapper">
                     <!-- Auth Container -->
                     <div id="auth-container" class="auth-container">
-                        <button id="btn-login-google" class="btn-login" style="display: none;">
-                            <ion-icon name="logo-google"></ion-icon> Ingresar
-                        </button>
                         <div id="user-profile" class="user-profile" style="display: none;">
                             <img id="user-pic" src="" alt="Perfil" class="user-pic">
                         </div>
@@ -516,6 +513,36 @@
             <div class="user-panel-footer">
                 <button id="btn-logout" class="btn-logout"><ion-icon name="log-out-outline"></ion-icon> Cerrar sesión</button>
             </div>
+        </div>
+    </div>
+
+    <!-- Popup de Login Inferior -->
+    <div id="login-bottom-sheet" class="login-bottom-sheet-overlay" style="display: none;">
+        <div class="login-bottom-sheet-content">
+            <div class="login-icon-top">🌿</div>
+            <h3 class="login-title">Bienvenido a Huerta Urbana</h3>
+            <p class="login-subtitle">Ingresá para aprovechar todos los beneficios</p>
+            
+            <ul class="login-benefits">
+                <li>
+                    <ion-icon name="checkmark-circle" class="benefit-check"></ion-icon>
+                    <span>Guardá tu historial de pedidos</span>
+                </li>
+                <li>
+                    <ion-icon name="checkmark-circle" class="benefit-check"></ion-icon>
+                    <span>Mirá tu crédito acumulado por referidos</span>
+                </li>
+                <li>
+                    <ion-icon name="checkmark-circle" class="benefit-check"></ion-icon>
+                    <span>Repetí tu último pedido con un click</span>
+                </li>
+            </ul>
+
+            <button id="btn-login-google-popup" class="btn-login-popup">
+                <ion-icon name="logo-google"></ion-icon> Ingresar con Google
+            </button>
+            
+            <button id="btn-close-login-popup" class="btn-close-popup">Ahora no</button>
         </div>
     </div>
 
