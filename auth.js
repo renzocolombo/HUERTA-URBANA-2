@@ -91,12 +91,21 @@ onAuthStateChanged(auth, async (user) => {
         closeUserPanel();
 
         // Mostrar Popup Bottom Sheet después de 5 seg
+        if (popupTimeout) clearTimeout(popupTimeout);
         popupTimeout = setTimeout(() => {
-            if (sessionStorage.getItem('login_popup_cerrado') !== 'true') {
+            if (sessionStorage.getItem('login_popup_cerrado') !== 'true' && !auth.currentUser) {
                 loginBottomSheet.classList.remove('hidden');
                 loginBottomSheet.style.display = 'flex';
             }
         }, 5000);
+    }
+});
+
+// Cerrar popup al hacer clic fuera (en el overlay)
+loginBottomSheet.addEventListener('click', (e) => {
+    if (e.target === loginBottomSheet) {
+        sessionStorage.setItem('login_popup_cerrado', 'true');
+        loginBottomSheet.classList.add('hidden');
     }
 });
 
