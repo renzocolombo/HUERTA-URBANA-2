@@ -1,4 +1,4 @@
-const CACHE_NAME = 'huerta-urbana-static-v19';
+const CACHE_NAME = 'huerta-urbana-static-v20';
 const ASSETS = [
   './',
   './style.css',

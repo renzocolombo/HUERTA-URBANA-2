@@ -13,6 +13,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
   deferredPrompt = e;
   console.log('PWA Evento capturado mostrando banner en 3 segundos');
   setTimeout(() => {
+    if (sessionStorage.getItem('pwa_dismissed') === 'true') return;
     const banner = document.getElementById('pwa-banner');
     if (banner) {
       banner.classList.add('pwa-visible');
@@ -30,7 +31,7 @@ setTimeout(() => {
   const isInstalled = window.matchMedia('(display-mode: standalone)').matches;
   const wasInstalledBefore = localStorage.getItem('huerta_pwa_instalada') === 'true';
   
-  if (isMobile && !isInstalled && !wasInstalledBefore) {
+  if (isMobile && !isInstalled && !wasInstalledBefore && sessionStorage.getItem('pwa_dismissed') !== 'true') {
     const banner = document.getElementById('pwa-banner');
     if (banner) {
       banner.classList.add('pwa-visible');
@@ -91,13 +92,19 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  btnDismiss?.addEventListener('click', () => {
-    if (banner) {
-      banner.style.display = 'none';
-      banner.classList.remove('pwa-visible');
-    }
-  });
+  btnDismiss?.addEventListener('click', dismissPWABanner);
 });
+
+// Función global para asegurar cierre inmediato
+window.dismissPWABanner = function() {
+  const banner = document.getElementById('pwa-banner');
+  if (banner) {
+    banner.style.display = 'none';
+    banner.classList.remove('pwa-visible');
+    sessionStorage.setItem('pwa_dismissed', 'true');
+    console.log('PWA Banner descartado');
+  }
+};
 
 window.addEventListener('appinstalled', () => {
   console.log('[PWA] Aplicación instalada con éxito');
