@@ -1781,6 +1781,7 @@ select option {
     .header-right-panel {
         display: flex !important;
         flex-direction: column !important;
+        align-items: flex-end !important; /* Estabilidad total v5.5 */
         gap: 3px !important;
     }
 
@@ -2199,6 +2200,23 @@ select option {
     align-items: center;
     cursor: pointer;
     transition: transform 0.2s;
+}
+
+/* Refinamiento Google Icon v5.5 */
+.auth-placeholder {
+    border: none !important;
+    width: 28px !important;
+    height: 28px !important;
+    margin-right: -10px; /* 1cm extra a la derecha */
+    display: flex !important;
+    align-items: center;
+    justify-content: center;
+}
+
+.google-icon-svg {
+    width: 22px;
+    height: 22px;
+    display: block;
 }
 
 .user-profile:hover {
