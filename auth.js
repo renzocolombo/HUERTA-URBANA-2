@@ -25,6 +25,7 @@ const panelUserName = document.getElementById('panel-user-name');
 const panelUserEmail = document.getElementById('panel-user-email');
 const btnLogout = document.getElementById('btn-logout');
 const closePanelBtn = document.getElementById('close-user-panel');
+const panelUserPicWrapper = document.getElementById('panel-user-pic-wrapper');
 
 // Bottom Sheet DOM Elements
 const loginBottomSheet = document.getElementById('login-bottom-sheet');
@@ -87,7 +88,14 @@ onAuthStateChanged(auth, async (user) => {
         }
         
         // Purgar y cargar panel
-        panelUserPic.src = user.photoURL || '';
+        if (user.photoURL) {
+            panelUserPic.src = user.photoURL;
+            panelUserPic.style.display = 'block';
+            panelUserPicWrapper.classList.remove('auth-placeholder');
+        } else {
+            panelUserPic.style.display = 'none';
+            panelUserPicWrapper.classList.add('auth-placeholder');
+        }
         panelUserName.innerText = user.displayName || 'Usuario';
         panelUserEmail.innerText = user.email || '';
     } else {
@@ -95,6 +103,14 @@ onAuthStateChanged(auth, async (user) => {
         userProfile.style.display = 'flex'; // Siempre visible por diseño v5.1
         userPic.style.display = 'none';
         userPic.src = '';
+        
+        // Panel placeholder
+        panelUserPic.style.display = 'none';
+        panelUserPic.src = '';
+        if (panelUserPicWrapper) panelUserPicWrapper.classList.add('auth-placeholder');
+        panelUserName.innerText = 'Invitado';
+        panelUserEmail.innerText = 'Inicia sesión para ver tus créditos';
+        
         closeUserPanel();
 
         // Mostrar Popup Bottom Sheet después de 5 seg
