@@ -79,7 +79,12 @@ onAuthStateChanged(auth, async (user) => {
         loginBottomSheet.classList.add('hidden');
         
         userProfile.style.display = 'flex';
-        userPic.src = user.photoURL || '';
+        if (user.photoURL) {
+            userPic.src = user.photoURL;
+            userPic.style.display = 'block';
+        } else {
+            userPic.style.display = 'none';
+        }
         
         // Purgar y cargar panel
         panelUserPic.src = user.photoURL || '';
@@ -88,6 +93,8 @@ onAuthStateChanged(auth, async (user) => {
     } else {
         // Interfaz NO logueada
         userProfile.style.display = 'flex'; // Siempre visible por diseño v5.1
+        userPic.style.display = 'none';
+        userPic.src = '';
         closeUserPanel();
 
         // Mostrar Popup Bottom Sheet después de 5 seg
