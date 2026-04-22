@@ -230,23 +230,50 @@ header#header {
 .user-pic { width: 100%; height: 100%; object-fit: cover; background: white; z-index: 2; position: relative; }
 .user-icon-placeholder { position: absolute; inset: 0; z-index: 1; font-size: 38px; color: var(--text-muted); display: flex; align-items: center; justify-content: center; }
 
+.header-nav-desktop {
+    grid-area: nav-desktop;
+    display: none; /* Oculto en móvil por defecto */
+}
+
 /* Layout Desktop Override */
 @media (min-width: 769px) {
     header#header { padding: 5px 0; }
 
     .header-right-panel {
-        width: 480px !important;
-        grid-template-columns: auto auto auto;
+        width: auto !important; /* Ancho dinámico para acomodar el menú */
+        grid-template-columns: auto auto auto auto;
         grid-template-areas: 
-            "total button avatar"
-            "credits credits credits"
-            "shipping shipping shipping";
-        gap: 6px 22px !important;
+            "total button nav-desktop avatar"
+            "credits credits credits credits"
+            "shipping shipping shipping shipping";
+        gap: 6px 20px !important;
+        justify-items: end;
+    }
+
+    .header-nav-desktop {
+        display: flex !important;
+        gap: 15px;
+        align-items: center;
+        margin: 0 10px;
+    }
+
+    .header-nav-desktop .nav-link {
+        font-family: 'Montserrat', sans-serif;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--text-dark);
+        text-decoration: none;
+        white-space: nowrap;
+        transition: color 0.3s;
+    }
+
+    .header-nav-desktop .nav-link:hover {
+        color: var(--primary);
     }
 
     .grid-item-button {
         width: auto !important;
-        padding: 8px 22px !important;
+        padding: 8px 20px !important;
         margin: 0 !important;
     }
 
