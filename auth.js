@@ -85,8 +85,14 @@ onAuthStateChanged(auth, async (user) => {
 
             if (headerCredits) headerCredits.innerText = `${fmtCredits} créditos de referidos`;
             if (formCredits) formCredits.innerText = fmtCredits;
-            if (creditFormGroup && window.userCredits > 0) {
+            if (creditFormGroup) {
+                // Ahora lo mostramos siempre que esté logueado para evitar confusión v7.0
                 creditFormGroup.style.display = 'block';
+                const creditMsg = document.getElementById('credit-mensaje');
+                if (window.userCredits <= 0 && creditMsg) {
+                    creditMsg.textContent = 'No tenés créditos disponibles para aplicar.';
+                    creditMsg.className = 'cupon-mensaje error';
+                }
             }
 
             // También en el panel lateral v5.5
