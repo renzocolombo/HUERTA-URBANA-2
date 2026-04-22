@@ -2019,10 +2019,10 @@ select option {
 
 .cupon-input-wrapper input {
   flex: 1;
-  padding: 10px 14px;
+  padding: 8px 12px;
   border: 2px solid #ddd;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 13px;
   text-transform: uppercase;
   letter-spacing: 1px;
 }
@@ -2033,12 +2033,12 @@ select option {
 }
 
 #btn-aplicar-cupon {
-  padding: 10px 18px;
+  padding: 8px 14px;
   background: var(--primary);
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
@@ -2064,11 +2064,11 @@ select option {
 
 .credit-display-box {
   flex: 1;
-  padding: 10px 14px;
+  padding: 8px 12px;
   background: #f1f8f1;
   border: 2px solid var(--primary-light);
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 13px;
   display: flex;
   align-items: center;
   gap: 6px;
@@ -2085,12 +2085,12 @@ select option {
 }
 
 #btn-aplicar-credito {
-  padding: 10px 18px;
+  padding: 8px 14px;
   background: var(--primary);
   color: white;
   border: none;
   border-radius: 8px;
-  font-size: 14px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   white-space: nowrap;
