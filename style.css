@@ -256,7 +256,7 @@ header#header {
 
 /* Layout Desktop Override */
 @media (min-width: 769px) {
-    header#header { padding: 10px 0; }
+    header#header { padding: 3px 0; }
 
     .header-container {
         display: grid !important;
@@ -294,7 +294,7 @@ header#header {
         flex-direction: column;
         align-items: center;
         width: auto;
-        gap: 2px;
+        gap: 0;
     }
 
     /* LOCK: Stable Balance + Avatar anchor grid */
@@ -323,11 +323,11 @@ header#header {
     .header-nav-desktop {
         display: flex !important;
         justify-content: center;
-        gap: 50px; /* Spaced out words */
+        gap: 45px; /* Spaced out words */
         background: rgba(255, 255, 255, 0.4);
-        padding: 12px 35px;
+        padding: 5px 25px;
         border-radius: 50px;
-        margin: 8px 0;
+        margin: 3px 0;
     }
 
     .header-nav-desktop .nav-link {
@@ -349,9 +349,9 @@ header#header {
 
     .grid-item-button {
         width: auto !important;
-        padding: 9px 35px !important;
-        margin: 6px 0 !important;
-        font-size: 0.95rem !important;
+        padding: 5px 30px !important;
+        margin: 2px 0 !important;
+        font-size: 0.9rem !important;
         border-radius: 50px !important;
     }
 
