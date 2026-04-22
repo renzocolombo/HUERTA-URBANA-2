@@ -40,12 +40,21 @@ btnLoginGooglePopup.addEventListener('click', async () => {
     }
 });
 
-btnLogout.addEventListener('click', () => {
-    signOut(auth).then(() => {
-        closeUserPanel();
-    }).catch(error => {
-        console.error("Error al cerrar sesión", error);
-    });
+btnLogout.addEventListener('click', async () => {
+    if (auth.currentUser) {
+        signOut(auth).then(() => {
+            closeUserPanel();
+        }).catch(error => {
+            console.error("Error al cerrar sesión", error);
+        });
+    } else {
+        try {
+            await signInWithPopup(auth, provider);
+            closeUserPanel();
+        } catch (error) {
+            console.error("Error al iniciar sesión desde el panel:", error);
+        }
+    }
 });
 
 btnCloseLoginPopup.addEventListener('click', () => {
@@ -113,6 +122,10 @@ onAuthStateChanged(auth, async (user) => {
         }
 
         // Mostrar Interfaz Logueado
+        btnLogout.innerHTML = '<ion-icon name="log-out-outline"></ion-icon> Cerrar sesión';
+        btnLogout.style.background = '#fdf2f2';
+        btnLogout.style.color = 'var(--danger)';
+
         if (popupTimeout) clearTimeout(popupTimeout);
         loginBottomSheet.classList.add('hidden');
         
@@ -148,6 +161,10 @@ onAuthStateChanged(auth, async (user) => {
         panelUserName.innerText = 'Invitado';
         panelUserEmail.innerText = 'Inicia sesión para ver tus créditos';
         
+        btnLogout.innerHTML = '<ion-icon name="logo-google"></ion-icon> Entrar con Google';
+        btnLogout.style.background = '#f0f8f1';
+        btnLogout.style.color = 'var(--primary)';
+
         window.userCredits = 0;
         const creditBtn = document.getElementById('btn-aplicar-credito');
         const creditMsg = document.getElementById('credit-mensaje');
