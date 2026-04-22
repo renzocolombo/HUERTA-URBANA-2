@@ -197,6 +197,7 @@ header#header {
     justify-items: end;
     align-items: center;
     gap: 4px 12px;
+    grid-template-columns: 1fr auto;
     grid-template-areas: 
         "total avatar"
         "credits credits"
