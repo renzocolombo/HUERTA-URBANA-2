@@ -2062,6 +2062,44 @@ select option {
   color: var(--danger);
 }
 
+.credit-display-box {
+  flex: 1;
+  padding: 10px 14px;
+  background: #f1f8f1;
+  border: 2px solid var(--primary-light);
+  border-radius: 8px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.credit-display-box span {
+  color: var(--text-muted);
+  font-weight: 500;
+}
+
+.credit-display-box strong {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+#btn-aplicar-credito {
+  padding: 10px 18px;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
+#btn-aplicar-credito:hover {
+  background: var(--primary-light);
+}
+
 /* =====================================================
    AUTH & USER PANEL
    ===================================================== */

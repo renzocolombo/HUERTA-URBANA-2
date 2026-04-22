@@ -184,6 +184,7 @@ const CUPONES_VALIDOS = {
   'BIENVENIDO10': { tipo: 'porcentaje', valor: 10, descripcion: '10% de descuento de bienvenida' }
 }
 let cuponAplicado = null;
+let creditoAplicado = 0; // v5.5
 
 async function cargarPrecios() {
   try {
@@ -340,6 +341,29 @@ document.addEventListener('DOMContentLoaded', async () => {
       mensaje.className = 'cupon-mensaje error'
       updateSummary()
     })
+
+    // Lógica de Crédito Referido v5.5
+    document.getElementById('btn-aplicar-credito')?.addEventListener('click', () => {
+      const mensaje = document.getElementById('credit-mensaje');
+      if (!window.userCredits || window.userCredits <= 0) {
+        mensaje.textContent = 'No tenés créditos disponibles';
+        mensaje.className = 'cupon-mensaje error';
+        return;
+      }
+
+      if (creditoAplicado > 0) {
+        creditoAplicado = 0;
+        mensaje.textContent = 'Créditos removidos';
+        mensaje.className = 'cupon-mensaje';
+        document.getElementById('btn-aplicar-credito').innerText = 'Aplicar';
+      } else {
+        creditoAplicado = window.userCredits;
+        mensaje.textContent = `✅ Créditos aplicados: $${creditoAplicado.toLocaleString('es-AR')}`;
+        mensaje.className = 'cupon-mensaje exito';
+        document.getElementById('btn-aplicar-credito').innerText = 'Remover';
+      }
+      updateSummary();
+    });
 });
 
 function loadCustomerData() {
@@ -610,21 +634,35 @@ function updateSummary() {
         });
     }
 
-    summaryItems.innerHTML = itemsHtml;
-
-    let descuento = 0;
+    // Calcular descuento por cupón
+    let descuentoCupon = 0;
     if (cuponAplicado && cuponAplicado.tipo === 'porcentaje') {
-        descuento = Math.floor(total * cuponAplicado.valor / 100);
+        descuentoCupon = Math.floor(total * cuponAplicado.valor / 100);
         itemsHtml += `
             <div class="summary-item discount-item" style="color: #22c55e; font-weight: 600;">
                 <span>Descuento (${cuponAplicado.codigo})</span>
-                <span>-$${descuento.toLocaleString('es-AR')}</span>
+                <span>-$${descuentoCupon.toLocaleString('es-AR')}</span>
             </div>
         `;
-        summaryItems.innerHTML = itemsHtml;
     }
 
-    const totalFinal = total - descuento;
+    // Calcular descuento por crédito v5.5 (sobre el subtotal después de cupón)
+    const subtotalPostCupon = total - descuentoCupon;
+    let actualDescuentoCredito = 0;
+    
+    if (creditoAplicado > 0) {
+        actualDescuentoCredito = Math.min(subtotalPostCupon, creditoAplicado);
+        itemsHtml += `
+            <div class="summary-item discount-item" style="color: #22c55e; font-weight: 600;">
+                <span>Créditos aplicados</span>
+                <span>-$${actualDescuentoCredito.toLocaleString('es-AR')}</span>
+            </div>
+        `;
+    }
+
+    summaryItems.innerHTML = itemsHtml;
+
+    const totalFinal = subtotalPostCupon - actualDescuentoCredito;
     summaryTotal.innerText = `$${Math.floor(totalFinal).toLocaleString('es-AR')}`;
     headerTotal.innerText = `$${Math.floor(totalFinal).toLocaleString('es-AR')}`;
 
@@ -643,8 +681,11 @@ function updateSummary() {
         // Sincronizar también cantidad y total en el DOM (campos ocultos)
         const cantidadInput = document.querySelector('[name="cantidad"]');
         const totalInput = document.querySelector('[name="total"]');
+        const creditoUsadoInput = document.querySelector('[name="credito_usado"]'); // v5.5
+
         if (cantidadInput) cantidadInput.value = Object.values(cart).reduce((acc, item) => acc + (item.qty || 1), 0);
-        if (totalInput) totalInput.value = total;
+        if (totalInput) totalInput.value = totalFinal; // Sincronizar el total REAL final
+        if (creditoUsadoInput) creditoUsadoInput.value = actualDescuentoCredito;
     }
 
     // Also update modal if visible

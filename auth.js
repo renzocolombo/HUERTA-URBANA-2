@@ -68,9 +68,31 @@ onAuthStateChanged(auth, async (user) => {
                     nombre: user.displayName,
                     email: user.email,
                     foto: user.photoURL,
+                    creditos: 0,
                     fecha_registro: serverTimestamp()
                 });
+                window.userCredits = 0;
+            } else {
+                const data = docSnap.data();
+                window.userCredits = data.creditos || 0;
             }
+
+            // Actualizar UI de créditos
+            const fmtCredits = '$' + window.userCredits.toLocaleString('es-AR');
+            const headerCredits = document.getElementById('credito-referidos');
+            const formCredits = document.getElementById('available-credit');
+            const creditFormGroup = document.getElementById('credit-form-group');
+
+            if (headerCredits) headerCredits.innerText = `${fmtCredits} créditos de referidos`;
+            if (formCredits) formCredits.innerText = fmtCredits;
+            if (creditFormGroup && window.userCredits > 0) {
+                creditFormGroup.style.display = 'block';
+            }
+
+            // También en el panel lateral v5.5
+            const panelCredits = document.querySelector('.credit-amount');
+            if (panelCredits) panelCredits.innerText = fmtCredits;
+
         } catch (error) {
             console.error("Error al interactuar con Firestore:", error);
         }
@@ -111,6 +133,10 @@ onAuthStateChanged(auth, async (user) => {
         panelUserName.innerText = 'Invitado';
         panelUserEmail.innerText = 'Inicia sesión para ver tus créditos';
         
+        window.userCredits = 0;
+        const creditFormGroup = document.getElementById('credit-form-group');
+        if (creditFormGroup) creditFormGroup.style.display = 'none';
+
         closeUserPanel();
 
         // Mostrar Popup Bottom Sheet después de 5 seg
