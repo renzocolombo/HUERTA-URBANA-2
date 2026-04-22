@@ -281,11 +281,11 @@ header#header {
         justify-self: center;
         display: flex !important;
         gap: 40px;
-        background: rgba(255, 255, 255, 0.4);
-        padding: 2px 20px;
-        border-radius: 50px;
+        background: transparent; /* Cleaner alignment without background box */
+        padding: 0;
         margin: 0;
         z-index: 10;
+        transform: translateY(10px); /* Lowering to match the slogan */
     }
 
     /* RIGHT: Status and Actions */
