@@ -241,6 +241,7 @@ header#header {
 }
 
 /* Wrappers en móvil */
+.header-status-stack,
 .header-center-stack {
     display: contents;
 }
@@ -256,11 +257,11 @@ header#header {
 
 /* Layout Desktop Override */
 @media (min-width: 769px) {
-    header#header { padding: 3px 0; }
+    header#header { padding: 5px 0; }
 
     .header-container {
         display: grid !important;
-        grid-template-columns: 1fr auto 1fr; /* Symmetrical grid for perfect centering */
+        grid-template-columns: 1fr auto 1fr; /* Logo | Nav (C) | Status (R) */
         align-items: center;
         gap: 0;
         max-width: 100% !important;
@@ -271,74 +272,67 @@ header#header {
     .header-left { 
         grid-column: 1;
         justify-self: start;
-        flex: none; 
         z-index: 10;
     }
 
-    .header-right-panel {
+    /* CENTER: Menu only */
+    .header-nav-desktop {
         grid-column: 2;
         justify-self: center;
+        display: flex !important;
+        gap: 45px;
+        background: rgba(255, 255, 255, 0.4);
+        padding: 6px 25px;
+        border-radius: 50px;
+        margin: 0;
+        z-index: 10;
+    }
+
+    /* RIGHT: Status and Actions */
+    .header-right-panel {
+        grid-column: 3;
+        justify-self: end;
         width: auto !important;
         display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
     }
 
-    .header-desktop-spacer {
-        display: block !important;
-        grid-column: 3;
-    }
-
-    .header-center-stack {
+    .header-status-stack {
         display: flex !important;
         flex-direction: column;
-        align-items: center;
-        width: auto;
-        gap: 0;
+        align-items: flex-end;
+        gap: 2px;
     }
 
     /* LOCK: Stable Balance + Avatar anchor grid */
     .total-avatar-wrapper {
         display: grid !important;
-        grid-template-columns: 1fr 1fr; /* Split into two halves */
+        grid-template-columns: 1fr 1fr;
         align-items: center;
         gap: 12px;
-        width: 320px; /* Wider to accommodate growth without shifting center */
+        width: 280px; /* Locked width */
     }
 
     .grid-item-total {
-        grid-area: unset !important;
         text-align: right;
-        font-size: 1.2rem !important;
+        font-size: 1.1rem !important;
         font-weight: 800;
         color: var(--primary);
     }
 
     .grid-item-avatar {
-        grid-area: unset !important;
         justify-self: start;
         margin: 0 !important;
-    }
-
-    .header-nav-desktop {
-        display: flex !important;
-        justify-content: center;
-        gap: 45px; /* Spaced out words */
-        background: rgba(255, 255, 255, 0.4);
-        padding: 5px 25px;
-        border-radius: 50px;
-        margin: 3px 0;
     }
 
     .header-nav-desktop .nav-link {
         font-family: 'Montserrat', sans-serif;
         font-size: 0.88rem;
-        font-weight: 800; /* Extra bold menu font */
+        font-weight: 800;
         color: var(--text-dark);
         text-decoration: none;
         white-space: nowrap;
         text-transform: uppercase;
-        letter-spacing: 0.15em; /* Spaced out letters */
+        letter-spacing: 0.15em;
         transition: all 0.3s ease;
     }
 
@@ -349,15 +343,21 @@ header#header {
 
     .grid-item-button {
         width: auto !important;
-        padding: 5px 30px !important;
+        padding: 5px 25px !important;
         margin: 2px 0 !important;
         font-size: 0.9rem !important;
         border-radius: 50px !important;
     }
 
-    .cart-controls-wrapper {
-        display: none !important; /* Replaced by center-stack in desktop */
+    .grid-item-credits, .grid-item-shipping {
+        display: block !important;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-align: right;
+        margin: 0 !important;
     }
+}
 
     .grid-item-credits, .grid-item-shipping {
         display: block !important;

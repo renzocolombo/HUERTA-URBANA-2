@@ -40,7 +40,7 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2d5a27">
-    <link rel="stylesheet" href="style.css?v=26.0">
+    <link rel="stylesheet" href="style.css?v=27.0">
 </head>
 
 <body>
@@ -74,9 +74,17 @@
                 </a>
             </div>
 
-            <!-- Derecha/Centro: Bloque de información y acciones -->
+            <!-- Centro: Menú de navegación (Desktop) -->
+            <nav class="header-nav-desktop">
+                <a href="#hero" class="nav-link">Inicio</a>
+                <a href="#combos-estandar" class="nav-link">Combos</a>
+                <a href="#personalizado" class="nav-link">Armar Pedido</a>
+                <a href="#formulario" class="nav-link">Finalizar</a>
+            </nav>
+
+            <!-- Derecha: Bloque de información y acciones -->
             <div class="header-right-panel" id="open-cart">
-                <div class="header-center-stack">
+                <div class="header-status-stack">
                     <div class="total-avatar-wrapper">
                         <span id="cart-total-header" class="grid-item-total">$0</span>
                         
@@ -94,13 +102,6 @@
 
                     <span id="credito-referidos" class="credito-referidos grid-item-credits">$0 créditos de referidos</span>
 
-                    <nav class="header-nav-desktop">
-                        <a href="#hero" class="nav-link">Inicio</a>
-                        <a href="#combos-estandar" class="nav-link">Combos</a>
-                        <a href="#personalizado" class="nav-link">Armar Pedido</a>
-                        <a href="#formulario" class="nav-link">Finalizar</a>
-                    </nav>
-
                     <button class="btn-ver-pedido grid-item-button" id="open-cart-btn">
                         <span>Ver pedido</span>
                         <ion-icon name="cart-outline"></ion-icon>
@@ -110,8 +111,7 @@
                 </div>
             </div>
 
-            <!-- Espaciador para centrado matemático simétrico en Desktop -->
-            <div class="header-desktop-spacer"></div>
+            <!-- Espaciador eliminado y reemplazado por el panel derecho en el grid -->
         </div>
     </header>
 
@@ -592,8 +592,8 @@
         </div>
     </div>
 
-    <script src="script.js?v=26.0"></script>
-    <script type="module" src="auth.js?v=22.0"></script>
+    <script src="script.js?v=27.0"></script>
+    <script type="module" src="auth.js?v=23.0"></script>
 </body>
 
 </html>
