@@ -188,6 +188,7 @@ header#header {
     align-items: center;
 }
 
+/* Fila 1: Total + Avatar */
 /* Panel Derecho - Resolución Final Grid Areas */
 .header-right-panel {
     display: grid !important;
@@ -201,10 +202,6 @@ header#header {
         "credits credits"
         "button button"
         "shipping shipping";
-}
-
-.cart-controls-wrapper {
-    display: contents;
 }
 
 .grid-item-total { grid-area: total; font-weight: 800; color: var(--primary); font-size: 1.15rem; white-space: nowrap; transition: var(--transition); }
