@@ -125,6 +125,14 @@ header#header {
     gap: 20px;
 }
 
+.cart-controls-wrapper {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 8px;
+    flex-wrap: nowrap;
+}
+
 .header-left {
     flex: 1;
     min-width: 0;
@@ -240,6 +248,10 @@ header#header {
         width: auto !important;
         padding: 8px 22px !important;
         margin: 0 !important;
+    }
+
+    .cart-controls-wrapper {
+        display: contents;
     }
 }
 
