@@ -237,48 +237,108 @@ header#header {
 
 /* Layout Desktop Override */
 @media (min-width: 769px) {
-    header#header { padding: 5px 0; }
+    header#header { padding: 8px 0; }
+
+    .header-container {
+        display: flex !important;
+        justify-content: flex-start;
+        align-items: center;
+        gap: 0;
+    }
+
+    .header-left { 
+        flex: none; 
+        z-index: 10;
+        min-width: 280px;
+    }
 
     .header-right-panel {
-        width: auto !important; /* Ancho dinámico para acomodar el menú */
-        grid-template-columns: auto auto auto auto;
-        grid-template-areas: 
-            "total button nav-desktop avatar"
-            "credits credits credits credits"
-            "shipping shipping shipping shipping";
-        gap: 6px 20px !important;
-        justify-items: end;
+        flex: 1;
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+        width: auto !important;
+        margin-left: -280px; /* Offset the logo to center the main content relative to the whole page */
+    }
+
+    .header-center-stack {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        width: 100%;
+        max-width: 800px;
+        gap: 2px;
+    }
+
+    /* FIX: Stable Balance + Avatar alignment */
+    .total-avatar-wrapper {
+        display: grid !important;
+        grid-template-columns: 1fr 45px;
+        align-items: center;
+        gap: 15px;
+        width: 250px; /* Fixed width for this row to keep everything locked */
+    }
+
+    .grid-item-total {
+        grid-area: unset !important;
+        text-align: right;
+        font-size: 1.2rem !important;
+        font-weight: 800;
+        color: var(--primary);
+    }
+
+    .grid-item-avatar {
+        grid-area: unset !important;
+        justify-self: start;
+        margin: 0 !important;
     }
 
     .header-nav-desktop {
         display: flex !important;
-        gap: 15px;
-        align-items: center;
-        margin: 0 10px;
+        justify-content: center;
+        gap: 50px; /* Spaced out words */
+        background: rgba(255, 255, 255, 0.4);
+        padding: 12px 35px;
+        border-radius: 50px;
+        margin: 8px 0;
     }
 
     .header-nav-desktop .nav-link {
         font-family: 'Montserrat', sans-serif;
-        font-size: 0.85rem;
-        font-weight: 700;
+        font-size: 0.88rem;
+        font-weight: 800; /* Extra bold menu font */
         color: var(--text-dark);
         text-decoration: none;
         white-space: nowrap;
-        transition: color 0.3s;
+        text-transform: uppercase;
+        letter-spacing: 0.15em; /* Spaced out letters */
+        transition: all 0.3s ease;
     }
 
     .header-nav-desktop .nav-link:hover {
         color: var(--primary);
+        transform: translateY(-2px);
     }
 
     .grid-item-button {
         width: auto !important;
-        padding: 8px 20px !important;
-        margin: 0 !important;
+        padding: 9px 35px !important;
+        margin: 6px 0 !important;
+        font-size: 0.95rem !important;
+        border-radius: 50px !important;
     }
 
     .cart-controls-wrapper {
-        display: contents;
+        display: none !important; /* Replaced by center-stack in desktop */
+    }
+
+    .grid-item-credits, .grid-item-shipping {
+        display: block !important;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: var(--text-muted);
+        text-align: center;
+        margin: 0 !important;
     }
 }
 
