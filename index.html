@@ -63,37 +63,34 @@
 
     <header id="header">
         <div class="container header-container">
-            <a href="#hero" class="logo">
-                <ion-icon name="leaf" class="logo-icon"></ion-icon>
-                <div class="logo-text-wrapper">
-                    <span class="logo-main-text">HUERTA URBANA</span>
-                    <small class="logo-subtitle">Un compromiso familiar<br>en cada entrega</small>
-                </div>
-            </a>
-            <nav class="desktop-nav">
-                <ul>
-                    <li><a href="#hero">Inicio</a></li>
-                    <li><a href="#combos-estandar">Combos</a></li>
-                    <li><a href="#personalizado">Armar Pedido</a></li>
-                    <li><a href="#formulario">Finalizar</a></li>
-                </ul>
-            </nav>
-            <div class="header-cart-info" id="open-cart">
-                <div class="cart-controls-wrapper">
-                    <!-- Auth Container -->
-                    <div id="auth-container" class="auth-container">
-                        <div id="user-profile" class="user-profile" style="display: none;">
-                            <img id="user-pic" src="" alt="Perfil" class="user-pic">
-                        </div>
+            <!-- Izquierda: Logo + Slogan -->
+            <div class="header-left">
+                <a href="#hero" class="logo">
+                    <ion-icon name="leaf" class="logo-icon"></ion-icon>
+                    <div class="logo-text-wrapper">
+                        <span class="logo-main-text">HUERTA URBANA</span>
+                        <small class="logo-subtitle">Un compromiso familiar en cada entrega</small>
                     </div>
-                    
-                    <span id="cart-total-header" class="cart-total-header">$0</span>
-                    <button class="btn-ver-pedido" id="open-cart-btn">
-                        <ion-icon name="cart-outline"></ion-icon>
-                        <span>Ver pedido</span>
-                    </button>
+                </a>
+            </div>
+
+            <!-- Derecha: 5 elementos planos manejados por CSS Grid Areas -->
+            <div class="header-right-panel" id="open-cart">
+                <span id="cart-total-header" class="grid-item-total">$0 total</span>
+                
+                <div id="user-profile" class="user-profile grid-item-avatar">
+                    <img id="user-pic" src="" alt="Perfil" class="user-pic">
+                    <ion-icon name="person-circle-outline" class="user-icon-placeholder"></ion-icon>
                 </div>
-                <span id="shipping-header-msg" class="shipping-header-msg"></span>
+
+                <span id="credito-referidos" class="credito-referidos grid-item-credits">$0 créditos de referidos</span>
+
+                <button class="btn-ver-pedido grid-item-button" id="open-cart-btn">
+                    <span>Ver pedido</span>
+                    <ion-icon name="cart-outline"></ion-icon>
+                </button>
+
+                <span id="shipping-header-msg" class="shipping-header-msg grid-item-shipping">Envío gratis a partir de $35.000</span>
             </div>
         </div>
     </header>

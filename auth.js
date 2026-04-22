@@ -87,7 +87,7 @@ onAuthStateChanged(auth, async (user) => {
         panelUserEmail.innerText = user.email || '';
     } else {
         // Interfaz NO logueada
-        userProfile.style.display = 'none';
+        userProfile.style.display = 'flex'; // Siempre visible por diseño v5.1
         closeUserPanel();
 
         // Mostrar Popup Bottom Sheet después de 5 seg

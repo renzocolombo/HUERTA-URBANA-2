@@ -190,7 +190,7 @@ async function cargarPrecios() {
     const response = await fetch(APPS_SCRIPT_URL + '?accion=getPreciosWeb')
     const data = await response.json()
     if (data.success) {
-      MIN_PURCHASE = data.monto_minimo || 35000
+      MIN_PURCHASE = 35000; // Forzado a $35.000 por diseño v5.0
       if (data.productos) actualizarProductos(data.productos)
       if (data.combos) actualizarCombos(data.combos)
       actualizarTextos()
