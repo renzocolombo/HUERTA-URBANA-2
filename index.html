@@ -40,7 +40,7 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2d5a27">
-    <link rel="stylesheet" href="style.css?v=7.0">
+    <link rel="stylesheet" href="style.css?v=8.0">
 </head>
 
 <body>
@@ -287,16 +287,16 @@
                                 <p id="cupon-mensaje" class="cupon-mensaje"></p>
                             </div>
 
-                            <div class="form-group cupon-group" id="credit-form-group" style="display: none;">
+                            <div class="form-group cupon-group" id="credit-form-group">
                                 <label>¿Tenés crédito referido?</label>
                                 <div class="cupon-input-wrapper">
                                     <div class="credit-display-box">
                                         <span>Disponible: </span>
                                         <strong id="available-credit">$0</strong>
                                     </div>
-                                    <button type="button" id="btn-aplicar-credito">Aplicar</button>
+                                    <button type="button" id="btn-aplicar-credito" class="btn-disabled" disabled>Aplicar</button>
                                 </div>
-                                <p id="credit-mensaje" class="cupon-mensaje"></p>
+                                <p id="credit-mensaje" class="cupon-mensaje">Iniciá sesión para ver tus créditos</p>
                             </div>
 
                             <button type="submit" id="submit-btn" class="btn btn-full btn-disabled" disabled>Confirmar Pedido</button>
@@ -580,8 +580,8 @@
         </div>
     </div>
 
-    <script src="script.js?v=7.0"></script>
-    <script type="module" src="auth.js?v=3.0"></script>
+    <script src="script.js?v=8.0"></script>
+    <script type="module" src="auth.js?v=4.0"></script>
 </body>
 
 </html>

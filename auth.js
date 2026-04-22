@@ -85,12 +85,21 @@ onAuthStateChanged(auth, async (user) => {
 
             if (headerCredits) headerCredits.innerText = `${fmtCredits} créditos de referidos`;
             if (formCredits) formCredits.innerText = fmtCredits;
-            if (creditFormGroup) {
-                // Ahora lo mostramos siempre que esté logueado para evitar confusión v7.0
-                creditFormGroup.style.display = 'block';
-                const creditMsg = document.getElementById('credit-mensaje');
-                if (window.userCredits <= 0 && creditMsg) {
-                    creditMsg.textContent = 'No tenés créditos disponibles para aplicar.';
+            
+            // UI del Formulario v8.0
+            const creditBtn = document.getElementById('btn-aplicar-credito');
+            const creditMsg = document.getElementById('credit-mensaje');
+            
+            if (creditBtn && creditMsg) {
+                if (window.userCredits > 0) {
+                    creditBtn.disabled = false;
+                    creditBtn.classList.remove('btn-disabled');
+                    creditMsg.textContent = 'Tenés créditos disponibles para usar.';
+                    creditMsg.className = 'cupon-mensaje exito';
+                } else {
+                    creditBtn.disabled = true;
+                    creditBtn.classList.add('btn-disabled');
+                    creditMsg.textContent = 'No tenés créditos disponibles.';
                     creditMsg.className = 'cupon-mensaje error';
                 }
             }
@@ -140,8 +149,19 @@ onAuthStateChanged(auth, async (user) => {
         panelUserEmail.innerText = 'Inicia sesión para ver tus créditos';
         
         window.userCredits = 0;
-        const creditFormGroup = document.getElementById('credit-form-group');
-        if (creditFormGroup) creditFormGroup.style.display = 'none';
+        const creditBtn = document.getElementById('btn-aplicar-credito');
+        const creditMsg = document.getElementById('credit-mensaje');
+        const availableCredits = document.getElementById('available-credit');
+
+        if (availableCredits) availableCredits.innerText = '$0';
+        if (creditBtn) {
+            creditBtn.disabled = true;
+            creditBtn.classList.add('btn-disabled');
+        }
+        if (creditMsg) {
+            creditMsg.textContent = 'Iniciá sesión para ver tus créditos';
+            creditMsg.className = 'cupon-mensaje';
+        }
 
         closeUserPanel();
 
