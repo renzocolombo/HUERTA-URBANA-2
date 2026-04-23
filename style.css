@@ -257,7 +257,12 @@ header#header {
 
 /* Layout Desktop Override */
 @media (min-width: 769px) {
-    header#header { padding: 1px 0; }
+    html { scroll-padding-top: 55px; } /* Ajuste de scroll para el header finito */
+    
+    header#header { 
+        padding: 1px 0; 
+        min-height: auto; /* Quitamos el min-height viejo que era muy alto */
+    }
 
     .header-container {
         display: grid !important;
@@ -356,6 +361,12 @@ header#header {
         color: var(--text-muted);
         text-align: right;
         margin: 0 !important;
+    }
+
+    /* Reducción de relleno de secciones para el header compacto */
+    section {
+        padding: 50px 0 60px !important;
+        min-height: calc(100vh - 55px) !important;
     }
 }
 
