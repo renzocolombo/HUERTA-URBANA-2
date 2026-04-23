@@ -381,11 +381,9 @@ header#header {
         margin-top: 19px;
     }
 
-    /* COMPACT FORM: Reducción RADICAL y NAVEGACIÓN ESTABLE (v47.0) */
+    /* COMPACT FORM: Volviendo a estado compacto (v43.0/v48.0) */
     #formulario {
         padding: 0 0 10px !important; 
-        min-height: calc(100vh - 55px) !important;
-        scroll-margin-top: 55px !important; /* Fuerza la posición exacta en carga inicial */
     }
 
     /* BLOQUE DE AYUDA RE-ACTIVADO: Muy compacto (v45.0) */

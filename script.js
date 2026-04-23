@@ -1,7 +1,7 @@
 /* HUERTA URBANA - LOGIC & CART SYSTEM (Catalogo Extendido) */
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js?v=67');
+  navigator.serviceWorker.register('sw.js?v=68');
 }
 
 /* ── PWA: Sistema de Instalación ─────────────────────── */
