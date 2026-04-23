@@ -378,7 +378,7 @@ header#header {
     /* Espacio extra antes del título en secciones específicas (Ajustado medio cm menos) */
     #combos-estandar .section-header, 
     #personalizado .section-header {
-        margin-top: 22px;
+        margin-top: 19px;
     }
 }
 
