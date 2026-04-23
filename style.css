@@ -285,7 +285,7 @@ header#header {
         padding: 0;
         margin: 0;
         z-index: 10;
-        transform: translateY(-24px); /* Subido 1cm aprox para alineación */
+        transform: translateY(-43px); /* Subido medio cm más */
     }
 
     /* RIGHT: Status and Actions */
