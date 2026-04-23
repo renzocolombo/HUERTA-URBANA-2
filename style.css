@@ -375,10 +375,10 @@ header#header {
         gap: 20px !important;
     }
 
-    /* Espacio extra antes del título en secciones específicas */
+    /* Espacio extra antes del título en secciones específicas (Ajustado medio cm menos) */
     #combos-estandar .section-header, 
     #personalizado .section-header {
-        margin-top: 40px;
+        margin-top: 25px;
     }
 }
 
