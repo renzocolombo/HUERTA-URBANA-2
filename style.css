@@ -381,9 +381,10 @@ header#header {
         margin-top: 19px;
     }
 
-    /* COMPACT FORM: Reducción RADICAL para que entre en pantalla (v43.0) */
+    /* COMPACT FORM: Reducción RADICAL para que entre en pantalla (v46.0) */
     #formulario {
-        padding: 0 0 10px !important; /* Cero margen superior */
+        padding: 0 0 10px !important; /* Cero margen superior solicitado */
+        min-height: calc(100vh - 55px) !important; /* Evita el salto visual al navegar */
     }
 
     /* BLOQUE DE AYUDA RE-ACTIVADO: Muy compacto (v45.0) */
