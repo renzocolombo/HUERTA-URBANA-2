@@ -368,6 +368,18 @@ header#header {
         padding: 50px 0 60px !important;
         min-height: calc(100vh - 55px) !important;
     }
+
+    /* Grid Layouts: 8 items en 4x2 */
+    .combos-grid, .custom-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 20px !important;
+    }
+
+    /* Espacio extra antes del título en secciones específicas */
+    #combos-estandar .section-header, 
+    #personalizado .section-header {
+        margin-top: 40px;
+    }
 }
 
 .btn-ver-pedido ion-icon {
@@ -852,8 +864,8 @@ header#header {
 /* Combo Cards */
 .combos-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 10px;
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en móvil */
+    gap: 15px;
 }
 
 .combo-card {
@@ -982,7 +994,7 @@ header#header {
 
 .custom-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(2, 1fr); /* 2 columnas en móvil */
     gap: 10px;
     margin-top: 16px;
 }
