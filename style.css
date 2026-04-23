@@ -285,7 +285,7 @@ header#header {
         padding: 0;
         margin: 0;
         z-index: 10;
-        transform: translateY(14px); /* Alineado con el botón Ver Pedido */
+        transform: translateY(-24px); /* Subido 1cm aprox para alineación */
     }
 
     /* RIGHT: Status and Actions */
