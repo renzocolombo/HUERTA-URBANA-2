@@ -386,9 +386,15 @@ header#header {
         padding: 0 0 10px !important; /* Cero margen superior */
     }
 
-    /* Ocultamos el bloque de ayuda en desktop para que no empuje el formulario abajo */
+    /* BLOQUE DE AYUDA RE-ACTIVADO: Muy compacto (v45.0) */
     #desktop-help {
-        display: none !important;
+        display: block !important;
+        padding: 5px 12px !important;
+    }
+
+    .checkout-contact-item {
+        margin-bottom: 2px !important;
+        font-size: 0.8rem !important;
     }
 
     .order-layout {
@@ -398,14 +404,15 @@ header#header {
 
     .order-summary {
         padding: 8px 12px !important;
-        min-height: auto !important; /* Ahora termina justo donde terminan las letras */
+        min-height: auto !important;
         box-shadow: none !important;
         border: 1px solid #eee !important;
+        margin-bottom: 8px !important;
     }
 
     .order-form-container {
         padding: 8px 12px !important;
-        min-height: 340px !important; /* Reducido aprox un 25% para mayor compacidad */
+        min-height: 380px !important; /* Agrandada un 10% (v45.0) */
         box-shadow: none !important;
         border: 1px solid #eee !important;
     }
