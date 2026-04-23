@@ -381,54 +381,62 @@ header#header {
         margin-top: 19px;
     }
 
-    /* COMPACT FORM: Reducción extrema y ESTABILIDAD (v42.0) */
+    /* COMPACT FORM: Reducción RADICAL para que entre en pantalla (v43.0) */
     #formulario {
-        padding: 3px 0 20px !important; /* Solo 3px del margen superior */
+        padding: 0 0 10px !important; /* Cero margen superior */
+    }
+
+    /* Ocultamos el bloque de ayuda en desktop para que no empuje el formulario abajo */
+    #desktop-help {
+        display: none !important;
     }
 
     .order-layout {
-        gap: 15px !important; /* Más pegado */
+        gap: 12px !important;
         margin-top: 0 !important;
     }
 
     .order-summary, .order-form-container {
-        padding: 10px 15px !important;
-        min-height: 490px !important; /* Estabilidad total al cargar */
-        box-shadow: var(--shadow-sm) !important;
+        padding: 8px 12px !important;
+        min-height: 420px !important; /* Aún más bajo */
+        box-shadow: none !important;
+        border: 1px solid #eee !important;
     }
 
     .order-form-container h3, .order-summary h3 {
-        margin-bottom: 4px !important;
-        font-size: 1rem !important; /* Más chico solicitado */
-    }
-
-    .checkout-contact-info h4 {
-        font-size: 0.9rem !important;
-        margin-bottom: 6px !important;
+        margin-bottom: 2px !important;
+        font-size: 0.95rem !important;
     }
 
     .form-group {
-        margin-bottom: 4px !important;
+        margin-bottom: 3px !important;
     }
 
     label {
-        font-size: 0.8rem !important; /* Labels más chicas */
-        margin-bottom: 2px !important;
+        font-size: 0.75rem !important;
+        margin-bottom: 0 !important;
     }
 
     input, select, textarea {
-        padding: 5px 8px !important;
-        font-size: 0.85rem !important;
+        padding: 4px 6px !important;
+        font-size: 0.8rem !important;
+        border-radius: 6px !important;
     }
 
     .summary-items {
-        max-height: 160px !important; /* Ahorrar más espacio vertical */
+        max-height: 140px !important; /* Máxima brevedad */
+    }
+
+    .shipping-info, .warning-text {
+        font-size: 0.75rem !important;
+        margin-top: 5px !important;
     }
 
     #submit-btn {
-        padding: 7px !important;
+        padding: 6px !important;
         font-size: 0.85rem !important;
-        margin-top: 4px !important;
+        margin-top: 3px !important;
+        border-radius: 8px !important;
     }
 }
 
