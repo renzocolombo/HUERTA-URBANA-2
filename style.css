@@ -266,7 +266,7 @@ header#header {
         gap: 0;
         max-width: 100% !important;
         width: 100% !important;
-        padding: 0 15px !important; /* Pushed to the edges */
+        padding: 0 10px !important; /* Extremely close to edges */
     }
 
     .header-left { 
@@ -303,13 +303,13 @@ header#header {
         gap: 0;
     }
 
-    /* LOCK: Stable Balance + Avatar anchor grid */
+    /* RIGHT: Counter and Avatar shifted to maximum edge */
     .total-avatar-wrapper {
-        display: grid !important;
-        grid-template-columns: 1fr 1fr;
+        display: flex !important;
+        justify-content: flex-end !important;
         align-items: center;
         gap: 12px;
-        width: 280px; /* Locked width */
+        width: auto !important; /* Removed fixed width to allow edge hugging */
     }
 
     .grid-item-total {
