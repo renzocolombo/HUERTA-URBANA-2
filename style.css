@@ -396,9 +396,16 @@ header#header {
         margin-top: 0 !important;
     }
 
-    .order-summary, .order-form-container {
+    .order-summary {
         padding: 8px 12px !important;
-        min-height: 420px !important; /* Aún más bajo */
+        min-height: auto !important; /* Ahora termina justo donde terminan las letras */
+        box-shadow: none !important;
+        border: 1px solid #eee !important;
+    }
+
+    .order-form-container {
+        padding: 8px 12px !important;
+        min-height: 340px !important; /* Reducido aprox un 25% para mayor compacidad */
         box-shadow: none !important;
         border: 1px solid #eee !important;
     }
