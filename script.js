@@ -1,7 +1,7 @@
 /* HUERTA URBANA - LOGIC & CART SYSTEM (Catalogo Extendido) */
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js?v=68');
+  navigator.serviceWorker.register('sw.js?v=69');
 }
 
 /* ── PWA: Sistema de Instalación ─────────────────────── */
@@ -308,6 +308,17 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderCombos();
     renderCustomProducts();
     updateSummary();
+
+    // Corrección automática de desfasaje de scroll en carga inicial (v49.0)
+    if (window.location.hash === '#formulario') {
+        setTimeout(() => {
+            const target = document.getElementById('formulario');
+            if (target) {
+                target.scrollIntoView({ behavior: 'auto', block: 'start' });
+                console.log('[SCROLL] Re-alineación automática de formulario aplicada');
+            }
+        }, 500); // Pequeño margen para asegurar que el DOM se haya estabilizado
+    }
 
     // Lógica de Cupón
     document.getElementById('btn-aplicar-cupon')?.addEventListener('click', () => {
