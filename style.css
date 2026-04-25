@@ -1872,7 +1872,7 @@ select option {
 
 @media (max-width: 768px) {
     html {
-        scroll-padding-top: 65px; /* Ajuste fino: sube la sección 1.5cm aprox v53.0 */
+        scroll-padding-top: 30px; /* Sube la sección un centímetro extra en mobile v54.0 */
     }
 
     header {
