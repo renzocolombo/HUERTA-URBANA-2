@@ -520,14 +520,26 @@ function switchCategory(cat) {
 function renderCombos() {
     const combosContainer = document.getElementById('combos-container');
     combosContainer.innerHTML = PRODUCTS.combos.map(combo => {
+        // Función para formatear el item si es objeto o string
+        const formatItem = (item) => {
+            if (typeof item === 'string') return item;
+            if (item && typeof item === 'object') {
+                const cant = item.cantidad || item.qty || '';
+                const unit = item.unidad || item.unit || '';
+                const name = item.nombre || item.name || '';
+                return `${cant}${unit} ${name}`.trim();
+            }
+            return '';
+        };
+
         // Generar lista de productos como texto plano
-        const itemsList = combo.items.join(', ');
-        const maxLength = 55; // Ajuste para que quepa bien en la tarjeta compacta
-        let itemsHtml = itemsList;
+        const itemsTextList = combo.items.map(formatItem).filter(i => i).join(', ');
+        const maxLength = 55;
+        let itemsHtml = itemsTextList;
         let expandHtml = '';
 
-        if (itemsList.length > maxLength) {
-            itemsHtml = itemsList.substring(0, maxLength) + '...';
+        if (itemsTextList.length > maxLength) {
+            itemsHtml = itemsTextList.substring(0, maxLength) + '...';
             expandHtml = '<span class="expand-text">expandir</span>';
         }
 
@@ -913,13 +925,25 @@ function showComboDetails(id) {
     const combo = PRODUCTS.combos.find(c => c.id === id);
     if (!combo) return;
 
+    // Función auxiliar idéntica a la de renderCombos
+    const formatItem = (item) => {
+        if (typeof item === 'string') return item;
+        if (item && typeof item === 'object') {
+            const cant = item.cantidad || item.qty || '';
+            const unit = item.unidad || item.unit || '';
+            const name = item.nombre || item.name || '';
+            return `${cant}${unit} ${name}`.trim();
+        }
+        return '';
+    };
+
     document.getElementById('modal-combo-img').src = combo.img;
     document.getElementById('modal-combo-img').alt = combo.name;
     document.getElementById('modal-combo-name').innerText = combo.name;
     document.getElementById('modal-combo-price').innerText = `$${combo.price.toLocaleString('es-AR')}`;
 
     const itemsList = document.getElementById('modal-combo-items');
-    itemsList.innerHTML = combo.items.map(item => `<li><ion-icon name="checkmark-outline"></ion-icon> ${item}</li>`).join('');
+    itemsList.innerHTML = combo.items.map(item => `<li><ion-icon name="checkmark-outline"></ion-icon> ${formatItem(item)}</li>`).join('');
 
     const addBtn = document.getElementById('modal-add-btn');
     addBtn.onclick = () => {
