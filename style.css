@@ -1157,6 +1157,7 @@ header#header {
 .summary-items {
     margin: 5px 0;
     max-height: 250px;
+    min-height: 120px; /* Estabilidad: Reserva espacio para evitar el salto de scroll (v51.0) */
     overflow-y: auto;
     padding-right: 5px;
 }
@@ -2214,11 +2215,13 @@ select option {
   display: flex;
   gap: 8px;
   margin-top: 6px;
+  height: 38px; /* Altura unificada v51.0 */
 }
 
 .cupon-input-wrapper input {
   flex: 1;
-  padding: 8px 12px;
+  padding: 0 12px;
+  height: 100%;
   border: 2px solid #ddd;
   border-radius: 8px;
   font-size: 13px;
@@ -2232,7 +2235,8 @@ select option {
 }
 
 #btn-aplicar-cupon {
-  padding: 8px 14px;
+  padding: 0 14px;
+  height: 100%;
   background: var(--primary);
   color: white;
   border: none;
@@ -2263,7 +2267,8 @@ select option {
 
 .credit-display-box {
   flex: 1;
-  padding: 8px 12px;
+  padding: 0 12px;
+  height: 38px; /* Altura unificada v51.0 */
   background: #f1f8f1;
   border: 2px solid var(--primary-light);
   border-radius: 8px;
@@ -2284,7 +2289,8 @@ select option {
 }
 
 #btn-aplicar-credito {
-  padding: 8px 14px;
+  padding: 0 14px;
+  height: 38px; /* Altura unificada v51.0 */
   background: var(--primary);
   color: white;
   border: none;

@@ -1,9 +1,9 @@
-const CACHE_NAME = 'huerta-urbana-static-v70';
+const CACHE_NAME = 'huerta-urbana-static-v71';
 const ASSETS = [
   './',
-  './style.css?v=50.0',
-  './script.js?v=50.0',
-  './auth.js?v=46.0',
+  './style.css?v=51.0',
+  './script.js?v=51.0',
+  './auth.js?v=47.0',
   './img/favicon.png',
   './manifest.json',
   './img/icon-maskable-192.png',
