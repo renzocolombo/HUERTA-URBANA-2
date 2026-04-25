@@ -519,23 +519,35 @@ function switchCategory(cat) {
 
 function renderCombos() {
     const combosContainer = document.getElementById('combos-container');
-    combosContainer.innerHTML = PRODUCTS.combos.map(combo => `
-        <div class="combo-card" onclick="showComboDetails('${combo.id}')" style="cursor: pointer;">
-            <img src="${combo.img}" alt="${combo.name}" class="combo-img">
-            <div class="combo-info">
-                <h3>${combo.name}</h3>
-                <p>${combo.desc}</p>
-                <div class="combo-price-row">
-                    <span class="price">$${Math.floor(combo.price).toLocaleString('es-AR')}</span>
-                    <div class="qty-control" onclick="event.stopPropagation()">
-                        <button type="button" class="qty-btn" onclick="updateComboQty('${combo.id}', -1)"><ion-icon name="remove-circle-outline"></ion-icon></button>
-                        <span class="qty-val" id="qty-combo-${combo.id}">0</span>
-                        <button type="button" class="qty-btn" onclick="updateComboQty('${combo.id}', 1)"><ion-icon name="add-circle-outline"></ion-icon></button>
+    combosContainer.innerHTML = PRODUCTS.combos.map(combo => {
+        // Previsualización de primeros 5 productos (v55.0)
+        const visibleItems = combo.items.slice(0, 5);
+        const moreCount = combo.items.length - 5;
+        const itemsHtml = visibleItems.map(item => `<span class="combo-chip">${item}</span>`).join('');
+        const moreHtml = moreCount > 0 ? `<span class="combo-chip-more">+${moreCount} más</span>` : '';
+
+        return `
+            <div class="combo-card" onclick="showComboDetails('${combo.id}')" style="cursor: pointer;">
+                <img src="${combo.img}" alt="${combo.name}" class="combo-img">
+                <div class="combo-info">
+                    <h3>${combo.name}</h3>
+                    <p>${combo.desc}</p>
+                    <div class="combo-items-preview">
+                        ${itemsHtml}
+                        ${moreHtml}
+                    </div>
+                    <div class="combo-price-row">
+                        <span class="price">$${Math.floor(combo.price).toLocaleString('es-AR')}</span>
+                        <div class="qty-control" onclick="event.stopPropagation()">
+                            <button type="button" class="qty-btn" onclick="updateComboQty('${combo.id}', -1)"><ion-icon name="remove-circle-outline"></ion-icon></button>
+                            <span class="qty-val" id="qty-combo-${combo.id}">0</span>
+                            <button type="button" class="qty-btn" onclick="updateComboQty('${combo.id}', 1)"><ion-icon name="add-circle-outline"></ion-icon></button>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 function renderCustomProducts() {
