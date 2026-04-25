@@ -1,7 +1,7 @@
 /* HUERTA URBANA - LOGIC & CART SYSTEM (Catalogo Extendido) */
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js?v=74');
+  navigator.serviceWorker.register('sw.js?v=75');
 }
 
 /* ── PWA: Sistema de Instalación ─────────────────────── */
@@ -510,10 +510,10 @@ function updateCartModalContent() {
             const unitLabel = item.unit || item.unidad || 'kg';
             const displayQty = item.qty === 0.5 ? '1/2' : item.qty;
             let itemText;
-            if (unitLabel === 'unidad' || unitLabel === '') {
+            if (unitLabel.toLowerCase() === 'unidad' || unitLabel === '') {
                 itemText = `${displayQty} ${pluralizar(item.qty, item.name)}`;
-            } else if (unitLabel.includes('kg') || unitLabel.includes('kilo')) {
-                itemText = `${displayQty} ${pluralizar(item.qty, 'kilo')} ${item.name}`;
+            } else if (unitLabel.toLowerCase().includes('kg') || unitLabel.toLowerCase().includes('kilo')) {
+                itemText = `${displayQty} kg ${item.name}`;
             } else {
                 itemText = `${displayQty} ${pluralizar(item.qty, unitLabel)} ${item.name}`;
             }
@@ -547,7 +547,7 @@ function renderCombos() {
     combosContainer.innerHTML = PRODUCTS.combos.map(combo => {
         // La descripción ya suele traer la lista de productos (según la foto)
         // Vamos a usar esa descripción y agregarle el "expandir" si es muy larga.
-        const fullDesc = combo.desc || '';
+        let fullDesc = (combo.desc || '').replace(/\b0\.5\b/g, '1/2').replace(/\bunidad\b/gi, '').trim();
         const maxLength = 80; // Un poco más de margen para la descripción
         let descHtml = fullDesc;
         let expandHtml = '';
@@ -595,7 +595,7 @@ function renderCustomProducts() {
             <div class="product-item">
                 <div class="product-details">
                     <h4>${prod.name}</h4>
-                    <span>$${Math.floor(prod.price).toLocaleString('es-AR')} / ${prod.unit || prod.unidad || 'kg'}</span>
+                    <span>$${Math.floor(prod.price).toLocaleString('es-AR')} / ${ (prod.unit || prod.unidad || 'kg').toLowerCase() === 'unidad' ? '' : (prod.unit || prod.unidad || 'kg') }</span>
                 </div>
                 <div class="qty-control">
                     <button type="button" class="qty-btn" onclick="updateCustomQty('${prod.id}', -1, '${activeCategory}')"><ion-icon name="remove-outline"></ion-icon></button>
@@ -675,10 +675,10 @@ function updateSummary() {
             const unitLabel = item.unit || item.unidad || 'kg';
             const displayQty = item.qty === 0.5 ? '1/2' : item.qty;
             let itemText;
-            if (unitLabel === 'unidad' || unitLabel === '') {
+            if (unitLabel.toLowerCase() === 'unidad' || unitLabel === '') {
                 itemText = `${displayQty} ${pluralizar(item.qty, item.name)}`;
-            } else if (unitLabel.includes('kg') || unitLabel.includes('kilo')) {
-                itemText = `${displayQty} ${pluralizar(item.qty, 'kilo')} ${item.name}`;
+            } else if (unitLabel.toLowerCase().includes('kg') || unitLabel.toLowerCase().includes('kilo')) {
+                itemText = `${displayQty} kg ${item.name}`;
             } else {
                 itemText = `${displayQty} ${pluralizar(item.qty, unitLabel)} ${item.name}`;
             }
@@ -733,10 +733,10 @@ function updateSummary() {
             const unitLabel = item.unit || item.unidad || 'kg';
             const displayQty = item.qty === 0.5 ? '1/2' : item.qty;
             let itemText;
-            if (unitLabel === 'unidad' || unitLabel === '') {
+            if (unitLabel.toLowerCase() === 'unidad' || unitLabel === '') {
                 itemText = `${displayQty} ${pluralizar(item.qty, item.name)}`;
-            } else if (unitLabel.includes('kg') || unitLabel.includes('kilo')) {
-                itemText = `${displayQty} ${pluralizar(item.qty, 'kilo')} ${item.name}`;
+            } else if (unitLabel.toLowerCase().includes('kg') || unitLabel.toLowerCase().includes('kilo')) {
+                itemText = `${displayQty} kg ${item.name}`;
             } else {
                 itemText = `${displayQty} ${pluralizar(item.qty, unitLabel)} ${item.name}`;
             }
