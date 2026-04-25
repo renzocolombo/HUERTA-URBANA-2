@@ -192,6 +192,20 @@
   ],
   "combos": [
     {
+      "nombre": "Combo Básico",
+      "precio": 0,
+      "descripcion": "",
+      "items": [],
+      "activo": true
+    },
+    {
+      "nombre": "Combo Fit",
+      "precio": 0,
+      "descripcion": "",
+      "items": [],
+      "activo": true
+    },
+    {
       "nombre": "Combo Familiar",
       "precio": 0,
       "descripcion": "",
@@ -206,14 +220,16 @@
       "activo": true
     },
     {
-      "nombre": "Combo Básico",
-      "precio": 0,
+      "nombre": "Combo Vegetariano",
+      "precio": 3400,
       "descripcion": "",
-      "items": [],
+      "items": [
+        "1x Lechuga"
+      ],
       "activo": true
     },
     {
-      "nombre": "Combo Fit",
+      "nombre": "Combo Mensual",
       "precio": 0,
       "descripcion": "",
       "items": [],
