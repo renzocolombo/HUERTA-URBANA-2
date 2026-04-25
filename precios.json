@@ -196,16 +196,56 @@
       "precio": 39575,
       "descripcion": "Papa 4kg, Cebolla 3kg, Zanahoria 2kg, Zapallo 2kg, Tomate 2kg, Banana 2kg, Huevos 1 maple, Lechuga 0.5 unidad, Rúcula 0.5 atado, Naranja 1kg",
       "items": [
-        "4x Papa",
-        "ID:undefined",
-        "2x Zanahoria",
-        "2x Zapallo blanco",
-        "2x Tomate",
-        "2x Banana",
-        "1x Huevos Nº1",
-        "0.5x Lechuga",
-        "0.5x Rúcula",
-        "1x Naranja"
+        {
+          "nombre": "Papa",
+          "cantidad": 4,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Cebolla",
+          "cantidad": 3,
+          "unidad": ""
+        },
+        {
+          "nombre": "Zanahoria",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Zapallo blanco",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Tomate",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Banana",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Huevos Nº1",
+          "cantidad": 1,
+          "unidad": "maple x30 uds"
+        },
+        {
+          "nombre": "Lechuga",
+          "cantidad": 0.5,
+          "unidad": "unidad"
+        },
+        {
+          "nombre": "Rúcula",
+          "cantidad": 0.5,
+          "unidad": "atado"
+        },
+        {
+          "nombre": "Naranja",
+          "cantidad": 1,
+          "unidad": "kg"
+        }
       ],
       "activo": true
     },
@@ -214,16 +254,56 @@
       "precio": 51525,
       "descripcion": "Papa 4kg, Cebolla 2kg, Zanahoria 2kg, Tomate 2kg, Zapallito 2kg, Banana 2kg, Naranja 2kg, Lechuga 0.5 unidad, Remolacha 2 unidades, Huevos 1 maple",
       "items": [
-        "4x Papa",
-        "ID:undefined",
-        "2x Zanahoria",
-        "2x Tomate",
-        "2x Zapallito",
-        "2x Banana",
-        "2x Naranja",
-        "0.5x Lechuga",
-        "2x Remolacha",
-        "1x Huevos Nº1"
+        {
+          "nombre": "Papa",
+          "cantidad": 4,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Cebolla",
+          "cantidad": 2,
+          "unidad": ""
+        },
+        {
+          "nombre": "Zanahoria",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Tomate",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Zapallito",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Banana",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Naranja",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Lechuga",
+          "cantidad": 0.5,
+          "unidad": "unidad"
+        },
+        {
+          "nombre": "Remolacha",
+          "cantidad": 2,
+          "unidad": "unidad"
+        },
+        {
+          "nombre": "Huevos Nº1",
+          "cantidad": 1,
+          "unidad": "maple x30 uds"
+        }
       ],
       "activo": true
     },
@@ -232,18 +312,66 @@
       "precio": 38625,
       "descripcion": "Papa 2kg, Cebolla 1kg, Zanahoria 1kg, Tomate 1kg, Lechuga 0.5 unidad, Rúcula 0.5 atado, Banana 1kg, Manzana roja 1kg, Limón 1kg, Huevos 1 maple, Remolacha 1 unidad, Choclo 4 unidades",
       "items": [
-        "2x Papa",
-        "ID:undefined",
-        "1x Zanahoria",
-        "1x Tomate",
-        "0.5x Lechuga",
-        "0.5x Rúcula",
-        "1x Banana",
-        "1x Manzana roja",
-        "1x Limón",
-        "1x Huevos Nº1",
-        "1x Remolacha",
-        "4x Choclo"
+        {
+          "nombre": "Papa",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Cebolla",
+          "cantidad": 1,
+          "unidad": ""
+        },
+        {
+          "nombre": "Zanahoria",
+          "cantidad": 1,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Tomate",
+          "cantidad": 1,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Lechuga",
+          "cantidad": 0.5,
+          "unidad": "unidad"
+        },
+        {
+          "nombre": "Rúcula",
+          "cantidad": 0.5,
+          "unidad": "atado"
+        },
+        {
+          "nombre": "Banana",
+          "cantidad": 1,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Manzana roja",
+          "cantidad": 1,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Limón",
+          "cantidad": 1,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Huevos Nº1",
+          "cantidad": 1,
+          "unidad": "maple x30 uds"
+        },
+        {
+          "nombre": "Remolacha",
+          "cantidad": 1,
+          "unidad": "unidad"
+        },
+        {
+          "nombre": "Choclo",
+          "cantidad": 4,
+          "unidad": "unidad"
+        }
       ],
       "activo": true
     },
@@ -252,17 +380,61 @@
       "precio": 54975,
       "descripcion": "Lechuga 0.5 unidad, Rúcula 0.5 atado, Espinaca 1kg, Tomate 2kg, Pepino 1kg, Palta 3 unidades, Manzana roja 2kg, Limón 1kg, Banana 2kg, Arándanos 1 bandeja, Remolacha 2 unidades",
       "items": [
-        "0.5x Lechuga",
-        "0.5x Rúcula",
-        "1x Espinaca",
-        "2x Tomate",
-        "1x Pepino",
-        "3x Palta",
-        "2x Manzana roja",
-        "1x Limón",
-        "2x Banana",
-        "1x Arándano",
-        "2x Remolacha"
+        {
+          "nombre": "Lechuga",
+          "cantidad": 0.5,
+          "unidad": "unidad"
+        },
+        {
+          "nombre": "Rúcula",
+          "cantidad": 0.5,
+          "unidad": "atado"
+        },
+        {
+          "nombre": "Espinaca",
+          "cantidad": 1,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Tomate",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Pepino",
+          "cantidad": 1,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Palta",
+          "cantidad": 3,
+          "unidad": "unidad"
+        },
+        {
+          "nombre": "Manzana roja",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Limón",
+          "cantidad": 1,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Banana",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Arándano",
+          "cantidad": 1,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Remolacha",
+          "cantidad": 2,
+          "unidad": "unidad"
+        }
       ],
       "activo": true
     },
@@ -271,20 +443,76 @@
       "precio": 66875,
       "descripcion": "Berenjena 2kg, Zapallito 2kg, Tomate 2kg, Zanahoria 2kg, Pepino 1kg, Brócoli 2 unidades, Espinaca 1kg, Lechuga 0.5 unidad, Rúcula 0.5 atado, Palta 3 unidades, Banana 2kg, Manzana roja 2kg, Limón 1kg, Remolacha 2 unidades",
       "items": [
-        "2x Berenjena",
-        "2x Zapallito",
-        "2x Tomate",
-        "2x Zanahoria",
-        "1x Pepino",
-        "2x Brócoli",
-        "1x Espinaca",
-        "0.5x Lechuga",
-        "0.5x Rúcula",
-        "3x Palta",
-        "2x Banana",
-        "2x Manzana roja",
-        "1x Limón",
-        "2x Remolacha"
+        {
+          "nombre": "Berenjena",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Zapallito",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Tomate",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Zanahoria",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Pepino",
+          "cantidad": 1,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Brócoli",
+          "cantidad": 2,
+          "unidad": "unidad"
+        },
+        {
+          "nombre": "Espinaca",
+          "cantidad": 1,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Lechuga",
+          "cantidad": 0.5,
+          "unidad": "unidad"
+        },
+        {
+          "nombre": "Rúcula",
+          "cantidad": 0.5,
+          "unidad": "atado"
+        },
+        {
+          "nombre": "Palta",
+          "cantidad": 3,
+          "unidad": "unidad"
+        },
+        {
+          "nombre": "Banana",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Manzana roja",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Limón",
+          "cantidad": 1,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Remolacha",
+          "cantidad": 2,
+          "unidad": "unidad"
+        }
       ],
       "activo": true
     },
@@ -293,18 +521,66 @@
       "precio": 75725,
       "descripcion": "Papa 5kg, Cebolla 3kg, Zanahoria 2kg, Tomate 2kg, Zapallito 2kg, Banana 3kg, Naranja 2kg, Manzana roja 2kg, Lechuga 0.5 unidad, Remolacha 2 unidades, Choclo 6 unidades, Huevos 1 maple",
       "items": [
-        "5x Papa",
-        "ID:undefined",
-        "2x Zanahoria",
-        "2x Tomate",
-        "2x Zapallito",
-        "3x Banana",
-        "2x Naranja",
-        "2x Manzana roja",
-        "0.5x Lechuga",
-        "2x Remolacha",
-        "6x Choclo",
-        "1x Huevos Nº1"
+        {
+          "nombre": "Papa",
+          "cantidad": 5,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Cebolla",
+          "cantidad": 3,
+          "unidad": ""
+        },
+        {
+          "nombre": "Zanahoria",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Tomate",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Zapallito",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Banana",
+          "cantidad": 3,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Naranja",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Manzana roja",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Lechuga",
+          "cantidad": 0.5,
+          "unidad": "unidad"
+        },
+        {
+          "nombre": "Remolacha",
+          "cantidad": 2,
+          "unidad": "unidad"
+        },
+        {
+          "nombre": "Choclo",
+          "cantidad": 6,
+          "unidad": "unidad"
+        },
+        {
+          "nombre": "Huevos Nº1",
+          "cantidad": 1,
+          "unidad": "maple x30 uds"
+        }
       ],
       "activo": true
     },
@@ -313,17 +589,61 @@
       "precio": 78750,
       "descripcion": "Papa 3kg, Tomate 2kg, Morrón rojo 1kg, Banana 2kg, Manzana roja 2kg, Uva 1kg, Palta 3 unidades, Arándanos 1 bandeja, Huevos 2 maples, Miel 1kg, Espinaca 1kg",
       "items": [
-        "3x Papa",
-        "2x Tomate",
-        "1x Morrón rojo",
-        "2x Banana",
-        "2x Manzana roja",
-        "1x Uva",
-        "3x Palta",
-        "1x Arándano",
-        "2x Huevos Nº1",
-        "ID:undefined",
-        "1x Espinaca"
+        {
+          "nombre": "Papa",
+          "cantidad": 3,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Tomate",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Morrón rojo",
+          "cantidad": 1,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Banana",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Manzana roja",
+          "cantidad": 2,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Uva",
+          "cantidad": 1,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Palta",
+          "cantidad": 3,
+          "unidad": "unidad"
+        },
+        {
+          "nombre": "Arándano",
+          "cantidad": 1,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Huevos Nº1",
+          "cantidad": 2,
+          "unidad": "maple x30 uds"
+        },
+        {
+          "nombre": "Miel pura",
+          "cantidad": 1,
+          "unidad": "kg"
+        },
+        {
+          "nombre": "Espinaca",
+          "cantidad": 1,
+          "unidad": "kg"
+        }
       ],
       "activo": true
     }
