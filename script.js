@@ -520,21 +520,25 @@ function switchCategory(cat) {
 function renderCombos() {
     const combosContainer = document.getElementById('combos-container');
     combosContainer.innerHTML = PRODUCTS.combos.map(combo => {
-        // Previsualización de primeros 5 productos (v55.0)
-        const visibleItems = combo.items.slice(0, 5);
-        const moreCount = combo.items.length - 5;
-        const itemsHtml = visibleItems.map(item => `<span class="combo-chip">${item}</span>`).join('');
-        const moreHtml = moreCount > 0 ? `<span class="combo-chip-more">+${moreCount} más</span>` : '';
+        // Generar lista de productos como texto plano
+        const itemsList = combo.items.join(', ');
+        const maxLength = 55; // Ajuste para que quepa bien en la tarjeta compacta
+        let itemsHtml = itemsList;
+        let expandHtml = '';
+
+        if (itemsList.length > maxLength) {
+            itemsHtml = itemsList.substring(0, maxLength) + '...';
+            expandHtml = '<span class="expand-text">expandir</span>';
+        }
 
         return `
             <div class="combo-card" onclick="showComboDetails('${combo.id}')" style="cursor: pointer;">
                 <img src="${combo.img}" alt="${combo.name}" class="combo-img">
                 <div class="combo-info">
                     <h3>${combo.name}</h3>
-                    <p>${combo.desc}</p>
-                    <div class="combo-items-preview">
-                        ${itemsHtml}
-                        ${moreHtml}
+                    <p class="combo-desc">${combo.desc}</p>
+                    <div class="combo-items-text">
+                        ${itemsHtml} ${expandHtml}
                     </div>
                     <div class="combo-price-row">
                         <span class="price">$${Math.floor(combo.price).toLocaleString('es-AR')}</span>

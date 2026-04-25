@@ -369,10 +369,43 @@ header#header {
         min-height: calc(100vh - 55px) !important;
     }
 
-    /* Grid Layouts: 8 items en 4x2 */
-    .combos-grid, .custom-grid {
+    /* Grid Layouts: 8 items en 4x2 Estricto (v60.0) */
+    .combos-grid {
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 15px !important;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .custom-grid {
         grid-template-columns: repeat(4, 1fr) !important;
         gap: 20px !important;
+    }
+
+    .combo-card {
+        max-height: 320px; /* Altura máxima para asegurar que entren 2 filas */
+    }
+
+    .combo-img {
+        height: 100px !important; /* Imagen un poco más baja en desktop */
+    }
+
+    .combo-info {
+        padding: 10px !important;
+    }
+
+    .combo-info h3 {
+        font-size: 1rem !important;
+    }
+
+    .combo-desc {
+        font-size: 0.75rem !important;
+        line-height: 1.2 !important;
+        margin-bottom: 5px !important;
+        display: -webkit-box;
+        -webkit-line-clamp: 2;
+        -webkit-box-orient: vertical;
+        overflow: hidden;
     }
 
     /* Espacio extra antes del título en secciones específicas (Ajustado medio cm menos) */
@@ -975,11 +1008,11 @@ header#header {
     font-size: 1.1rem;
 }
 
-.combo-info p {
+.combo-info p.combo-desc {
     color: var(--text-muted);
     font-size: 0.8rem;
-    margin-bottom: 10px;
-    min-height: 32px;
+    margin-bottom: 8px;
+    min-height: auto;
 }
 
 .combo-price-row {
@@ -987,39 +1020,29 @@ header#header {
     justify-content: space-between;
     align-items: center;
     margin-top: auto;
-    padding-top: 10px;
+    padding-top: 8px;
 }
 
-/* Chips de Productos */
-.combo-items-preview {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 4px;
-    margin-bottom: 12px;
+/* Lista de Productos Slim */
+.combo-items-text {
+    font-size: 0.72rem;
+    color: #666;
+    line-height: 1.3;
+    margin-bottom: 5px;
+    font-style: italic;
 }
 
-.combo-chip {
-    background: rgba(45, 90, 39, 0.08);
+.expand-text {
     color: var(--primary);
-    font-size: 0.65rem;
-    font-weight: 600;
-    padding: 2px 8px;
-    border-radius: 20px;
-    white-space: nowrap;
-    border: 1px solid rgba(45, 90, 39, 0.1);
-}
-
-.combo-chip-more {
-    background: #f0f0f0;
-    color: #888;
-    font-size: 0.65rem;
     font-weight: 700;
-    padding: 2px 8px;
-    border-radius: 20px;
+    text-transform: uppercase;
+    font-size: 0.65rem;
+    cursor: pointer;
+    margin-left: 2px;
 }
 
 .price {
-    font-size: 1.2rem;
+    font-size: 1.1rem;
     font-weight: 700;
     color: var(--primary);
 }
