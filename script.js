@@ -520,27 +520,16 @@ function switchCategory(cat) {
 function renderCombos() {
     const combosContainer = document.getElementById('combos-container');
     combosContainer.innerHTML = PRODUCTS.combos.map(combo => {
-        // Función para formatear el item si es objeto o string
-        const formatItem = (item) => {
-            if (typeof item === 'string') return item;
-            if (item && typeof item === 'object') {
-                const cant = item.cantidad || item.qty || '';
-                const unit = item.unidad || item.unit || '';
-                const name = item.nombre || item.name || '';
-                return `${cant}${unit} ${name}`.trim();
-            }
-            return '';
-        };
-
-        // Generar lista de productos como texto plano
-        const itemsTextList = combo.items.map(formatItem).filter(i => i).join(', ');
-        const maxLength = 55;
-        let itemsHtml = itemsTextList;
+        // La descripción ya suele traer la lista de productos (según la foto)
+        // Vamos a usar esa descripción y agregarle el "expandir" si es muy larga.
+        const fullDesc = combo.desc || '';
+        const maxLength = 80; // Un poco más de margen para la descripción
+        let descHtml = fullDesc;
         let expandHtml = '';
 
-        if (itemsTextList.length > maxLength) {
-            itemsHtml = itemsTextList.substring(0, maxLength) + '...';
-            expandHtml = '<span class="expand-text">expandir</span>';
+        if (fullDesc.length > maxLength) {
+            descHtml = fullDesc.substring(0, maxLength) + '...';
+            expandHtml = '<span class="expand-text">EXPANDIR</span>';
         }
 
         return `
@@ -548,10 +537,9 @@ function renderCombos() {
                 <img src="${combo.img}" alt="${combo.name}" class="combo-img">
                 <div class="combo-info">
                     <h3>${combo.name}</h3>
-                    <p class="combo-desc">${combo.desc}</p>
-                    <div class="combo-items-text">
-                        ${itemsHtml} ${expandHtml}
-                    </div>
+                    <p class="combo-desc">
+                        ${descHtml} ${expandHtml}
+                    </p>
                     <div class="combo-price-row">
                         <span class="price">$${Math.floor(combo.price).toLocaleString('es-AR')}</span>
                         <div class="qty-control" onclick="event.stopPropagation()">

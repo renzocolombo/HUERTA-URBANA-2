@@ -399,13 +399,10 @@ header#header {
     }
 
     .combo-desc {
-        font-size: 0.75rem !important;
-        line-height: 1.2 !important;
-        margin-bottom: 5px !important;
-        display: -webkit-box;
-        -webkit-line-clamp: 2;
-        line-clamp: 2;
-        -webkit-box-orient: vertical;
+        font-size: 0.72rem !important;
+        line-height: 1.3 !important;
+        margin-bottom: 2px !important;
+        min-height: 38px; /* Altura mínima para 2-3 líneas de texto */
         overflow: hidden;
     }
 
@@ -1011,8 +1008,8 @@ header#header {
 
 .combo-info p.combo-desc {
     color: var(--text-muted);
-    font-size: 0.8rem;
-    margin-bottom: 8px;
+    font-size: 0.75rem;
+    margin-bottom: 5px;
     min-height: auto;
 }
 
@@ -1021,25 +1018,19 @@ header#header {
     justify-content: space-between;
     align-items: center;
     margin-top: auto;
-    padding-top: 8px;
+    padding-top: 5px;
 }
 
-/* Lista de Productos Slim */
-.combo-items-text {
-    font-size: 0.72rem;
-    color: #666;
-    line-height: 1.3;
-    margin-bottom: 5px;
-    font-style: italic;
-}
-
+/* Texto de Expandir */
 .expand-text {
     color: var(--primary);
-    font-weight: 700;
+    font-weight: 800;
     text-transform: uppercase;
-    font-size: 0.65rem;
+    font-size: 0.62rem;
     cursor: pointer;
-    margin-left: 2px;
+    white-space: nowrap;
+    text-decoration: underline;
+    margin-left: 4px;
 }
 
 .price {
