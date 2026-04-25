@@ -192,47 +192,139 @@
   ],
   "combos": [
     {
-      "nombre": "Combo Básico",
-      "precio": 0,
-      "descripcion": "",
-      "items": [],
-      "activo": true
-    },
-    {
-      "nombre": "Combo Fit",
-      "precio": 0,
-      "descripcion": "",
-      "items": [],
-      "activo": true
-    },
-    {
-      "nombre": "Combo Familiar",
-      "precio": 0,
-      "descripcion": "",
-      "items": [],
-      "activo": true
-    },
-    {
-      "nombre": "Combo Premium",
-      "precio": 0,
-      "descripcion": "",
-      "items": [],
-      "activo": true
-    },
-    {
-      "nombre": "Combo Vegetariano",
-      "precio": 3400,
-      "descripcion": "",
+      "nombre": "COMBO 1 — Básico",
+      "precio": 39575,
+      "descripcion": "Papa 4kg, Cebolla 3kg, Zanahoria 2kg, Zapallo 2kg, Tomate 2kg, Banana 2kg, Huevos 1 maple, Lechuga 0.5 unidad, Rúcula 0.5 atado, Naranja 1kg",
       "items": [
-        "1x Lechuga"
+        "4x Papa",
+        "ID:undefined",
+        "2x Zanahoria",
+        "2x Zapallo blanco",
+        "2x Tomate",
+        "2x Banana",
+        "1x Huevos Nº1",
+        "0.5x Lechuga",
+        "0.5x Rúcula",
+        "1x Naranja"
       ],
       "activo": true
     },
     {
-      "nombre": "Combo Mensual",
-      "precio": 0,
-      "descripcion": "",
-      "items": [],
+      "nombre": "COMBO 2 — Semanal",
+      "precio": 51525,
+      "descripcion": "Papa 4kg, Cebolla 2kg, Zanahoria 2kg, Tomate 2kg, Zapallito 2kg, Banana 2kg, Naranja 2kg, Lechuga 0.5 unidad, Remolacha 2 unidades, Huevos 1 maple",
+      "items": [
+        "4x Papa",
+        "ID:undefined",
+        "2x Zanahoria",
+        "2x Tomate",
+        "2x Zapallito",
+        "2x Banana",
+        "2x Naranja",
+        "0.5x Lechuga",
+        "2x Remolacha",
+        "1x Huevos Nº1"
+      ],
+      "activo": true
+    },
+    {
+      "nombre": "COMBO 3 — Para Dos",
+      "precio": 38625,
+      "descripcion": "Papa 2kg, Cebolla 1kg, Zanahoria 1kg, Tomate 1kg, Lechuga 0.5 unidad, Rúcula 0.5 atado, Banana 1kg, Manzana roja 1kg, Limón 1kg, Huevos 1 maple, Remolacha 1 unidad, Choclo 4 unidades",
+      "items": [
+        "2x Papa",
+        "ID:undefined",
+        "1x Zanahoria",
+        "1x Tomate",
+        "0.5x Lechuga",
+        "0.5x Rúcula",
+        "1x Banana",
+        "1x Manzana roja",
+        "1x Limón",
+        "1x Huevos Nº1",
+        "1x Remolacha",
+        "4x Choclo"
+      ],
+      "activo": true
+    },
+    {
+      "nombre": "COMBO 4 — Fit",
+      "precio": 54975,
+      "descripcion": "Lechuga 0.5 unidad, Rúcula 0.5 atado, Espinaca 1kg, Tomate 2kg, Pepino 1kg, Palta 3 unidades, Manzana roja 2kg, Limón 1kg, Banana 2kg, Arándanos 1 bandeja, Remolacha 2 unidades",
+      "items": [
+        "0.5x Lechuga",
+        "0.5x Rúcula",
+        "1x Espinaca",
+        "2x Tomate",
+        "1x Pepino",
+        "3x Palta",
+        "2x Manzana roja",
+        "1x Limón",
+        "2x Banana",
+        "1x Arándano",
+        "2x Remolacha"
+      ],
+      "activo": true
+    },
+    {
+      "nombre": "COMBO 5 — Vegetariano",
+      "precio": 66875,
+      "descripcion": "Berenjena 2kg, Zapallito 2kg, Tomate 2kg, Zanahoria 2kg, Pepino 1kg, Brócoli 2 unidades, Espinaca 1kg, Lechuga 0.5 unidad, Rúcula 0.5 atado, Palta 3 unidades, Banana 2kg, Manzana roja 2kg, Limón 1kg, Remolacha 2 unidades",
+      "items": [
+        "2x Berenjena",
+        "2x Zapallito",
+        "2x Tomate",
+        "2x Zanahoria",
+        "1x Pepino",
+        "2x Brócoli",
+        "1x Espinaca",
+        "0.5x Lechuga",
+        "0.5x Rúcula",
+        "3x Palta",
+        "2x Banana",
+        "2x Manzana roja",
+        "1x Limón",
+        "2x Remolacha"
+      ],
+      "activo": true
+    },
+    {
+      "nombre": "COMBO 6 — Familiar",
+      "precio": 75725,
+      "descripcion": "Papa 5kg, Cebolla 3kg, Zanahoria 2kg, Tomate 2kg, Zapallito 2kg, Banana 3kg, Naranja 2kg, Manzana roja 2kg, Lechuga 0.5 unidad, Remolacha 2 unidades, Choclo 6 unidades, Huevos 1 maple",
+      "items": [
+        "5x Papa",
+        "ID:undefined",
+        "2x Zanahoria",
+        "2x Tomate",
+        "2x Zapallito",
+        "3x Banana",
+        "2x Naranja",
+        "2x Manzana roja",
+        "0.5x Lechuga",
+        "2x Remolacha",
+        "6x Choclo",
+        "1x Huevos Nº1"
+      ],
+      "activo": true
+    },
+    {
+      "nombre": "COMBO 7 — Premium",
+      "precio": 78750,
+      "descripcion": "Papa 3kg, Tomate 2kg, Morrón rojo 1kg, Banana 2kg, Manzana roja 2kg, Uva 1kg, Palta 3 unidades, Arándanos 1 bandeja, Huevos 2 maples, Miel 1kg, Espinaca 1kg",
+      "items": [
+        "3x Papa",
+        "2x Tomate",
+        "1x Morrón rojo",
+        "2x Banana",
+        "2x Manzana roja",
+        "1x Uva",
+        "3x Palta",
+        "1x Arándano",
+        "2x Huevos Nº1",
+        "ID:undefined",
+        "1x Espinaca"
+      ],
       "activo": true
     }
   ]
