@@ -508,13 +508,14 @@ function updateCartModalContent() {
             total += subtotal;
 
             const unitLabel = item.unit || item.unidad || 'kg';
+            const displayQty = item.qty === 0.5 ? '1/2' : item.qty;
             let itemText;
             if (unitLabel === 'unidad' || unitLabel === '') {
-              itemText = `${item.qty} ${pluralizar(item.qty, item.name)}`;
+                itemText = `${displayQty} ${pluralizar(item.qty, item.name)}`;
             } else if (unitLabel.includes('kg') || unitLabel.includes('kilo')) {
-              itemText = `${item.qty} ${pluralizar(item.qty, 'kilo')} ${item.name}`;
+                itemText = `${displayQty} ${pluralizar(item.qty, 'kilo')} ${item.name}`;
             } else {
-              itemText = `${item.qty} ${pluralizar(item.qty, unitLabel)} ${item.name}`;
+                itemText = `${displayQty} ${pluralizar(item.qty, unitLabel)} ${item.name}`;
             }
 
             html += `
@@ -672,13 +673,14 @@ function updateSummary() {
 
             total += subtotal;
             const unitLabel = item.unit || item.unidad || 'kg';
+            const displayQty = item.qty === 0.5 ? '1/2' : item.qty;
             let itemText;
             if (unitLabel === 'unidad' || unitLabel === '') {
-                itemText = `${item.qty} ${pluralizar(item.qty, item.name)}`;
+                itemText = `${displayQty} ${pluralizar(item.qty, item.name)}`;
             } else if (unitLabel.includes('kg') || unitLabel.includes('kilo')) {
-                itemText = `${item.qty} ${pluralizar(item.qty, 'kilo')} ${item.name}`;
+                itemText = `${displayQty} ${pluralizar(item.qty, 'kilo')} ${item.name}`;
             } else {
-                itemText = `${item.qty} ${pluralizar(item.qty, unitLabel)} ${item.name}`;
+                itemText = `${displayQty} ${pluralizar(item.qty, unitLabel)} ${item.name}`;
             }
             const subtotalText = `$${Math.floor(subtotal).toLocaleString('es-AR')}`;
 
@@ -729,13 +731,14 @@ function updateSummary() {
     if (hiddenDetails) {
         const textSummary = Object.values(cart).map(item => {
             const unitLabel = item.unit || item.unidad || 'kg';
+            const displayQty = item.qty === 0.5 ? '1/2' : item.qty;
             let itemText;
             if (unitLabel === 'unidad' || unitLabel === '') {
-                itemText = `${item.qty} ${pluralizar(item.qty, item.name)}`;
+                itemText = `${displayQty} ${pluralizar(item.qty, item.name)}`;
             } else if (unitLabel.includes('kg') || unitLabel.includes('kilo')) {
-                itemText = `${item.qty} ${pluralizar(item.qty, 'kilo')} ${item.name}`;
+                itemText = `${displayQty} ${pluralizar(item.qty, 'kilo')} ${item.name}`;
             } else {
-                itemText = `${item.qty} ${pluralizar(item.qty, unitLabel)} ${item.name}`;
+                itemText = `${displayQty} ${pluralizar(item.qty, unitLabel)} ${item.name}`;
             }
             return itemText.toUpperCase();
         }).join(', ');
@@ -953,12 +956,18 @@ function showComboDetails(id) {
 
     // Función auxiliar idéntica a la de renderCombos
     const formatItem = (item) => {
-        if (typeof item === 'string') return item;
+        if (typeof item === 'string') {
+            return item.replace(/\b0\.5\b/g, '1/2').replace(/\bunidad\b/gi, '').replace(/\s+/g, ' ').trim();
+        }
         if (item && typeof item === 'object') {
             const cant = item.cantidad || item.qty || '';
             const unit = item.unidad || item.unit || '';
             const name = item.nombre || item.name || '';
-            return `${cant}${unit} ${name}`.trim();
+            
+            const displayCant = (cant === 0.5 || cant === '0.5') ? '1/2' : cant;
+            const displayUnit = (unit.toLowerCase() === 'unidad') ? '' : unit;
+            
+            return `${displayCant}${displayUnit} ${name}`.replace(/\s+/g, ' ').trim();
         }
         return '';
     };
