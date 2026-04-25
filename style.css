@@ -371,14 +371,14 @@ header#header {
 
     /* Grid Layouts: 8 items en 4x2 Estricto (v60.0) */
     .combos-grid {
-        grid-template-columns: repeat(4, 1fr) !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
         gap: 15px !important;
         max-width: 1200px;
         margin: 0 auto;
     }
 
     .custom-grid {
-        grid-template-columns: repeat(4, 1fr) !important;
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
         gap: 20px !important;
     }
 
@@ -967,7 +967,7 @@ header#header {
 /* Combo Cards */
 .combos-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columnas en móvil */
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 columnas en móvil */
     gap: 15px;
 }
 
@@ -1042,7 +1042,7 @@ header#header {
 .qty-control {
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 8px; /* Reducido de 15px para mayor estabilidad */
     background: var(--bg-alt);
     padding: 5px 10px;
     border-radius: 8px;
@@ -1065,7 +1065,7 @@ header#header {
 
 .qty-val {
     font-weight: 700;
-    min-width: 20px;
+    min-width: 42px; /* Aumentado de 20px para evitar saltos con decimales (0.5, 1.5, etc) */
     text-align: center;
 }
 
@@ -1117,7 +1117,7 @@ header#header {
 
 .custom-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 columnas en móvil */
+    grid-template-columns: repeat(2, minmax(0, 1fr)); /* 2 columnas en móvil */
     gap: 10px;
     margin-top: 16px;
 }

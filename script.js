@@ -217,6 +217,21 @@ function actualizarTextos() {
   })
 }
 
+function pluralizar(cantidad, palabra) {
+  if (!palabra || cantidad <= 1) return palabra;
+  const p = palabra.toLowerCase().trim();
+  if (p === 'kg' || p === 'kilo') return 'kilos';
+  if (p === 'unidad') return 'unidades';
+  if (p === 'atado') return 'atados';
+  if (p === 'maple') return 'maples';
+  if (p === 'cabeza') return 'cabezas';
+  if (p === 'bandeja') return 'bandejas';
+  
+  if (palabra.toLowerCase().endsWith('ón')) return palabra.slice(0, -2) + 'ones';
+  if (/[aeiouáéíóú]$/i.test(palabra)) return palabra + 's';
+  return palabra + 'es';
+}
+
 // Listas de palabras clave para clasificar productos (sin tildes, la función normaliza)
 const NOMBRES_VERDURAS = [
   'papa', 'cebolla comun', 'cebolla', 'cebolla morada', 'tomate', 'tomate cherry', 
@@ -492,11 +507,20 @@ function updateCartModalContent() {
             }
             total += subtotal;
 
+            const unitLabel = item.unit || item.unidad || 'kg';
+            let itemText;
+            if (unitLabel === 'unidad' || unitLabel === '') {
+              itemText = `${item.qty} ${pluralizar(item.qty, item.name)}`;
+            } else if (unitLabel.includes('kg') || unitLabel.includes('kilo')) {
+              itemText = `${item.qty} ${pluralizar(item.qty, 'kilo')} ${item.name}`;
+            } else {
+              itemText = `${item.qty} ${pluralizar(item.qty, unitLabel)} ${item.name}`;
+            }
+
             html += `
                 <div class="cart-modal-item">
                     <div class="cart-modal-item-info">
-                        <span class="cart-modal-item-name">${item.name}</span>
-                        <span class="cart-modal-item-qty">${item.qty} ${item.unit || ''}</span>
+                        <span class="cart-modal-item-name">${itemText}</span>
                     </div>
                     <span class="cart-modal-item-price">$${Math.floor(subtotal).toLocaleString('es-AR')}</span>
                 </div>
@@ -648,7 +672,14 @@ function updateSummary() {
 
             total += subtotal;
             const unitLabel = item.unit || item.unidad || 'kg';
-            const itemText = `${item.name} (${item.qty} ${unitLabel})`;
+            let itemText;
+            if (unitLabel === 'unidad' || unitLabel === '') {
+                itemText = `${item.qty} ${pluralizar(item.qty, item.name)}`;
+            } else if (unitLabel.includes('kg') || unitLabel.includes('kilo')) {
+                itemText = `${item.qty} ${pluralizar(item.qty, 'kilo')} ${item.name}`;
+            } else {
+                itemText = `${item.qty} ${pluralizar(item.qty, unitLabel)} ${item.name}`;
+            }
             const subtotalText = `$${Math.floor(subtotal).toLocaleString('es-AR')}`;
 
             itemsHtml += `
@@ -697,9 +728,16 @@ function updateSummary() {
 
     if (hiddenDetails) {
         const textSummary = Object.values(cart).map(item => {
-            const sub = Math.floor(item.unit === 'g' ? (item.price / 1000) * item.qty : item.price * item.qty);
             const unitLabel = item.unit || item.unidad || 'kg';
-            return `${item.name.toUpperCase()} (${item.qty} ${unitLabel})`;
+            let itemText;
+            if (unitLabel === 'unidad' || unitLabel === '') {
+                itemText = `${item.qty} ${pluralizar(item.qty, item.name)}`;
+            } else if (unitLabel.includes('kg') || unitLabel.includes('kilo')) {
+                itemText = `${item.qty} ${pluralizar(item.qty, 'kilo')} ${item.name}`;
+            } else {
+                itemText = `${item.qty} ${pluralizar(item.qty, unitLabel)} ${item.name}`;
+            }
+            return itemText.toUpperCase();
         }).join(', ');
 
         hiddenDetails.value = textSummary;
