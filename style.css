@@ -378,8 +378,8 @@ header#header {
     }
 
     .custom-grid {
-        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
-        gap: 25px !important; /* Espacio entre tarjetas aumentado a pedido del usuario */
+        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+        gap: 15px !important; /* Gap reducido para maximizar ancho de tarjeta en 4 columnas */
     }
 
     .combo-card {
@@ -1042,11 +1042,11 @@ header#header {
 .qty-control {
     display: flex;
     align-items: center;
-    gap: 10px; /* Un poco más de aire para comodidad */
+    gap: 8px; /* Reducido para ahorrar espacio en 4 columnas */
     background: var(--bg-alt);
-    padding: 6px 12px;
+    padding: 5px 10px;
     border-radius: 8px;
-    flex-shrink: 0; /* Impedir que el control se achique */
+    flex-shrink: 0;
 }
 
 .qty-btn {
@@ -1127,7 +1127,7 @@ header#header {
 /* Custom Product Items Enhancements */
 .product-item {
     background: white;
-    padding: 10px 15px;
+    padding: 10px;
     border-radius: 12px;
     display: flex;
     align-items: center;
@@ -1158,7 +1158,7 @@ header#header {
 }
 
 .product-details h4 {
-    font-size: 0.9rem; /* Un poco más grande para legibilidad */
+    font-size: 0.85rem;
     margin-bottom: 4px;
     white-space: nowrap;
     overflow: hidden;
