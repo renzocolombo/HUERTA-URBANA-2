@@ -378,8 +378,8 @@ header#header {
     }
 
     .custom-grid {
-        grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-        gap: 20px !important;
+        grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
+        gap: 25px !important; /* Espacio entre tarjetas aumentado a pedido del usuario */
     }
 
     .combo-card {
@@ -1042,10 +1042,11 @@ header#header {
 .qty-control {
     display: flex;
     align-items: center;
-    gap: 8px; /* Reducido de 15px para mayor estabilidad */
+    gap: 10px; /* Un poco más de aire para comodidad */
     background: var(--bg-alt);
-    padding: 5px 10px;
+    padding: 6px 12px;
     border-radius: 8px;
+    flex-shrink: 0; /* Impedir que el control se achique */
 }
 
 .qty-btn {
@@ -1065,8 +1066,9 @@ header#header {
 
 .qty-val {
     font-weight: 700;
-    min-width: 42px; /* Aumentado de 20px para evitar saltos con decimales (0.5, 1.5, etc) */
+    min-width: 50px; /* Aumentado a 50px para total estabilidad con '0.5', '10.5', etc */
     text-align: center;
+    font-variant-numeric: tabular-nums; /* Asegura que los números ocupen el mismo ancho */
 }
 
 /* Tabs System */
@@ -1125,14 +1127,14 @@ header#header {
 /* Custom Product Items Enhancements */
 .product-item {
     background: white;
-    padding: 8px 12px;
-    border-radius: 10px;
+    padding: 10px 15px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 12px;
     box-shadow: var(--shadow-sm);
     transition: var(--transition);
-    height: 68px; /* altura fija: todas las tarjetas iguales */
+    height: 82px; /* Aumentado de 68px para que los nombres respiren mejor */
     box-sizing: border-box;
     justify-content: space-between;
     overflow: hidden;
@@ -1156,11 +1158,11 @@ header#header {
 }
 
 .product-details h4 {
-    font-size: 0.8rem;
-    margin-bottom: 2px;
+    font-size: 0.9rem; /* Un poco más grande para legibilidad */
+    margin-bottom: 4px;
     white-space: nowrap;
     overflow: hidden;
-    text-overflow: ellipsis; /* nombre largo → truncado con ... */
+    text-overflow: ellipsis;
 }
 
 .product-details span {
