@@ -1066,7 +1066,7 @@ header#header {
 
 .qty-val {
     font-weight: 700;
-    min-width: 50px; /* Aumentado a 50px para total estabilidad con '0.5', '10.5', etc */
+    min-width: 60px; /* Aumentado a 60px para asegurar que '0.5' y '10.5' quepan sin mover los botones */
     text-align: center;
     font-variant-numeric: tabular-nums; /* Asegura que los números ocupen el mismo ancho */
 }
