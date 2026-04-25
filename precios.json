@@ -30,7 +30,7 @@
     {
       "nombre": "Lechuga",
       "precio": 3400,
-      "unidad": "",
+      "unidad": "unidad",
       "activo": true
     },
     {
@@ -66,7 +66,7 @@
     {
       "nombre": "Remolacha",
       "precio": 4250,
-      "unidad": "",
+      "unidad": "unidad",
       "activo": true
     },
     {
@@ -78,7 +78,7 @@
     {
       "nombre": "Brócoli",
       "precio": 2185.714285714286,
-      "unidad": "",
+      "unidad": "unidad",
       "activo": true
     },
     {
@@ -114,7 +114,7 @@
     {
       "nombre": "Palta",
       "precio": 2210,
-      "unidad": "",
+      "unidad": "unidad",
       "activo": true
     },
     {
@@ -174,7 +174,7 @@
     {
       "nombre": "Choclo",
       "precio": 765,
-      "unidad": "",
+      "unidad": "unidad",
       "activo": true
     },
     {
@@ -196,16 +196,16 @@
       "precio": 39575,
       "descripcion": "Papa 4kg, Cebolla 3kg, Zanahoria 2kg, Zapallo 2kg, Tomate 2kg, Banana 2kg, Huevos 1 maple, Lechuga 0.5 unidad, Rúcula 0.5 atado, Naranja 1kg",
       "items": [
-        "4kg Papa",
-        "3 Cebolla",
-        "2kg Zanahoria",
-        "2kg Zapallo blanco",
-        "2kg Tomate",
-        "2kg Banana",
+        "4 kilos Papa",
+        "3 Cebollas",
+        "2 kilos Zanahoria",
+        "2 kilos Zapallo blanco",
+        "2 kilos Tomate",
+        "2 kilos Banana",
         "1 maple Nº1 x30",
         "0.5 Lechuga",
         "0.5 atado Rúcula",
-        "1kg Naranja"
+        "1 kilo Naranja"
       ],
       "activo": true
     },
@@ -214,15 +214,15 @@
       "precio": 51525,
       "descripcion": "Papa 4kg, Cebolla 2kg, Zanahoria 2kg, Tomate 2kg, Zapallito 2kg, Banana 2kg, Naranja 2kg, Lechuga 0.5 unidad, Remolacha 2 unidades, Huevos 1 maple",
       "items": [
-        "4kg Papa",
-        "2 Cebolla",
-        "2kg Zanahoria",
-        "2kg Tomate",
-        "2kg Zapallito",
-        "2kg Banana",
-        "2kg Naranja",
+        "4 kilos Papa",
+        "2 Cebollas",
+        "2 kilos Zanahoria",
+        "2 kilos Tomate",
+        "2 kilos Zapallito",
+        "2 kilos Banana",
+        "2 kilos Naranja",
         "0.5 Lechuga",
-        "2 Remolacha",
+        "2 Remolachas",
         "1 maple Nº1 x30"
       ],
       "activo": true
@@ -232,18 +232,18 @@
       "precio": 38625,
       "descripcion": "Papa 2kg, Cebolla 1kg, Zanahoria 1kg, Tomate 1kg, Lechuga 0.5 unidad, Rúcula 0.5 atado, Banana 1kg, Manzana roja 1kg, Limón 1kg, Huevos 1 maple, Remolacha 1 unidad, Choclo 4 unidades",
       "items": [
-        "2kg Papa",
+        "2 kilos Papa",
         "1 Cebolla",
-        "1kg Zanahoria",
-        "1kg Tomate",
+        "1 kilo Zanahoria",
+        "1 kilo Tomate",
         "0.5 Lechuga",
         "0.5 atado Rúcula",
-        "1kg Banana",
-        "1kg Manzana roja",
-        "1kg Limón",
+        "1 kilo Banana",
+        "1 kilo Manzana roja",
+        "1 kilo Limón",
         "1 maple Nº1 x30",
         "1 Remolacha",
-        "4 Choclo"
+        "4 Choclos"
       ],
       "activo": true
     },
@@ -254,15 +254,15 @@
       "items": [
         "0.5 Lechuga",
         "0.5 atado Rúcula",
-        "1kg Espinaca",
-        "2kg Tomate",
-        "1kg Pepino",
-        "3 Palta",
-        "2kg Manzana roja",
-        "1kg Limón",
-        "2kg Banana",
-        "1kg Arándano",
-        "2 Remolacha"
+        "1 kilo Espinaca",
+        "2 kilos Tomate",
+        "1 kilo Pepino",
+        "3 Paltas",
+        "2 kilos Manzana roja",
+        "1 kilo Limón",
+        "2 kilos Banana",
+        "1 kilo Arándano",
+        "2 Remolachas"
       ],
       "activo": true
     },
@@ -271,20 +271,20 @@
       "precio": 66875,
       "descripcion": "Berenjena 2kg, Zapallito 2kg, Tomate 2kg, Zanahoria 2kg, Pepino 1kg, Brócoli 2 unidades, Espinaca 1kg, Lechuga 0.5 unidad, Rúcula 0.5 atado, Palta 3 unidades, Banana 2kg, Manzana roja 2kg, Limón 1kg, Remolacha 2 unidades",
       "items": [
-        "2kg Berenjena",
-        "2kg Zapallito",
-        "2kg Tomate",
-        "2kg Zanahoria",
-        "1kg Pepino",
-        "2 Brócoli",
-        "1kg Espinaca",
+        "2 kilos Berenjena",
+        "2 kilos Zapallito",
+        "2 kilos Tomate",
+        "2 kilos Zanahoria",
+        "1 kilo Pepino",
+        "2 Brócolis",
+        "1 kilo Espinaca",
         "0.5 Lechuga",
         "0.5 atado Rúcula",
-        "3 Palta",
-        "2kg Banana",
-        "2kg Manzana roja",
-        "1kg Limón",
-        "2 Remolacha"
+        "3 Paltas",
+        "2 kilos Banana",
+        "2 kilos Manzana roja",
+        "1 kilo Limón",
+        "2 Remolachas"
       ],
       "activo": true
     },
@@ -293,17 +293,17 @@
       "precio": 75725,
       "descripcion": "Papa 5kg, Cebolla 3kg, Zanahoria 2kg, Tomate 2kg, Zapallito 2kg, Banana 3kg, Naranja 2kg, Manzana roja 2kg, Lechuga 0.5 unidad, Remolacha 2 unidades, Choclo 6 unidades, Huevos 1 maple",
       "items": [
-        "5kg Papa",
-        "3 Cebolla",
-        "2kg Zanahoria",
-        "2kg Tomate",
-        "2kg Zapallito",
-        "3kg Banana",
-        "2kg Naranja",
-        "2kg Manzana roja",
+        "5 kilos Papa",
+        "3 Cebollas",
+        "2 kilos Zanahoria",
+        "2 kilos Tomate",
+        "2 kilos Zapallito",
+        "3 kilos Banana",
+        "2 kilos Naranja",
+        "2 kilos Manzana roja",
         "0.5 Lechuga",
-        "2 Remolacha",
-        "6 Choclo",
+        "2 Remolachas",
+        "6 Choclos",
         "1 maple Nº1 x30"
       ],
       "activo": true
@@ -313,17 +313,17 @@
       "precio": 78750,
       "descripcion": "Papa 3kg, Tomate 2kg, Morrón rojo 1kg, Banana 2kg, Manzana roja 2kg, Uva 1kg, Palta 3 unidades, Arándanos 1 bandeja, Huevos 2 maples, Miel 1kg, Espinaca 1kg",
       "items": [
-        "3kg Papa",
-        "2kg Tomate",
-        "1kg Morrón rojo",
-        "2kg Banana",
-        "2kg Manzana roja",
-        "1kg Uva",
-        "3 Palta",
-        "1kg Arándano",
-        "2 maple Nº1 x30",
-        "1kg Miel pura",
-        "1kg Espinaca"
+        "3 kilos Papa",
+        "2 kilos Tomate",
+        "1 kilo Morrón rojo",
+        "2 kilos Banana",
+        "2 kilos Manzana roja",
+        "1 kilo Uva",
+        "3 Paltas",
+        "1 kilo Arándano",
+        "2 maples Nº1 x30",
+        "1 kilo Miel pura",
+        "1 kilo Espinaca"
       ],
       "activo": true
     }
