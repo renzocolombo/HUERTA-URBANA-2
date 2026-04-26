@@ -174,7 +174,7 @@ const PRODUCTS = {
     }
 };
 
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyAIskGdqV0hg5xhsh7ieZiCekbWBBR-bmDEjBR1-4_Ah3vSrORRaqVnRqhBXRX1AA/exec'
+const PRECIOS_JSON_URL = 'https://raw.githubusercontent.com/renzocolombo/HUERTA-URBANA-2/main/precios.json'
 
 let MIN_PURCHASE = 35000;
 let cart = {};
@@ -188,16 +188,15 @@ let creditoAplicado = 0; // v5.5
 
 async function cargarPrecios() {
   try {
-    const response = await fetch(APPS_SCRIPT_URL + '?accion=getPreciosWeb')
+    const response = await fetch(PRECIOS_JSON_URL)
     const data = await response.json()
-    if (data.success) {
-      if (data.monto_minimo) MIN_PURCHASE = data.monto_minimo; // Sincronizado con dashboard
-      if (data.productos) actualizarProductos(data.productos)
-      if (data.combos) actualizarCombos(data.combos)
-      actualizarTextos()
-    }
+    
+    if (data.monto_minimo) MIN_PURCHASE = data.monto_minimo; // Sincronizado con dashboard
+    if (data.productos) actualizarProductos(data.productos)
+    if (data.combos) actualizarCombos(data.combos)
+    actualizarTextos()
   } catch (e) {
-    console.log('[PRECIOS] Usando datos locales')
+    console.log('[PRECIOS] Error cargando precios desde GitHub, usando datos locales:', e)
   }
 }
 
