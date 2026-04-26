@@ -30,8 +30,11 @@
     box-sizing: border-box;
 }
 
-html, body {
+html {
     overflow-x: hidden;
+}
+
+body {
     max-width: 100vw;
 }
 
@@ -264,6 +267,9 @@ header#header {
     html { scroll-padding-top: 55px; } /* Ajuste de scroll para el header finito */
     
     header#header { 
+        position: sticky !important;
+        top: 0 !important;
+        z-index: 1000 !important;
         padding: 1px 0; 
         min-height: auto; /* Quitamos el min-height viejo que era muy alto */
     }
