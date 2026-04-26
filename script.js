@@ -762,26 +762,33 @@ function updateSummary() {
     // Actualizar indicador de envío en el header (v4.0)
     const headerMsg = document.getElementById('shipping-header-msg');
 
+    const montoStr = `$${MIN_PURCHASE.toLocaleString('es-AR')}`;
+
     if (total >= MIN_PURCHASE) {
         // Estado: Éxito con monto
-        if (headerMsg) {
-            headerMsg.innerText = '¡Envío gratis!';
-            headerMsg.className = 'shipping-header-msg status-green';
-        }
-        minMsg.style.color = '#27ae60';
-        minMsg.innerText = '✅ Cupo mínimo alcanzado';
+        const spanHeader = document.getElementById('header-minima-monto');
+        if (spanHeader) spanHeader.textContent = '¡GRATIS!';
+        
+        const spanMinima = document.getElementById('compra-minima-monto');
+        if (spanMinima) spanMinima.textContent = 'ALCANZADO';
+
+        if (headerMsg) headerMsg.className = 'shipping-header-msg status-green';
+        if (minMsg) minMsg.style.color = '#27ae60';
         
         // Habilitar botón de envío
         submitBtn.disabled = false;
         submitBtn.classList.remove('btn-disabled');
     } else {
         // Estado: Pendiente de monto
-        if (headerMsg) {
-            headerMsg.innerText = `Envío gratis a partir de $${MIN_PURCHASE.toLocaleString('es-AR')}`;
-            headerMsg.className = 'shipping-header-msg status-red';
-        }
-        minMsg.style.color = '#e74c3c';
-        minMsg.innerText = `Compra mínima: $${MIN_PURCHASE.toLocaleString('es-AR')}`;
+        const spanHeader = document.getElementById('header-minima-monto');
+        if (spanHeader) spanHeader.textContent = montoStr;
+        
+        const spanMinima = document.getElementById('compra-minima-monto');
+        if (spanMinima) spanMinima.textContent = montoStr;
+
+        if (headerMsg) headerMsg.className = 'shipping-header-msg status-red';
+        if (minMsg) minMsg.style.color = '#e74c3c';
+
         submitBtn.disabled = true;
         submitBtn.classList.add('btn-disabled');
     }
