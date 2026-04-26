@@ -191,7 +191,7 @@ async function cargarPrecios() {
     const response = await fetch(APPS_SCRIPT_URL + '?accion=getPreciosWeb')
     const data = await response.json()
     if (data.success) {
-      MIN_PURCHASE = 35000; // Forzado a $35.000 por diseño v5.0
+      if (data.monto_minimo) MIN_PURCHASE = data.monto_minimo; // Sincronizado con dashboard
       if (data.productos) actualizarProductos(data.productos)
       if (data.combos) actualizarCombos(data.combos)
       actualizarTextos()
@@ -210,7 +210,7 @@ function actualizarTextos() {
     document.getElementById('footer-minima-monto')
   )
 
-  const ids = ['envio-gratis-monto', 'compra-minima-monto', 'footer-minima-monto']
+  const ids = ['envio-gratis-monto', 'compra-minima-monto', 'footer-minima-monto', 'header-minima-monto', 'terms-minima-monto']
   ids.forEach(id => {
     const el = document.getElementById(id)
     if (el) el.textContent = monto
