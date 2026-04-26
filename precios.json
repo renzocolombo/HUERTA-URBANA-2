@@ -1,11 +1,11 @@
 {
   "accion": "publicarPrecios",
-  "monto_minimo": 35000,
-  "mensaje_minimo": "El pedido mínimo es de $35.000",
+  "monto_minimo": 100,
+  "mensaje_minimo": "El pedido mínimo es de $100",
   "productos": [
     {
       "nombre": "Papa",
-      "precio": 1020,
+      "precio": 100,
       "unidad": "kg",
       "activo": true
     },
