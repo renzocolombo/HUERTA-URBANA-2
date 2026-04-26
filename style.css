@@ -379,7 +379,36 @@ header#header {
 
     .custom-grid {
         grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
-        gap: 15px !important; /* Gap reducido para maximizar ancho de tarjeta en 4 columnas */
+        gap: 8px !important; /* Gap reducido para mayor densidad */
+    }
+
+    /* Tarjetas de producto compactas en desktop (v3.0) */
+    .product-item {
+        height: 68px !important;
+        padding: 6px 10px !important;
+        gap: 10px !important;
+    }
+
+    .product-img {
+        width: 50px !important;
+        height: 50px !important;
+    }
+
+    .product-details h4 {
+        font-size: 0.82rem !important;
+    }
+
+    .product-details span {
+        font-size: 0.75rem !important;
+    }
+
+    .qty-control {
+        padding: 4px 8px !important;
+    }
+
+    .qty-val {
+        min-width: 50px !important;
+        font-size: 0.9rem !important;
     }
 
     .combo-card {
