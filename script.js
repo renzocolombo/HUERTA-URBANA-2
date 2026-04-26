@@ -203,6 +203,7 @@ async function cargarPrecios() {
 function actualizarTextos() {
   const monto = '$' + MIN_PURCHASE.toLocaleString('es-AR')
   console.log(`[TEXTOS] Sincronizando con MIN_PURCHASE: ${MIN_PURCHASE}`);
+  console.log('monto_minimo:', MIN_PURCHASE, 'elemento:', document.getElementById('header-minima-monto'));
   
   const ids = ['envio-gratis-monto', 'compra-minima-monto', 'footer-minima-monto', 'header-minima-monto', 'terms-minima-monto']
   ids.forEach(id => {
