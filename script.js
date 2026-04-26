@@ -766,8 +766,7 @@ function updateSummary() {
 
     if (total >= MIN_PURCHASE) {
         // Estado: Éxito con monto
-        const spanHeader = document.getElementById('header-minima-monto');
-        if (spanHeader) spanHeader.textContent = '¡GRATIS!';
+        if (headerMsg) headerMsg.textContent = '¡Envío GRATIS!';
         
         const spanMinima = document.getElementById('compra-minima-monto');
         if (spanMinima) spanMinima.textContent = 'ALCANZADO';
@@ -780,8 +779,7 @@ function updateSummary() {
         submitBtn.classList.remove('btn-disabled');
     } else {
         // Estado: Pendiente de monto
-        const spanHeader = document.getElementById('header-minima-monto');
-        if (spanHeader) spanHeader.textContent = montoStr;
+        if (headerMsg) headerMsg.textContent = 'Envío gratis a partir de ' + montoStr;
         
         const spanMinima = document.getElementById('compra-minima-monto');
         if (spanMinima) spanMinima.textContent = montoStr;
