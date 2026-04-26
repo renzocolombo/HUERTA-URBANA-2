@@ -1,9 +1,10 @@
-const CACHE_NAME = 'huerta-urbana-static-v75';
+const CACHE_NAME = 'huerta-urbana-static-v76';
 const ASSETS = [
   './',
   './style.css?v=54.0',
   './script.js?v=54.0',
   './auth.js?v=50.0',
+  './precios.json',
   './img/favicon.png',
   './manifest.json',
   './img/icon-maskable-192.png',
@@ -39,25 +40,27 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
 
-  // 1. Navegación e index.html: Network First (Priorizar red para frescura, fallback a caché para PWA)
-  if (e.request.mode === 'navigate' || url.pathname.endsWith('index.html') || url.pathname === '/') {
+  // 1. Archivos críticos: Network First (Priorizar red para frescura, fallback a caché si offline)
+  const isNetworkFirst = 
+    e.request.mode === 'navigate' || 
+    url.pathname.endsWith('index.html') || 
+    url.pathname === '/' ||
+    url.pathname.includes('script.js') ||
+    url.pathname.includes('style.css') ||
+    url.pathname.includes('precios.json');
+
+  if (isNetworkFirst) {
     e.respondWith(
       fetch(e.request)
         .catch(() => {
-          console.log('[SW] Modo offline: sirviendo desde caché');
-          return caches.match('/', { ignoreSearch: true });
+          console.log('[SW] Modo offline: sirviendo desde caché', url.pathname);
+          return caches.match(e.request, { ignoreSearch: true });
         })
     );
     return;
   }
 
-  // 2. Precios: Network Only (Siempre red para datos críticos)
-  if (url.pathname.includes('precios.json') || url.pathname.includes('getPreciosWeb')) {
-    e.respondWith(fetch(e.request));
-    return;
-  }
-
-  // 3. Resto de assets: Cache First (Velocidad para CSS/JS/Iconos)
+  // 2. Resto de assets: Cache First (Velocidad para imágenes/iconos)
   e.respondWith(
     caches.match(e.request, { ignoreSearch: true }).then((response) => {
       return response || fetch(e.request);
