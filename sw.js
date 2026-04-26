@@ -39,8 +39,8 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
 
-  // 1. Precios: Network Only (Siempre red, nunca caché)
-  if (url.pathname.includes('precios.json')) {
+  // 1. Datos externos y Precios: Network Only (Siempre red, nunca caché)
+  if (url.pathname.includes('precios.json') || url.hostname.includes('script.google.com')) {
     e.respondWith(fetch(e.request));
     return;
   }
