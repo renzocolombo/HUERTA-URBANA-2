@@ -4,7 +4,6 @@ const ASSETS = [
   './style.css?v=54.0',
   './script.js?v=54.0',
   './auth.js?v=50.0',
-  './precios.json',
   './img/favicon.png',
   './manifest.json',
   './img/icon-maskable-192.png',
@@ -40,14 +39,19 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
 
-  // 1. Archivos críticos: Network First (Priorizar red para frescura, fallback a caché si offline)
+  // 1. Precios: Network Only (Siempre red, nunca caché)
+  if (url.pathname.includes('precios.json')) {
+    e.respondWith(fetch(e.request));
+    return;
+  }
+
+  // 2. Archivos críticos: Network First (Priorizar red para frescura, fallback a caché si offline)
   const isNetworkFirst = 
     e.request.mode === 'navigate' || 
     url.pathname.endsWith('index.html') || 
     url.pathname === '/' ||
     url.pathname.includes('script.js') ||
-    url.pathname.includes('style.css') ||
-    url.pathname.includes('precios.json');
+    url.pathname.includes('style.css');
 
   if (isNetworkFirst) {
     e.respondWith(
@@ -60,7 +64,7 @@ self.addEventListener('fetch', (e) => {
     return;
   }
 
-  // 2. Resto de assets: Cache First (Velocidad para imágenes/iconos)
+  // 3. Resto de assets: Cache First (Velocidad para imágenes/iconos)
   e.respondWith(
     caches.match(e.request, { ignoreSearch: true }).then((response) => {
       return response || fetch(e.request);
