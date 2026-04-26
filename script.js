@@ -189,29 +189,16 @@ let creditoAplicado = 0; // v5.5
 
 async function cargarPrecios() {
   try {
-    const [resScript, resJson] = await Promise.all([
-      fetch(APPS_SCRIPT_URL + '?accion=getPreciosWeb').catch(e => null),
-      fetch(PRECIOS_JSON_URL).catch(e => null)
-    ]);
-    
-    if (resScript && resScript.ok) {
-      try {
-        const dataScript = await resScript.json();
-        if (dataScript.monto_minimo) MIN_PURCHASE = dataScript.monto_minimo;
-      } catch (e) { console.log('[PRECIOS] Error parseando Apps Script JSON'); }
+    const response = await fetch(APPS_SCRIPT_URL + '?accion=getPreciosWeb')
+    const data = await response.json()
+    if (data.success) {
+      if (data.monto_minimo) MIN_PURCHASE = data.monto_minimo
+      if (data.productos) actualizarProductos(data.productos)
+      if (data.combos) actualizarCombos(data.combos)
+      actualizarTextos()
     }
-    
-    if (resJson && resJson.ok) {
-      try {
-        const dataJson = await resJson.json();
-        if (dataJson.productos) actualizarProductos(dataJson.productos);
-        if (dataJson.combos) actualizarCombos(dataJson.combos);
-      } catch (e) { console.log('[PRECIOS] Error parseando GitHub JSON'); }
-    }
-    
-    actualizarTextos();
   } catch (e) {
-    console.log('[PRECIOS] Error general cargando precios:', e);
+    console.log('[PRECIOS] Usando datos locales')
   }
 }
 
