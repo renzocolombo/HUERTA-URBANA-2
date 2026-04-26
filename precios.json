@@ -5,7 +5,7 @@
   "productos": [
     {
       "nombre": "Papa",
-      "precio": 100,
+      "precio": 120,
       "unidad": "kg",
       "activo": true
     },
