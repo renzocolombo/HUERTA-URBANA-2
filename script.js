@@ -122,13 +122,13 @@ const PRODUCTS = {
             id: 'c1', name: 'Combo básico', price: 35000,
             desc: 'Mezcla esencial de frutas y verduras para arrancar la semana con energía y frescura.',
             img: 'https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&q=80&w=300',
-            items: ['2kg Papa blanca', '1kg Cebolla blanca', '1kg Tomate', '1/2kg Lechuga mantecosa', '1kg Manzana roja', '1kg Naranja']
+            items: ['2 kilos Papa blanca', '1 kilo Cebolla blanca', '1 kilo Tomate', '1/2 kilo Lechuga mantecosa', '1 kilo Manzana roja', '1 kilo Naranja']
         },
         {
             id: 'c2', name: 'Combo familiar', price: 65000,
             desc: 'Pensado para cubrir las necesidades de una familia, con frutas y verduras frescas para todos los días.',
             img: 'https://images.unsplash.com/photo-1490818387583-1baba5e638af?auto=format&fit=crop&q=80&w=300',
-            items: ['4kg Papa blanca', '2kg Cebolla blanca', '2kg Tomate', '1kg Lechuga mantecosa', '1kg Zanahoria', '1kg Calabaza anco', '2kg Manzana roja', '2kg Naranja', '1kg Banana']
+            items: ['4 kilos Papa blanca', '2 kilos Cebolla blanca', '2 kilos Tomate', '1 kilo Lechuga mantecosa', '1 kilo Zanahoria', '1 kilo Calabaza anco', '2 kilos Manzana roja', '2 kilos Naranja', '1 kilo Banana']
         },
         {
             id: 'c3', name: 'Combo premium', price: 95000,
@@ -152,7 +152,7 @@ const PRODUCTS = {
             id: 'c6', name: 'Combo semanal', price: 32000,
             desc: 'Mezcla pensada para una familia durante toda la semana, con frutas y verduras frescas de lunes a domingo.',
             img: 'https://images.unsplash.com/photo-1595855759920-86582396756a?auto=format&fit=crop&q=80&w=300',
-            items: ['2kg Papa blanca', '1kg Cebolla blanca', '1kg Tomate', '1kg Fruta Mezclada']
+            items: ['2 kilos Papa blanca', '1 kilo Cebolla blanca', '1 kilo Tomate', '1 kilo Fruta Mezclada']
         },
         {
             id: 'c7', name: 'Combo mensual', price: 120000,
@@ -513,7 +513,8 @@ function updateCartModalContent() {
             if (unitLabel.toLowerCase() === 'unidad' || unitLabel === '') {
                 itemText = `${displayQty} ${pluralizar(item.qty, item.name)}`;
             } else if (unitLabel.toLowerCase().includes('kg') || unitLabel.toLowerCase().includes('kilo')) {
-                itemText = `${displayQty} kg ${item.name}`;
+                const uKilo = item.qty <= 1 ? 'kilo' : 'kilos';
+                itemText = `${displayQty} ${uKilo} ${item.name}`;
             } else {
                 itemText = `${displayQty} ${pluralizar(item.qty, unitLabel)} ${item.name}`;
             }
@@ -547,7 +548,7 @@ function renderCombos() {
     combosContainer.innerHTML = PRODUCTS.combos.map(combo => {
         // La descripción ya suele traer la lista de productos (según la foto)
         // Vamos a usar esa descripción y agregarle el "expandir" si es muy larga.
-        let fullDesc = (combo.desc || '').replace(/\b0\.5\b/g, '1/2').replace(/\bunidad\b/gi, '').trim();
+        let fullDesc = (combo.desc || '').replace(/\b0\.5\b/g, '1/2').replace(/\b1\/2\b/g, '1/2 kilo').replace(/\bunidad\b/gi, '').replace(/\s+/g, ' ').trim();
         const maxLength = 80; // Un poco más de margen para la descripción
         let descHtml = fullDesc;
         let expandHtml = '';
@@ -678,7 +679,8 @@ function updateSummary() {
             if (unitLabel.toLowerCase() === 'unidad' || unitLabel === '') {
                 itemText = `${displayQty} ${pluralizar(item.qty, item.name)}`;
             } else if (unitLabel.toLowerCase().includes('kg') || unitLabel.toLowerCase().includes('kilo')) {
-                itemText = `${displayQty} kg ${item.name}`;
+                const uKilo = item.qty <= 1 ? 'kilo' : 'kilos';
+                itemText = `${displayQty} ${uKilo} ${item.name}`;
             } else {
                 itemText = `${displayQty} ${pluralizar(item.qty, unitLabel)} ${item.name}`;
             }
@@ -736,7 +738,8 @@ function updateSummary() {
             if (unitLabel.toLowerCase() === 'unidad' || unitLabel === '') {
                 itemText = `${displayQty} ${pluralizar(item.qty, item.name)}`;
             } else if (unitLabel.toLowerCase().includes('kg') || unitLabel.toLowerCase().includes('kilo')) {
-                itemText = `${displayQty} kg ${item.name}`;
+                const uKilo = item.qty <= 1 ? 'kilo' : 'kilos';
+                itemText = `${displayQty} ${uKilo} ${item.name}`;
             } else {
                 itemText = `${displayQty} ${pluralizar(item.qty, unitLabel)} ${item.name}`;
             }
@@ -876,6 +879,11 @@ async function processOrder(form) {
         "cantidad": formData.get("cantidad"),
         "total": totalNum - descuentoValor,
         "cupon": cuponAplicado ? cuponAplicado.codigo : '',
+        "uid": window.userUID || '',
+        "codigo_referido_usado": (function() {
+            const val = document.getElementById('cupon-input')?.value.trim().toUpperCase() || '';
+            return /^HU-[A-Z0-9]+$/.test(val) ? val : '';
+        })(),
         "descuento": descuentoValor,
         "acepto_tyc": localStorage.getItem('huerta_tyc_val') || 'SI',
         "acepto_publicidad": localStorage.getItem('huerta_pub_val') || 'NO',

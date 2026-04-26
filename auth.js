@@ -65,6 +65,7 @@ btnCloseLoginPopup.addEventListener('click', () => {
 let popupTimeout;
 
 onAuthStateChanged(auth, async (user) => {
+    window.userUID = user ? user.uid : '';
     if (user) {
         // Guardar/Actualizar en Firestore
         try {
