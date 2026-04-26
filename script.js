@@ -203,13 +203,8 @@ async function cargarPrecios() {
 
 function actualizarTextos() {
   const monto = '$' + MIN_PURCHASE.toLocaleString('es-AR')
+  console.log(`[TEXTOS] Sincronizando con MIN_PURCHASE: ${MIN_PURCHASE}`);
   
-  console.log('[MOBILE] spans encontrados:', 
-    document.getElementById('envio-gratis-monto'),
-    document.getElementById('compra-minima-monto'),
-    document.getElementById('footer-minima-monto')
-  )
-
   const ids = ['envio-gratis-monto', 'compra-minima-monto', 'footer-minima-monto', 'header-minima-monto', 'terms-minima-monto']
   ids.forEach(id => {
     const el = document.getElementById(id)
@@ -322,6 +317,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     initUI();
     renderCombos();
     renderCustomProducts();
+    actualizarTextos();
     updateSummary();
 
     // Corrección automática de desfasaje de scroll en carga inicial (v50.0)
