@@ -175,6 +175,7 @@ const PRODUCTS = {
 };
 
 const PRECIOS_JSON_URL = 'https://raw.githubusercontent.com/renzocolombo/HUERTA-URBANA-2/main/precios.json'
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyAIskGdqV0hg5xhsh7ieZiCekbWBBR-bmDEjBR1-4_Ah3vSrORRaqVnRqhBXRX1AA/exec';
 
 let MIN_PURCHASE = 35000;
 let cart = {};
@@ -188,15 +189,29 @@ let creditoAplicado = 0; // v5.5
 
 async function cargarPrecios() {
   try {
-    const response = await fetch(PRECIOS_JSON_URL)
-    const data = await response.json()
+    const [resScript, resJson] = await Promise.all([
+      fetch(APPS_SCRIPT_URL + '?accion=getPreciosWeb').catch(e => null),
+      fetch(PRECIOS_JSON_URL).catch(e => null)
+    ]);
     
-    if (data.monto_minimo) MIN_PURCHASE = data.monto_minimo; // Sincronizado con dashboard
-    if (data.productos) actualizarProductos(data.productos)
-    if (data.combos) actualizarCombos(data.combos)
-    actualizarTextos()
+    if (resScript && resScript.ok) {
+      try {
+        const dataScript = await resScript.json();
+        if (dataScript.monto_minimo) MIN_PURCHASE = dataScript.monto_minimo;
+      } catch (e) { console.log('[PRECIOS] Error parseando Apps Script JSON'); }
+    }
+    
+    if (resJson && resJson.ok) {
+      try {
+        const dataJson = await resJson.json();
+        if (dataJson.productos) actualizarProductos(dataJson.productos);
+        if (dataJson.combos) actualizarCombos(dataJson.combos);
+      } catch (e) { console.log('[PRECIOS] Error parseando GitHub JSON'); }
+    }
+    
+    actualizarTextos();
   } catch (e) {
-    console.log('[PRECIOS] Error cargando precios desde GitHub, usando datos locales:', e)
+    console.log('[PRECIOS] Error general cargando precios:', e);
   }
 }
 
