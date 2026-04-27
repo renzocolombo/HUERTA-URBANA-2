@@ -861,11 +861,11 @@ async function processOrder(form) {
 
     console.log("Método de pago detectado:", metodoPago);
 
+    const baseTotal = Object.values(cart).reduce((acc, item) => acc + (item.price * item.qty), 0);
     const totalNum = parseFloat(formData.get("total"));
-    let descuentoValor = 0;
-    if (cuponAplicado && cuponAplicado.tipo === 'porcentaje') {
-        descuentoValor = Math.floor(totalNum * cuponAplicado.valor / 100);
-    }
+    const cuponDescuentoMonto = (cuponAplicado && cuponAplicado.tipo === 'porcentaje') 
+        ? Math.floor(baseTotal * cuponAplicado.valor / 100) 
+        : 0;
 
     const orderData = {
         "numero_pedido": formData.get("numero_pedido"),
@@ -880,14 +880,16 @@ async function processOrder(form) {
         "metodo_pago": metodoPago,
         "producto": formData.get("producto"),
         "cantidad": formData.get("cantidad"),
-        "total": totalNum - descuentoValor,
+        "total": totalNum,
         "cupon": cuponAplicado ? cuponAplicado.codigo : '',
+        "cupon_codigo": document.getElementById('cupon-input')?.value.trim().toUpperCase() || '',
+        "cupon_descuento": cuponDescuentoMonto,
         "uid": window.userUID || '',
         "codigo_referido_usado": (function() {
             const val = document.getElementById('cupon-input')?.value.trim().toUpperCase() || '';
             return /^HU-[A-Z0-9]+$/.test(val) ? val : '';
         })(),
-        "descuento": descuentoValor,
+        "descuento": cuponDescuentoMonto,
         "acepto_tyc": localStorage.getItem('huerta_tyc_val') || 'SI',
         "acepto_publicidad": localStorage.getItem('huerta_pub_val') || 'NO',
         "estado": formData.get("estado"),
