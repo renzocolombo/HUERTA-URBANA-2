@@ -1,3 +1,4 @@
+
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
 import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
@@ -15,6 +16,16 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
+
+// Genera código de referido único tipo HU-XXXX
+const generarCodigoReferido = () => {
+    const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    let resultado = '';
+    for (let i = 0; i < 4; i++) {
+        resultado += caracteres.charAt(Math.floor(Math.random() * caracteres.length));
+    }
+    return `HU-${resultado}`;
+};
 
 // DOM Elements
 const userProfile = document.getElementById('user-profile');
@@ -73,25 +84,33 @@ onAuthStateChanged(auth, async (user) => {
             const docSnap = await getDoc(docRef);
 
             if (!docSnap.exists()) {
+                // Cliente nuevo — generar código de referido
                 await setDoc(docRef, {
                     uid: user.uid,
                     nombre: user.displayName,
                     email: user.email,
                     foto: user.photoURL,
                     creditos: 0,
+                    codigo_referido: generarCodigoReferido(),
                     fecha_registro: serverTimestamp()
                 });
                 window.userCredits = 0;
             } else {
                 const data = docSnap.data();
                 window.userCredits = data.creditos || 0;
+
+                // Si el cliente ya existe pero no tiene código de referido, generarlo
+                if (!data.codigo_referido) {
+                    await setDoc(docRef, {
+                        codigo_referido: generarCodigoReferido()
+                    }, { merge: true });
+                }
             }
 
             // Actualizar UI de créditos
             const fmtCredits = '$' + window.userCredits.toLocaleString('es-AR');
             const headerCredits = document.getElementById('credito-referidos');
             const formCredits = document.getElementById('available-credit');
-            const creditFormGroup = document.getElementById('credit-form-group');
 
             if (headerCredits) headerCredits.innerText = `${fmtCredits} créditos de referidos`;
             if (formCredits) formCredits.innerText = fmtCredits;
@@ -151,7 +170,7 @@ onAuthStateChanged(auth, async (user) => {
         panelUserEmail.innerText = user.email || '';
     } else {
         // Interfaz NO logueada
-        userProfile.style.display = 'flex'; // Siempre visible por diseño v5.1
+        userProfile.style.display = 'flex';
         userPic.style.display = 'none';
         userPic.src = '';
         
