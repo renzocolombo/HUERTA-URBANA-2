@@ -185,6 +185,7 @@ const CUPONES_VALIDOS = {
   'BIENVENIDO10': { tipo: 'porcentaje', valor: 10, descripcion: '10% de descuento de bienvenida' }
 }
 let cuponAplicado = null;
+let codigo_referido_usado = ''; // v5.6
 let creditoAplicado = 0; // v5.5
 
 async function cargarPrecios() {
@@ -345,21 +346,25 @@ document.addEventListener('DOMContentLoaded', async () => {
       
       if (CUPONES_VALIDOS[codigo]) {
         cuponAplicado = { codigo, ...CUPONES_VALIDOS[codigo] }
+        codigo_referido_usado = ''
         mensaje.textContent = `✅ Cupón aplicado — ${cuponAplicado.descripcion}`
         mensaje.className = 'cupon-mensaje exito'
         updateSummary()
         return
       }
       
-      if (/^[A-Z]{3,}[0-9]{4,}$/.test(codigo)) {
+      // Validación de código de referido HU-XXXX (v5.6)
+      if (/^HU-.{4}$/.test(codigo)) {
         cuponAplicado = { codigo, tipo: 'porcentaje', valor: 10, descripcion: '10% de descuento por referido' }
-        mensaje.textContent = `✅ Código de referido válido — 10% de descuento`
+        codigo_referido_usado = codigo
+        mensaje.textContent = `Código de referido aplicado ✅`
         mensaje.className = 'cupon-mensaje exito'
         updateSummary()
         return
       }
       
       cuponAplicado = null
+      codigo_referido_usado = ''
       mensaje.textContent = '❌ Cupón inválido o expirado'
       mensaje.className = 'cupon-mensaje error'
       updateSummary()
@@ -885,10 +890,7 @@ async function processOrder(form) {
         "cupon_codigo": document.getElementById('cupon-input')?.value.trim().toUpperCase() || '',
         "cupon_descuento": cuponDescuentoMonto,
         "uid": window.userUID || '',
-        "codigo_referido_usado": (function() {
-            const val = document.getElementById('cupon-input')?.value.trim().toUpperCase() || '';
-            return /^HU-[A-Z0-9]+$/.test(val) ? val : '';
-        })(),
+        "codigo_referido_usado": codigo_referido_usado,
         "descuento": cuponDescuentoMonto,
         "acepto_tyc": localStorage.getItem('huerta_tyc_val') || 'SI',
         "acepto_publicidad": localStorage.getItem('huerta_pub_val') || 'NO',
