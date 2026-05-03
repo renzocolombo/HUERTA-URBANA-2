@@ -84,16 +84,36 @@ onAuthStateChanged(auth, async (user) => {
 
             if (!docSnap.exists()) {
                 // Cliente nuevo — generar código de referido
+                const codigoReferido = generarCodigoReferido();
                 await setDoc(docRef, {
                     uid: user.uid,
                     nombre: user.displayName,
                     email: user.email,
                     foto: user.photoURL,
                     creditos: 0,
-                    codigo_referido: generarCodigoReferido(),
+                    codigo_referido: codigoReferido,
                     fecha_registro: serverTimestamp()
                 });
                 window.userCredits = 0;
+
+                // Enviar datos a Google Sheets (v6.0)
+                try {
+                    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyyAIskGdqV0hg5xhsh7ieZiCekbWBBR-bmDEjBR1-4_Ah3vSrORRaqVnRqhBXRX1AA/exec';
+                    fetch(APPS_SCRIPT_URL, {
+                        method: 'POST',
+                        mode: 'no-cors',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({
+                            accion: "guardarCliente",
+                            uid: user.uid,
+                            email: user.email,
+                            nombre: user.displayName,
+                            codigo_referido: codigoReferido
+                        })
+                    });
+                } catch (e) {
+                    console.error("Error al sincronizar con Google Sheets:", e);
+                }
             } else {
                 const data = docSnap.data();
                 window.userCredits = data.creditos || 0;
