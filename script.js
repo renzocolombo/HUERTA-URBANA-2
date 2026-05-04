@@ -185,7 +185,8 @@ const CUPONES_VALIDOS = {
   'BIENVENIDO10': { tipo: 'porcentaje', valor: 10, descripcion: '10% de descuento de bienvenida' }
 }
 let cuponAplicado = null;
-let codigo_referido_usado = ''; // v5.6
+let cupon_codigo = '';         // cupón de bienvenida → campo U del webhook
+let codigo_referido_usado = ''; // código de referido  → campo V del webhook
 let creditoAplicado = 0; // v5.5
 
 async function cargarPrecios() {
@@ -344,19 +345,22 @@ document.addEventListener('DOMContentLoaded', async () => {
         return
       }
       
+      // Caso 1: Cupón de bienvenida BIENVENIDO10 → campo U (cupon_codigo)
       if (CUPONES_VALIDOS[codigo]) {
         cuponAplicado = { codigo, ...CUPONES_VALIDOS[codigo] }
-        codigo_referido_usado = ''
+        cupon_codigo = codigo          // solo en campo U
+        codigo_referido_usado = ''     // campo V vacío
         mensaje.textContent = `✅ Cupón aplicado — ${cuponAplicado.descripcion}`
         mensaje.className = 'cupon-mensaje exito'
         updateSummary()
         return
       }
       
-      // Validación de código de referido HU-XXXX (v5.6)
+      // Caso 2: Código de referido HU-XXXX → campo V (codigo_referido_usado)
       if (/^HU-.{4}$/.test(codigo)) {
         cuponAplicado = { codigo, tipo: 'porcentaje', valor: 10, descripcion: '10% de descuento por referido' }
-        codigo_referido_usado = codigo
+        codigo_referido_usado = codigo // solo en campo V
+        cupon_codigo = ''              // campo U vacío
         mensaje.textContent = `Código de referido aplicado ✅`
         mensaje.className = 'cupon-mensaje exito'
         updateSummary()
@@ -364,6 +368,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       }
       
       cuponAplicado = null
+      cupon_codigo = ''
       codigo_referido_usado = ''
       mensaje.textContent = '❌ Cupón inválido o expirado'
       mensaje.className = 'cupon-mensaje error'
@@ -887,10 +892,10 @@ async function processOrder(form) {
         "cantidad": formData.get("cantidad"),
         "total": totalNum,
         "cupon": cuponAplicado ? cuponAplicado.codigo : '',
-        "cupon_codigo": document.getElementById('cupon-input')?.value.trim().toUpperCase() || '',
+        "cupon_codigo": cupon_codigo,           // campo U: solo cupones de bienvenida (ej: BIENVENIDO10)
         "cupon_descuento": cuponDescuentoMonto,
         "uid": window.userUID || '',
-        "codigo_referido_usado": codigo_referido_usado,
+        "codigo_referido_usado": codigo_referido_usado, // campo V: solo códigos HU-XXXX
         "descuento": cuponDescuentoMonto,
         "acepto_tyc": localStorage.getItem('huerta_tyc_val') || 'SI',
         "acepto_publicidad": localStorage.getItem('huerta_pub_val') || 'NO',
