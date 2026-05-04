@@ -94,7 +94,6 @@ onAuthStateChanged(auth, async (user) => {
                     codigo_referido: codigoReferido,
                     fecha_registro: serverTimestamp()
                 });
-                window.userCredits = 0;
 
                 // Enviar datos a Google Sheets (v6.0)
                 try {
@@ -116,7 +115,6 @@ onAuthStateChanged(auth, async (user) => {
                 }
             } else {
                 const data = docSnap.data();
-                window.userCredits = data.creditos || 0;
 
                 // Si el cliente ya existe pero no tiene código de referido, generarlo
                 if (!data.codigo_referido) {
@@ -124,6 +122,18 @@ onAuthStateChanged(auth, async (user) => {
                         codigo_referido: generarCodigoReferido()
                     }, { merge: true });
                 }
+            }
+
+            // Obtener crédito real desde Apps Script (en lugar de Firestore)
+            try {
+                const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxVo2asdOziGCgD8FIFN8WCIT8qtXHx91kBfweYDaNZNR6M98rNB_9e5twRq11G1C9W/exec';
+                const resp = await fetch(`${APPS_SCRIPT_URL}?accion=getCredito&uid=${encodeURIComponent(user.uid)}`);
+                const creditData = await resp.json();
+                window.userCredits = (creditData && typeof creditData.credito === 'number') ? creditData.credito : 0;
+                console.log('[CREDITO] Crédito obtenido desde Apps Script:', window.userCredits);
+            } catch (e) {
+                console.warn('[CREDITO] Error al obtener crédito desde Apps Script, usando 0:', e);
+                window.userCredits = 0;
             }
 
             // Actualizar UI de créditos
