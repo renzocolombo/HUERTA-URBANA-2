@@ -97,7 +97,7 @@ onAuthStateChanged(auth, async (user) => {
 
                 // Enviar datos a Google Sheets (v6.0)
                 try {
-                    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyHOan5n0wUgEodP4WCuf830d3X65rXUG9OWYbml_i39bNYHhbI20EKJ4Mpl6WZHCRi/exec';
+                    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6zXtx-EidR2Skyyq1tzT-Cvm088WVjiV1kVAoC9JJof6PgRtO0x64qcHHB57TyOav/exec';
                     fetch(APPS_SCRIPT_URL + '?accion=guardarCliente&uid=' + encodeURIComponent(user.uid) + '&email=' + encodeURIComponent(user.email) + '&nombre=' + encodeURIComponent(user.displayName) + '&codigo_referido=' + encodeURIComponent(codigoReferido));
                 } catch (e) {
                     console.error("Error al sincronizar con Google Sheets:", e);
@@ -117,7 +117,7 @@ onAuthStateChanged(auth, async (user) => {
 
                     // Sincronizar nuevo código con Google Sheets
                     try {
-                        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyHOan5n0wUgEodP4WCuf830d3X65rXUG9OWYbml_i39bNYHhbI20EKJ4Mpl6WZHCRi/exec';
+                        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6zXtx-EidR2Skyyq1tzT-Cvm088WVjiV1kVAoC9JJof6PgRtO0x64qcHHB57TyOav/exec';
                         fetch(APPS_SCRIPT_URL + '?accion=actualizarCodigoReferido&uid=' + encodeURIComponent(user.uid) + '&codigo_referido=' + encodeURIComponent(nuevoCodigo));
                         console.log("[AUTH] Sincronización de código de referido enviada a Apps Script");
                     } catch (e) {
@@ -128,7 +128,7 @@ onAuthStateChanged(auth, async (user) => {
 
             // Obtener crédito real desde Apps Script (en lugar de Firestore)
             try {
-                const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyHOan5n0wUgEodP4WCuf830d3X65rXUG9OWYbml_i39bNYHhbI20EKJ4Mpl6WZHCRi/exec';
+                const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6zXtx-EidR2Skyyq1tzT-Cvm088WVjiV1kVAoC9JJof6PgRtO0x64qcHHB57TyOav/exec';
                 const resp = await fetch(`${APPS_SCRIPT_URL}?accion=getCredito&uid=${encodeURIComponent(user.uid)}`);
                 const creditData = await resp.json();
                 window.userCredits = (creditData && typeof creditData.creditos === 'number') ? creditData.creditos : 0;
