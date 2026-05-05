@@ -115,6 +115,7 @@ onAuthStateChanged(auth, async (user) => {
                 }
             } else {
                 const data = docSnap.data();
+                console.log('[AUTH] Cliente existente en Firestore. codigo_referido actual:', JSON.stringify(data.codigo_referido));
 
                 // Si el cliente ya existe pero no tiene código de referido, generarlo
                 if (!data.codigo_referido) {
