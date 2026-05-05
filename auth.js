@@ -97,7 +97,7 @@ onAuthStateChanged(auth, async (user) => {
 
                 // Enviar datos a Google Sheets (v6.0)
                 try {
-                    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxVo2asdOziGCgD8FIFN8WCIT8qtXHx91kBfweYDaNZNR6M98rNB_9e5twRq11G1C9W/exec';
+                    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzInJjSZDYtFvyReLg4NMX4rdRSO_DFP0Z60jHTq4CvkyAvdN92qJE8-VO7JUWuKlAp/exec';
                     fetch(APPS_SCRIPT_URL, {
                         method: 'POST',
                         mode: 'no-cors',
@@ -126,7 +126,7 @@ onAuthStateChanged(auth, async (user) => {
 
             // Obtener crédito real desde Apps Script (en lugar de Firestore)
             try {
-                const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbxVo2asdOziGCgD8FIFN8WCIT8qtXHx91kBfweYDaNZNR6M98rNB_9e5twRq11G1C9W/exec';
+                const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzInJjSZDYtFvyReLg4NMX4rdRSO_DFP0Z60jHTq4CvkyAvdN92qJE8-VO7JUWuKlAp/exec';
                 const resp = await fetch(`${APPS_SCRIPT_URL}?accion=getCredito&uid=${encodeURIComponent(user.uid)}`);
                 const creditData = await resp.json();
                 window.userCredits = (creditData && typeof creditData.credito === 'number') ? creditData.credito : 0;
