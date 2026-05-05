@@ -118,9 +118,12 @@ onAuthStateChanged(auth, async (user) => {
 
                 // Si el cliente ya existe pero no tiene código de referido, generarlo
                 if (!data.codigo_referido) {
+                    console.log("[AUTH] El cliente no tiene código de referido. Generando uno...");
+                    const nuevoCodigo = generarCodigoReferido();
                     await setDoc(docRef, {
-                        codigo_referido: generarCodigoReferido()
+                        codigo_referido: nuevoCodigo
                     }, { merge: true });
+                    console.log("[AUTH] Código de referido generado y guardado en Firestore:", nuevoCodigo);
                 }
             }
 
