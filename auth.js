@@ -124,6 +124,24 @@ onAuthStateChanged(auth, async (user) => {
                         codigo_referido: nuevoCodigo
                     }, { merge: true });
                     console.log("[AUTH] Código de referido generado y guardado en Firestore:", nuevoCodigo);
+
+                    // Sincronizar nuevo código con Google Sheets
+                    try {
+                        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwHHl5DMaX2iTxfVtGo_NEG2LVfLnOmBQ5JE1woxxSLuXoE-L2Z5XNYEDqON-jmeJhA/exec';
+                        fetch(APPS_SCRIPT_URL, {
+                            method: 'POST',
+                            mode: 'no-cors',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({
+                                accion: "actualizarCodigoReferido",
+                                uid: user.uid,
+                                codigo_referido: nuevoCodigo
+                            })
+                        });
+                        console.log("[AUTH] Sincronización de código de referido enviada a Apps Script");
+                    } catch (e) {
+                        console.error("[AUTH] Error al sincronizar código con Apps Script:", e);
+                    }
                 }
             }
 
