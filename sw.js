@@ -1,9 +1,9 @@
-const CACHE_NAME = 'huerta-urbana-static-v76';
+const CACHE_NAME = 'huerta-urbana-static-v77';
 const ASSETS = [
   './',
   './style.css?v=54.0',
   './script.js?v=54.0',
-  './auth.js?v=50.0',
+  './auth.js?v=51.0',
   './img/favicon.png',
   './manifest.json',
   './img/icon-maskable-192.png',
@@ -51,7 +51,8 @@ self.addEventListener('fetch', (e) => {
     url.pathname.endsWith('index.html') || 
     url.pathname === '/' ||
     url.pathname.includes('script.js') ||
-    url.pathname.includes('style.css');
+    url.pathname.includes('style.css') ||
+    url.pathname.includes('auth.js');
 
   if (isNetworkFirst) {
     e.respondWith(
