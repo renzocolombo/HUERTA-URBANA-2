@@ -129,7 +129,7 @@ onAuthStateChanged(auth, async (user) => {
                 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwHHl5DMaX2iTxfVtGo_NEG2LVfLnOmBQ5JE1woxxSLuXoE-L2Z5XNYEDqON-jmeJhA/exec';
                 const resp = await fetch(`${APPS_SCRIPT_URL}?accion=getCredito&uid=${encodeURIComponent(user.uid)}`);
                 const creditData = await resp.json();
-                window.userCredits = (creditData && typeof creditData.credito === 'number') ? creditData.credito : 0;
+                window.userCredits = (creditData && typeof creditData.creditos === 'number') ? creditData.creditos : 0;
                 console.log('[CREDITO] Crédito obtenido desde Apps Script:', window.userCredits);
             } catch (e) {
                 console.warn('[CREDITO] Error al obtener crédito desde Apps Script, usando 0:', e);
