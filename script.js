@@ -175,7 +175,7 @@ const PRODUCTS = {
 };
 
 const PRECIOS_JSON_URL = 'https://raw.githubusercontent.com/renzocolombo/HUERTA-URBANA-2/main/precios.json'
-const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzInJjSZDYtFvyReLg4NMX4rdRSO_DFP0Z60jHTq4CvkyAvdN92qJE8-VO7JUWuKlAp/exec';
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbwHHl5DMaX2iTxfVtGo_NEG2LVfLnOmBQ5JE1woxxSLuXoE-L2Z5XNYEDqON-jmeJhA/exec';
 
 let MIN_PURCHASE = 35000;
 let cart = {};
