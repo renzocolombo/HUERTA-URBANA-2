@@ -98,7 +98,7 @@ onAuthStateChanged(auth, async (user) => {
 
                 // Enviar datos a Google Sheets (v6.0)
                 try {
-                    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6zXtx-EidR2Skyyq1tzT-Cvm088WVjiV1kVAoC9JJof6PgRtO0x64qcHHB57TyOav/exec';
+                    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz_NwZwNOo4rOJU9Rz_cskM7gsrofKfWyw9_mllXqibGnNLSWoRu4yaK3V2ajh8LmE/exec';
                     fetch(APPS_SCRIPT_URL + '?accion=guardarCliente&uid=' + encodeURIComponent(user.uid) + '&email=' + encodeURIComponent(user.email) + '&nombre=' + encodeURIComponent(user.displayName) + '&codigo_referido=' + encodeURIComponent(codigoReferido));
                 } catch (e) {
                     console.error("Error al sincronizar con Google Sheets:", e);
@@ -120,7 +120,7 @@ onAuthStateChanged(auth, async (user) => {
 
                     // Sincronizar nuevo código con Google Sheets
                     try {
-                        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6zXtx-EidR2Skyyq1tzT-Cvm088WVjiV1kVAoC9JJof6PgRtO0x64qcHHB57TyOav/exec';
+                        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbz_NwZwNOo4rOJU9Rz_cskM7gsrofKfWyw9_mllXqibGnNLSWoRu4yaK3V2ajh8LmE/exec';
                         fetch(APPS_SCRIPT_URL + '?accion=actualizarCodigoReferido&uid=' + encodeURIComponent(user.uid) + '&codigo_referido=' + encodeURIComponent(nuevoCodigo));
                         console.log("[AUTH] Sincronización de código de referido enviada a Apps Script");
                     } catch (e) {
