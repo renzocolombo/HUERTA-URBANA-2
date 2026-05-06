@@ -94,6 +94,7 @@ onAuthStateChanged(auth, async (user) => {
                     codigo_referido: codigoReferido,
                     fecha_registro: serverTimestamp()
                 });
+                window.userCredits = 0;
 
                 // Enviar datos a Google Sheets (v6.0)
                 try {
@@ -104,7 +105,9 @@ onAuthStateChanged(auth, async (user) => {
                 }
             } else {
                 const data = docSnap.data();
-                console.log('[AUTH] Cliente existente en Firestore. codigo_referido actual:', JSON.stringify(data.codigo_referido));
+                window.userCredits = data.creditos || 0;
+                console.log('[AUTH] Cliente existente en Firestore. Créditos:', window.userCredits);
+                console.log('[AUTH] codigo_referido actual:', JSON.stringify(data.codigo_referido));
 
                 // Si el cliente ya existe pero no tiene código de referido, generarlo
                 if (!data.codigo_referido) {
@@ -126,17 +129,7 @@ onAuthStateChanged(auth, async (user) => {
                 }
             }
 
-            // Obtener crédito real desde Apps Script (en lugar de Firestore)
-            try {
-                const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycby6zXtx-EidR2Skyyq1tzT-Cvm088WVjiV1kVAoC9JJof6PgRtO0x64qcHHB57TyOav/exec';
-                const resp = await fetch(`${APPS_SCRIPT_URL}?accion=getCredito&uid=${encodeURIComponent(user.uid)}`);
-                const creditData = await resp.json();
-                window.userCredits = (creditData && typeof creditData.creditos === 'number') ? creditData.creditos : 0;
-                console.log('[CREDITO] Crédito obtenido desde Apps Script:', window.userCredits);
-            } catch (e) {
-                console.warn('[CREDITO] Error al obtener crédito desde Apps Script, usando 0:', e);
-                window.userCredits = 0;
-            }
+
 
             // Actualizar UI de créditos
             const fmtCredits = '$' + window.userCredits.toLocaleString('es-AR');
