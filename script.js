@@ -431,16 +431,16 @@ document.addEventListener('DOMContentLoaded', async () => {
           descuentoCupon = Math.floor(subtotalBase * cuponAplicado.valor / 100);
       }
       const totalCarrito = subtotalBase - descuentoCupon;
-      const threshold = totalCarrito * 0.9;
+      const threshold = Math.ceil(totalCarrito * 0.9); // Redondeo v5.8
 
       if (window.userCredits <= threshold) {
         // El crédito es menor o igual al 90% del total -> se aplica todo
         finalizeCreditApplication(window.userCredits);
       } else {
         // El crédito supera el 90% -> mostrar popup de confirmación personalizado
-        const aplicar90 = Math.floor(threshold);
-        const aPagar = totalCarrito - aplicar90;
-        const restante = window.userCredits - aplicar90;
+        const aplicar90 = threshold;
+        const aPagar = Math.ceil(totalCarrito - aplicar90);
+        const restante = Math.ceil(window.userCredits - aplicar90);
         
         pendingCreditAmount = aplicar90;
         if (creditModalText) {
@@ -1130,10 +1130,10 @@ function copyLinkForSafari() {
     });
 }
 
-// Sincronizar UI de créditos v5.7
+// Sincronizar UI de créditos v5.8
 function updateCreditUI() {
     const remaining = (window.userCredits || 0) - (credito_usado || 0);
-    const fmtCredits = '$' + Math.floor(remaining).toLocaleString('es-AR');
+    const fmtCredits = '$' + Math.ceil(remaining).toLocaleString('es-AR'); // Redondeo v5.8
     
     const headerCredits = document.getElementById('credito-referidos');
     const formCredits = document.getElementById('available-credit');
