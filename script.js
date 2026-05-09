@@ -384,11 +384,13 @@ document.addEventListener('DOMContentLoaded', async () => {
 
     let pendingCreditAmount = 0;
 
+    const formatPesos = (n) => Math.round(n).toLocaleString('es-AR').replace(/[.,]$/, '');
+
     const finalizeCreditApplication = (amount) => {
       const mensaje = document.getElementById('credit-mensaje');
       creditoAplicado = amount;
       credito_usado = amount;
-      mensaje.textContent = `✅ Créditos aplicados: $${creditoAplicado.toLocaleString('es-AR')}`;
+      mensaje.textContent = `✅ Créditos aplicados: $${formatPesos(creditoAplicado)}`;
       mensaje.className = 'cupon-mensaje exito';
       document.getElementById('btn-aplicar-credito').innerText = 'Remover';
       
@@ -444,7 +446,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         pendingCreditAmount = aplicar90;
         if (creditModalText) {
-            creditModalText.innerHTML = `Tu crédito cubre más del 90% de tu compra.<br><br>Se aplicarán <strong>$${aplicar90.toLocaleString('es-AR')}</strong> de crédito.<br>Pagarás <strong>$${aPagar.toLocaleString('es-AR')}</strong><br>Te quedarán <strong>$${restante.toLocaleString('es-AR')}</strong> de crédito.`;
+            creditModalText.innerHTML = `Tu crédito cubre más del 90% de tu compra<br><br>Se aplicarán <strong>$${formatPesos(aplicar90)}</strong> de crédito<br>Pagarás <strong>$${formatPesos(aPagar)}</strong><br>Te quedarán <strong>$${formatPesos(restante)}</strong> de crédito`;
         }
         if (creditConfirmModal) creditConfirmModal.style.display = 'flex';
       }
@@ -1130,10 +1132,10 @@ function copyLinkForSafari() {
     });
 }
 
-// Sincronizar UI de créditos v6.0
+// Sincronizar UI de créditos v6.1
 function updateCreditUI() {
     const remaining = (window.userCredits || 0) - (credito_usado || 0);
-    const fmtCredits = '$' + Math.ceil(remaining).toLocaleString('es-AR'); // Redondeo v6.0
+    const fmtCredits = '$' + Math.round(remaining).toLocaleString('es-AR').replace(/[.,]$/, ''); 
     
     const headerCredits = document.getElementById('credito-referidos');
     const formCredits = document.getElementById('available-credit');
