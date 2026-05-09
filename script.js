@@ -188,6 +188,7 @@ let cuponAplicado = null;
 let cupon_codigo = '';         // cupón de bienvenida → campo U del webhook
 let codigo_referido_usado = ''; // código de referido  → campo V del webhook
 let creditoAplicado = 0; // v5.5
+let credito_usado = 0;   // v5.6 - monto real aplicado al pedido
 
 async function cargarPrecios() {
   try {
@@ -375,7 +376,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       updateSummary()
     })
 
-    // Lógica de Crédito Referido v5.5
+    // Lógica de Crédito Referido v5.6
     document.getElementById('btn-aplicar-credito')?.addEventListener('click', () => {
       const mensaje = document.getElementById('credit-mensaje');
       if (!window.userCredits || window.userCredits <= 0) {
@@ -386,15 +387,49 @@ document.addEventListener('DOMContentLoaded', async () => {
 
       if (creditoAplicado > 0) {
         creditoAplicado = 0;
+        credito_usado = 0;
         mensaje.textContent = 'Créditos removidos';
         mensaje.className = 'cupon-mensaje';
         document.getElementById('btn-aplicar-credito').innerText = 'Aplicar';
-      } else {
-        creditoAplicado = window.userCredits;
-        mensaje.textContent = `✅ Créditos aplicados: $${creditoAplicado.toLocaleString('es-AR')}`;
-        mensaje.className = 'cupon-mensaje exito';
-        document.getElementById('btn-aplicar-credito').innerText = 'Remover';
+        updateSummary();
+        return;
       }
+
+      // Calcular 90% del total actual (después de cupones)
+      const subtotalBase = Object.values(cart).reduce((acc, item) => acc + (item.price * item.qty), 0);
+      let descuentoCupon = 0;
+      if (cuponAplicado && cuponAplicado.tipo === 'porcentaje') {
+          descuentoCupon = Math.floor(subtotalBase * cuponAplicado.valor / 100);
+      }
+      const totalCarrito = subtotalBase - descuentoCupon;
+      const threshold = totalCarrito * 0.9;
+
+      let montoAAplicar = 0;
+
+      if (window.userCredits <= threshold) {
+        // El crédito es menor o igual al 90% del total -> se aplica todo
+        montoAAplicar = window.userCredits;
+      } else {
+        // El crédito supera el 90% -> mostrar popup de confirmación
+        const aplicar90 = Math.floor(threshold);
+        const aPagar = totalCarrito - aplicar90;
+        const restante = window.userCredits - aplicar90;
+        
+        const mensajePopup = `Tu crédito cubre más del 90% de tu compra. Se aplicarán $${aplicar90.toLocaleString('es-AR')} de crédito. Pagarás $${aPagar.toLocaleString('es-AR')}. Te quedarán $${restante.toLocaleString('es-AR')} de crédito.`;
+        
+        if (confirm(mensajePopup)) {
+            montoAAplicar = aplicar90;
+        } else {
+            return; // Cancelar
+        }
+      }
+
+      creditoAplicado = montoAAplicar;
+      credito_usado = montoAAplicar; // Guardar en variable global
+      mensaje.textContent = `✅ Créditos aplicados: $${creditoAplicado.toLocaleString('es-AR')}`;
+      mensaje.className = 'cupon-mensaje exito';
+      document.getElementById('btn-aplicar-credito').innerText = 'Remover';
+      
       updateSummary();
     });
 });
@@ -895,6 +930,7 @@ async function processOrder(form) {
         "cupon_codigo": cupon_codigo,           // campo U: solo cupones de bienvenida (ej: BIENVENIDO10)
         "cupon_descuento": cuponDescuentoMonto,
         "uid": window.userUID || '',
+        "credito_usado": credito_usado, // v5.6
         "codigo_referido_usado": codigo_referido_usado, // campo V: solo códigos HU-XXXX
         "descuento": cuponDescuentoMonto,
         "acepto_tyc": localStorage.getItem('huerta_tyc_val') || 'SI',
