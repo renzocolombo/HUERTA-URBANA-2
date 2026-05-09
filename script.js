@@ -430,7 +430,7 @@ document.addEventListener('DOMContentLoaded', async () => {
       if (cuponAplicado && cuponAplicado.tipo === 'porcentaje') {
           descuentoCupon = Math.floor(subtotalBase * cuponAplicado.valor / 100);
       }
-      const totalCarrito = subtotalBase - descuentoCupon;
+      const totalCarrito = Math.round(subtotalBase - descuentoCupon);
       const threshold = Math.floor(totalCarrito * 0.9); // Redondeo v6.0 (a favor del cliente)
 
       if (window.userCredits <= threshold) {
