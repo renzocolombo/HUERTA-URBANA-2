@@ -132,10 +132,11 @@ onAuthStateChanged(auth, async (user) => {
 
 
             // Actualizar UI de créditos v5.7
+            const fmtCredits = '$' + (window.userCredits || 0).toLocaleString('es-AR');
+            
             if (typeof updateCreditUI === 'function') {
                 updateCreditUI();
             } else {
-                const fmtCredits = '$' + window.userCredits.toLocaleString('es-AR');
                 const headerCredits = document.getElementById('credito-referidos');
                 const formCredits = document.getElementById('available-credit');
                 if (headerCredits) headerCredits.innerText = `${fmtCredits} créditos de referidos`;
