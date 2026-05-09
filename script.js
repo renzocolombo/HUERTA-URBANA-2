@@ -444,7 +444,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         
         pendingCreditAmount = aplicar90;
         if (creditModalText) {
-            creditModalText.innerHTML = `Tu crédito cubre más del 90% de tu compra.<br><br>Se aplicarán <strong>$${aplicar90.toLocaleString('es-AR')}</strong> de crédito.<br>Pagarás <strong>$${aPagar.toLocaleString('es-AR')}</strong>.<br>Te quedarán <strong>$${restante.toLocaleString('es-AR')}</strong> de crédito.`;
+            creditModalText.innerHTML = `Tu crédito cubre más del 90% de tu compra.<br><br>Se aplicarán <strong>$${aplicar90.toLocaleString('es-AR')}</strong> de crédito.<br>Pagarás <strong>$${aPagar.toLocaleString('es-AR')}</strong><br>Te quedarán <strong>$${restante.toLocaleString('es-AR')}</strong> de crédito.`;
         }
         if (creditConfirmModal) creditConfirmModal.style.display = 'flex';
       }
