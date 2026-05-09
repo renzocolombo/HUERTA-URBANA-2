@@ -131,13 +131,16 @@ onAuthStateChanged(auth, async (user) => {
 
 
 
-            // Actualizar UI de créditos
-            const fmtCredits = '$' + window.userCredits.toLocaleString('es-AR');
-            const headerCredits = document.getElementById('credito-referidos');
-            const formCredits = document.getElementById('available-credit');
-
-            if (headerCredits) headerCredits.innerText = `${fmtCredits} créditos de referidos`;
-            if (formCredits) formCredits.innerText = fmtCredits;
+            // Actualizar UI de créditos v5.7
+            if (typeof updateCreditUI === 'function') {
+                updateCreditUI();
+            } else {
+                const fmtCredits = '$' + window.userCredits.toLocaleString('es-AR');
+                const headerCredits = document.getElementById('credito-referidos');
+                const formCredits = document.getElementById('available-credit');
+                if (headerCredits) headerCredits.innerText = `${fmtCredits} créditos de referidos`;
+                if (formCredits) formCredits.innerText = fmtCredits;
+            }
             
             // UI del Formulario v8.0
             const creditBtn = document.getElementById('btn-aplicar-credito');

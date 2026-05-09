@@ -2737,4 +2737,132 @@ select option {
         from { transform: scale(0.9); opacity: 0; }
         to { transform: scale(1); opacity: 1; }
     }
-}
+}
+
+/* Modal Confirmación Crédito v5.7 */
+#credit-confirm-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(8px);
+    z-index: 100000;
+    display: none; /* Controlado por JS */
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.credit-modal-card {
+    background: white;
+    width: 100%;
+    max-width: 450px;
+    border-radius: 20px;
+    border: 2px solid #2d5a27;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+    animation: modalSlideIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+@keyframes modalSlideIn {
+    from { transform: translateY(30px) scale(0.9); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+}
+
+.credit-modal-header {
+    background: #f1f5f1;
+    padding: 25px;
+    text-align: center;
+    border-bottom: 1px solid rgba(45, 90, 39, 0.1);
+}
+
+.credit-modal-header ion-icon {
+    font-size: 3.5rem;
+    color: #2d5a27;
+    margin-bottom: 10px;
+}
+
+.credit-modal-header h3 {
+    color: #2d5a27;
+    font-size: 1.4rem;
+    font-weight: 800;
+    margin: 0;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.credit-modal-body {
+    padding: 30px;
+    text-align: center;
+}
+
+.credit-modal-body p {
+    font-size: 1.15rem;
+    line-height: 1.6;
+    color: #333;
+    font-weight: 500;
+    margin: 0;
+}
+
+.credit-modal-body strong {
+    color: #2d5a27;
+    font-weight: 800;
+}
+
+.credit-modal-footer {
+    padding: 0 30px 30px;
+    display: flex;
+    gap: 15px;
+}
+
+.btn-modal-cancel, .btn-modal-confirm {
+    flex: 1;
+    padding: 16px;
+    border-radius: 14px;
+    font-weight: 800;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    border: none;
+    font-family: 'Montserrat', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.btn-modal-cancel {
+    background: #f5f5f5;
+    color: #666;
+}
+
+.btn-modal-cancel:hover {
+    background: #eee;
+    transform: translateY(-2px);
+}
+
+.btn-modal-confirm {
+    background: #2d5a27;
+    color: white;
+    box-shadow: 0 4px 15px rgba(45, 90, 39, 0.3);
+}
+
+.btn-modal-confirm:hover {
+    background: #254a20;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 25px rgba(45, 90, 39, 0.4);
+}
+
+@media (max-width: 480px) {
+    .credit-modal-card {
+        max-width: 100%;
+        border-radius: 24px;
+    }
+    .credit-modal-header h3 {
+        font-size: 1.2rem;
+    }
+    .credit-modal-body p {
+        font-size: 1rem;
+    }
+    .btn-modal-cancel, .btn-modal-confirm {
+        padding: 14px;
+        font-size: 0.9rem;
+    }
+}
+

@@ -376,7 +376,35 @@ document.addEventListener('DOMContentLoaded', async () => {
       updateSummary()
     })
 
-    // Lógica de Crédito Referido v5.6
+    // Lógica de Crédito Referido v5.7
+    const creditConfirmModal = document.getElementById('credit-confirm-modal');
+    const creditModalText = document.getElementById('credit-modal-text');
+    const btnConfirmCredit = document.getElementById('btn-modal-confirm-credit');
+    const btnCancelCredit = document.getElementById('btn-modal-cancel-credit');
+
+    let pendingCreditAmount = 0;
+
+    const finalizeCreditApplication = (amount) => {
+      const mensaje = document.getElementById('credit-mensaje');
+      creditoAplicado = amount;
+      credito_usado = amount;
+      mensaje.textContent = `✅ Créditos aplicados: $${creditoAplicado.toLocaleString('es-AR')}`;
+      mensaje.className = 'cupon-mensaje exito';
+      document.getElementById('btn-aplicar-credito').innerText = 'Remover';
+      
+      updateSummary();
+      updateCreditUI();
+      if (creditConfirmModal) creditConfirmModal.style.display = 'none';
+    };
+
+    btnConfirmCredit?.addEventListener('click', () => {
+        finalizeCreditApplication(pendingCreditAmount);
+    });
+
+    btnCancelCredit?.addEventListener('click', () => {
+        if (creditConfirmModal) creditConfirmModal.style.display = 'none';
+    });
+
     document.getElementById('btn-aplicar-credito')?.addEventListener('click', () => {
       const mensaje = document.getElementById('credit-mensaje');
       if (!window.userCredits || window.userCredits <= 0) {
@@ -392,6 +420,7 @@ document.addEventListener('DOMContentLoaded', async () => {
         mensaje.className = 'cupon-mensaje';
         document.getElementById('btn-aplicar-credito').innerText = 'Aplicar';
         updateSummary();
+        updateCreditUI();
         return;
       }
 
@@ -404,33 +433,21 @@ document.addEventListener('DOMContentLoaded', async () => {
       const totalCarrito = subtotalBase - descuentoCupon;
       const threshold = totalCarrito * 0.9;
 
-      let montoAAplicar = 0;
-
       if (window.userCredits <= threshold) {
         // El crédito es menor o igual al 90% del total -> se aplica todo
-        montoAAplicar = window.userCredits;
+        finalizeCreditApplication(window.userCredits);
       } else {
-        // El crédito supera el 90% -> mostrar popup de confirmación
+        // El crédito supera el 90% -> mostrar popup de confirmación personalizado
         const aplicar90 = Math.floor(threshold);
         const aPagar = totalCarrito - aplicar90;
         const restante = window.userCredits - aplicar90;
         
-        const mensajePopup = `Tu crédito cubre más del 90% de tu compra. Se aplicarán $${aplicar90.toLocaleString('es-AR')} de crédito. Pagarás $${aPagar.toLocaleString('es-AR')}. Te quedarán $${restante.toLocaleString('es-AR')} de crédito.`;
-        
-        if (confirm(mensajePopup)) {
-            montoAAplicar = aplicar90;
-        } else {
-            return; // Cancelar
+        pendingCreditAmount = aplicar90;
+        if (creditModalText) {
+            creditModalText.innerHTML = `Tu crédito cubre más del 90% de tu compra.<br><br>Se aplicarán <strong>$${aplicar90.toLocaleString('es-AR')}</strong> de crédito.<br>Pagarás <strong>$${aPagar.toLocaleString('es-AR')}</strong>.<br>Te quedarán <strong>$${restante.toLocaleString('es-AR')}</strong> de crédito.`;
         }
+        if (creditConfirmModal) creditConfirmModal.style.display = 'flex';
       }
-
-      creditoAplicado = montoAAplicar;
-      credito_usado = montoAAplicar; // Guardar en variable global
-      mensaje.textContent = `✅ Créditos aplicados: $${creditoAplicado.toLocaleString('es-AR')}`;
-      mensaje.className = 'cupon-mensaje exito';
-      document.getElementById('btn-aplicar-credito').innerText = 'Remover';
-      
-      updateSummary();
     });
 });
 
@@ -1113,3 +1130,18 @@ function copyLinkForSafari() {
     });
 }
 
+// Sincronizar UI de créditos v5.7
+function updateCreditUI() {
+    const remaining = (window.userCredits || 0) - (credito_usado || 0);
+    const fmtCredits = '$' + Math.floor(remaining).toLocaleString('es-AR');
+    
+    const headerCredits = document.getElementById('credito-referidos');
+    const formCredits = document.getElementById('available-credit');
+
+    if (headerCredits) {
+        headerCredits.innerText = `${fmtCredits} créditos de referidos`;
+    }
+    if (formCredits) {
+        formCredits.innerText = fmtCredits;
+    }
+}
