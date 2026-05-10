@@ -974,7 +974,7 @@ async function processOrder(form) {
 
         if (response.ok) {
             const textResponse = await response.text();
-            console.log("Respuesta recibida (raw):", textResponse);
+            console.log("Respuesta de Make:", textResponse);
             
             let data = {};
             try {
@@ -992,7 +992,7 @@ async function processOrder(form) {
                     window.location.href = data.url;
                 } else {
                     console.error("Error: URL de pago no encontrada en la respuesta");
-                    alert("Hubo un error al generar el link de pago. Por favor, intenta de nuevo o elige Efectivo.");
+                    alert("Hubo un error al generar el link de pago. Por favor intentá de nuevo o contactanos por WhatsApp al 11 6177-1376");
                     submitBtn.disabled = false;
                     submitBtn.innerText = originalBtnText;
                 }
