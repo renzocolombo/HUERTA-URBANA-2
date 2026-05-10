@@ -952,8 +952,7 @@ async function processOrder(form) {
         "credito_usado": credito_usado, // v5.6
         "codigo_referido_usado": codigo_referido_usado, // campo V: solo códigos HU-XXXX
         "descuento": cuponDescuentoMonto,
-        "acepto_tyc": localStorage.getItem('huerta_tyc_val') || 'SI',
-        "acepto_publicidad": localStorage.getItem('huerta_pub_val') || 'NO',
+        "acepto_tc_publicidad": 'SI', // columna AA - siempre SI al confirmar pedido
         "estado": formData.get("estado"),
         "observaciones": formData.get("observaciones") || 'Sin observaciones',
         "fecha_entrega": formData.get("fecha_entrega"),
