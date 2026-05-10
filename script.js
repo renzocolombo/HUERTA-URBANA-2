@@ -774,7 +774,7 @@ function updateSummary() {
     let actualDescuentoCredito = 0;
     
     if (creditoAplicado > 0) {
-        actualDescuentoCredito = Math.min(subtotalPostCupon, creditoAplicado);
+        actualDescuentoCredito = Math.floor(Math.min(subtotalPostCupon, creditoAplicado));
         itemsHtml += `
             <div class="summary-item discount-item" style="color: #22c55e; font-weight: 600;">
                 <span>Créditos aplicados</span>
@@ -785,9 +785,9 @@ function updateSummary() {
 
     summaryItems.innerHTML = itemsHtml;
 
-    const totalFinal = subtotalPostCupon - actualDescuentoCredito;
-    summaryTotal.innerText = `$${Math.floor(totalFinal).toLocaleString('es-AR')}`;
-    headerTotal.innerText = `$${Math.floor(totalFinal).toLocaleString('es-AR')}`;
+    const totalFinal = Math.ceil(subtotalPostCupon - actualDescuentoCredito);
+    summaryTotal.innerText = `$${totalFinal.toLocaleString('es-AR')}`;
+    headerTotal.innerText = `$${totalFinal.toLocaleString('es-AR')}`;
 
     // Sincronizar con campo de producto para el JSON de Make
     const hiddenDetails = document.getElementById('hidden-details');
