@@ -973,8 +973,18 @@ async function processOrder(form) {
         });
 
         if (response.ok) {
-            const data = await response.json();
-            console.log("Respuesta recibida:", data);
+            const textResponse = await response.text();
+            console.log("Respuesta recibida (raw):", textResponse);
+            
+            let data = {};
+            try {
+                data = JSON.parse(textResponse);
+            } catch (e) {
+                console.warn("Respuesta de webhook no es JSON válido. Intentando parsear como texto.");
+                if (textResponse.trim().startsWith('http')) {
+                    data = { url: textResponse.trim() };
+                }
+            }
 
             // Redirección Automática (Mercado Pago)
             if (metodoPago === 'mercadopago') {
@@ -983,6 +993,8 @@ async function processOrder(form) {
                 } else {
                     console.error("Error: URL de pago no encontrada en la respuesta");
                     alert("Hubo un error al generar el link de pago. Por favor, intenta de nuevo o elige Efectivo.");
+                    submitBtn.disabled = false;
+                    submitBtn.innerText = originalBtnText;
                 }
                 return;
             }
