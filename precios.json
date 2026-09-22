@@ -191,7 +191,7 @@
     },
     {
       "nombre": "Latas de choclo",
-      "precio": 120,
+      "precio": 0,
       "unidad": "",
       "activo": true
     },
