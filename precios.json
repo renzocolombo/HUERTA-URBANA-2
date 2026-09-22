@@ -1,7 +1,7 @@
 {
   "accion": "publicarPrecios",
-  "monto_minimo": 106,
-  "mensaje_minimo": "El pedido mínimo es de $106",
+  "monto_minimo": 35000,
+  "mensaje_minimo": "El pedido mínimo es de $35.000",
   "productos": [
     {
       "nombre": "Papa",
@@ -10,20 +10,20 @@
       "activo": true
     },
     {
-      "nombre": "Cebolla ",
-      "precio": 850,
+      "nombre": "Cebolla",
+      "precio": 894.736842105263,
       "unidad": "kg",
       "activo": true
     },
     {
       "nombre": "Tomate",
-      "precio": 1888.8888888888887,
+      "precio": 2000,
       "unidad": "kg",
       "activo": true
     },
     {
       "nombre": "Zanahoria",
-      "precio": 1700,
+      "precio": 1888.8888888888887,
       "unidad": "kg",
       "activo": true
     },
@@ -35,19 +35,19 @@
     },
     {
       "nombre": "Zapallito",
-      "precio": 1275,
+      "precio": 1342.1052631578948,
       "unidad": "kg",
       "activo": true
     },
     {
       "nombre": "Zapallo blanco",
-      "precio": 1360,
+      "precio": 1457.142857142857,
       "unidad": "kg",
       "activo": true
     },
     {
-      "nombre": "Morrón rojo",
-      "precio": 4675,
+      "nombre": "Morrón rojo rojo",
+      "precio": 5342.857142857142,
       "unidad": "kg",
       "activo": true
     },
@@ -59,7 +59,7 @@
     },
     {
       "nombre": "Espinaca",
-      "precio": 1700,
+      "precio": 1854.5454545454547,
       "unidad": "kg",
       "activo": true
     },
@@ -71,7 +71,7 @@
     },
     {
       "nombre": "Pepino",
-      "precio": 1360,
+      "precio": 1457.142857142857,
       "unidad": "kg",
       "activo": true
     },
@@ -83,31 +83,31 @@
     },
     {
       "nombre": "Cebolla morada",
-      "precio": 2077.777777777778,
+      "precio": 2199.9999999999995,
       "unidad": "kg",
       "activo": true
     },
     {
       "nombre": "Cabutia",
-      "precio": 1275,
+      "precio": 1342.1052631578948,
       "unidad": "kg",
       "activo": true
     },
     {
       "nombre": "Ajo",
       "precio": 952,
-      "unidad": "cabeza",
+      "unidad": "",
       "activo": true
     },
     {
       "nombre": "Tomate cherry",
-      "precio": 6071.428571428572,
+      "precio": 7083.333333333334,
       "unidad": "kg",
       "activo": true
     },
     {
       "nombre": "Berenjena",
-      "precio": 2040,
+      "precio": 2266.6666666666665,
       "unidad": "kg",
       "activo": true
     },
@@ -119,55 +119,55 @@
     },
     {
       "nombre": "Manzana roja",
-      "precio": 5950,
+      "precio": 6611.11111111111,
       "unidad": "kg",
       "activo": true
     },
     {
       "nombre": "Banana",
-      "precio": 3570,
+      "precio": 3757.8947368421054,
       "unidad": "kg",
       "activo": true
     },
     {
       "nombre": "Naranja",
-      "precio": 3740,
+      "precio": 4155.555555555556,
       "unidad": "kg",
       "activo": true
     },
     {
       "nombre": "Manzana verde",
-      "precio": 3825,
+      "precio": 4026.3157894736837,
       "unidad": "kg",
       "activo": true
     },
     {
       "nombre": "Limón",
-      "precio": 3173.3333333333335,
+      "precio": 3400,
       "unidad": "kg",
       "activo": true
     },
     {
       "nombre": "Durazno",
-      "precio": 5409.090909090909,
+      "precio": 5950,
       "unidad": "kg",
       "activo": true
     },
     {
       "nombre": "Pomelo",
-      "precio": 3187.5,
+      "precio": 3400,
       "unidad": "kg",
       "activo": true
     },
     {
       "nombre": "Uva",
-      "precio": 5100,
+      "precio": 5666.666666666667,
       "unidad": "kg",
       "activo": true
     },
     {
       "nombre": "Arándano",
-      "precio": 3541.666666666667,
+      "precio": 3863.636363636363,
       "unidad": "kg",
       "activo": true
     },
@@ -188,6 +188,192 @@
       "precio": 6500,
       "unidad": "maple x30 uds",
       "activo": true
+    },
+    {
+      "nombre": "Latas de choclo",
+      "precio": 120,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Harina leudante Favorita",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Harina 0000",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Fideos tallarines",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Fideos guiseros",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Arroz blanco",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Aceite de girasol",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Azúcar común",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Sal fina",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Yerba mate",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Atún al natural",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Puré de tomate",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Arvejas en lata",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Mayonesa",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Coca Cola 1.5L",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Agua mineral 1.5L",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Soda sifón",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Jugo de naranja",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Detergente lavavajilla",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Lavandina común",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Jabón líquido ropa",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Papel higiénico x4",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Rollo de cocina",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Leche entera 1L",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Yogur bebible 1L",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Queso cremoso",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Manteca 200g",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Dulce de leche 400g",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Alfajor de chocolate",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Galletitas dulces",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
+    },
+    {
+      "nombre": "Snack papas fritas",
+      "precio": 0,
+      "unidad": "",
+      "activo": true
     }
   ],
   "combos": [
@@ -197,7 +383,7 @@
       "descripcion": "Papa 4kg, Cebolla 3kg, Zanahoria 2kg, Zapallo 2kg, Tomate 2kg, Banana 2kg, Huevos 1 maple, Lechuga 1/2 kilo, Rúcula 1/2 atado, Naranja 1kg",
       "items": [
         "4 kilos Papa",
-        "3 Cebollas",
+        "3 kilos Cebolla",
         "2 kilos Zanahoria",
         "2 kilos Zapallo blanco",
         "2 kilos Tomate",
@@ -215,7 +401,7 @@
       "descripcion": "Papa 4kg, Cebolla 2kg, Zanahoria 2kg, Tomate 2kg, Zapallito 2kg, Banana 2kg, Naranja 2kg, Lechuga 1/2 kilo, Remolacha 2, Huevos 1 maple",
       "items": [
         "4 kilos Papa",
-        "2 Cebollas",
+        "2 kilos Cebolla",
         "2 kilos Zanahoria",
         "2 kilos Tomate",
         "2 kilos Zapallito",
@@ -233,7 +419,7 @@
       "descripcion": "Papa 2kg, Cebolla 1kg, Zanahoria 1kg, Tomate 1kg, Lechuga 1/2 kilo, Rúcula 1/2 atado, Banana 1kg, Manzana roja 1kg, Limón 1kg, Huevos 1 maple, Remolacha 1, Choclo 4",
       "items": [
         "2 kilos Papa",
-        "1 Cebolla",
+        "1 kilo Cebolla",
         "1 kilo Zanahoria",
         "1 kilo Tomate",
         "1/2 kilo Lechuga",
@@ -294,7 +480,7 @@
       "descripcion": "Papa 5kg, Cebolla 3kg, Zanahoria 2kg, Tomate 2kg, Zapallito 2kg, Banana 3kg, Naranja 2kg, Manzana roja 2kg, Lechuga 1/2 kilo, Remolacha 2, Choclo 6, Huevos 1 maple",
       "items": [
         "5 kilos Papa",
-        "3 Cebollas",
+        "3 kilos Cebolla",
         "2 kilos Zanahoria",
         "2 kilos Tomate",
         "2 kilos Zapallito",
@@ -315,7 +501,7 @@
       "items": [
         "3 kilos Papa",
         "2 kilos Tomate",
-        "1 kilo Morrón rojo",
+        "1 Morrón rojo",
         "2 kilos Banana",
         "2 kilos Manzana roja",
         "1 kilo Uva",
