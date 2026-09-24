@@ -40,7 +40,61 @@
     <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#2d5a27">
-    <link rel="stylesheet" href="style.css?v=57.2">
+    <!-- Modo Vista Previa / Próximamente Gatekeeper (Ejecución Inmediata) -->
+    <script>
+      (function() {
+        try {
+          var params = new URLSearchParams(window.location.search);
+          var previewParam = params.get('preview');
+          if (previewParam) {
+            var val = previewParam.trim().toLowerCase();
+            if (val === 'huerta2026') {
+              localStorage.setItem('huerta_preview_unlocked', 'true');
+            } else if (val === 'lock' || val === 'false' || val === '0' || val === 'cerrar') {
+              localStorage.removeItem('huerta_preview_unlocked');
+            }
+          }
+          if (localStorage.getItem('huerta_preview_unlocked') === 'true') {
+            document.documentElement.classList.add('preview-unlocked');
+            document.documentElement.classList.remove('preview-locked');
+          } else {
+            document.documentElement.classList.add('preview-locked');
+            document.documentElement.classList.remove('preview-unlocked');
+          }
+        } catch (e) {
+          document.documentElement.classList.add('preview-locked');
+        }
+      })();
+    </script>
+    <style id="preview-gate-critical-css">
+      html.preview-locked body {
+        overflow-x: hidden;
+        background: #091708 !important;
+        margin: 0;
+        padding: 0;
+      }
+      html.preview-locked body > *:not(#preview-screen) {
+        display: none !important;
+      }
+      html.preview-locked .pwa-banner,
+      html.preview-locked .whatsapp-float,
+      html.preview-locked .toast-notification,
+      html.preview-locked .modal,
+      html.preview-locked .modal-overlay,
+      html.preview-locked .login-bottom-sheet-overlay,
+      html.preview-locked .user-panel-overlay,
+      html.preview-locked #preview-tester-pill {
+        display: none !important;
+      }
+      #preview-screen {
+        display: none;
+      }
+      html.preview-locked #preview-screen {
+        display: flex !important;
+      }
+    </style>
+
+    <link rel="stylesheet" href="style.css?v=58.0">
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RE23859X6R"></script>
@@ -53,6 +107,108 @@
 </head>
 
 <body>
+    <!-- ============================================== -->
+    <!-- PANTALLA MODO PRÓXIMAMENTE (COMING SOON)      -->
+    <!-- ============================================== -->
+    <div id="preview-screen" class="preview-screen" role="region" aria-label="Próximamente Huerta Urbana">
+        <div class="preview-backdrop-glow preview-glow-1"></div>
+        <div class="preview-backdrop-glow preview-glow-2"></div>
+        
+        <div class="preview-card">
+            <!-- Header con Logo y Slogan -->
+            <div class="preview-brand">
+                <div class="preview-logo-circle">
+                    <ion-icon name="leaf" class="preview-leaf-icon"></ion-icon>
+                </div>
+                <h1 class="preview-title">HUERTA URBANA</h1>
+                <p class="preview-subtitle">Un compromiso familiar en cada entrega</p>
+            </div>
+
+            <!-- Badge Estado -->
+            <div class="preview-badge-wrapper">
+                <span class="preview-badge">
+                    <span class="preview-badge-dot"></span>
+                    Muy Pronto · Tienda Online
+                </span>
+            </div>
+
+            <!-- Contenido Principal -->
+            <div class="preview-body">
+                <h2 class="preview-headline">Frescura de la huerta, directo a tu mesa en Pilar</h2>
+                <p class="preview-description">
+                    Estamos preparando nuestra plataforma online para que elijas las mejores frutas y verduras seleccionadas, con entregas programadas en la puerta de tu casa.
+                </p>
+
+                <!-- Grid de Ventajas / Info -->
+                <div class="preview-features-grid">
+                    <div class="preview-feature-card">
+                        <span class="preview-feature-icon">🚚</span>
+                        <div>
+                            <strong>Entregas Programadas</strong>
+                            <small>Martes y Jueves</small>
+                        </div>
+                    </div>
+                    <div class="preview-feature-card">
+                        <span class="preview-feature-icon">📍</span>
+                        <div>
+                            <strong>Zona de Envíos</strong>
+                            <small>Todo el Partido de Pilar</small>
+                        </div>
+                    </div>
+                    <div class="preview-feature-card">
+                        <span class="preview-feature-icon">🌿</span>
+                        <div>
+                            <strong>Frescura Garantizada</strong>
+                            <small>Selección diaria en el mercado</small>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Botón Contacto WhatsApp -->
+                <a href="https://wa.me/5491161771376?text=Hola!%20Quería%20consultar%20sobre%20el%20lanzamiento%20de%20Huerta%20Urbana" 
+                   target="_blank" 
+                   rel="noopener noreferrer" 
+                   class="preview-whatsapp-btn">
+                    <ion-icon name="logo-whatsapp"></ion-icon>
+                    <span>Consultas por WhatsApp</span>
+                </a>
+
+                <div class="preview-zones-tagline">
+                    <span>Del Viso · Manuel Alberti · Derqui · Villa Rosa · Pilar centro · La Lonja · Fátima</span>
+                </div>
+            </div>
+
+            <!-- Acceso Privado Testers -->
+            <div class="preview-tester-box">
+                <button type="button" id="preview-toggle-code-btn" class="preview-toggle-code-btn">
+                    <ion-icon name="key-outline"></ion-icon>
+                    <span>¿Tenés acceso de prueba? Ingresá acá</span>
+                </button>
+
+                <form id="preview-code-form" class="preview-code-form" style="display: none;" onsubmit="handlePreviewCodeSubmit(event)">
+                    <div class="preview-input-group">
+                        <input type="password" id="preview-code-input" placeholder="Clave de acceso" autocomplete="off">
+                        <button type="submit" class="preview-code-submit">Entrar</button>
+                    </div>
+                    <p id="preview-code-error" class="preview-code-error" style="display: none;">Clave incorrecta. Intentá nuevamente.</p>
+                </form>
+            </div>
+
+            <footer class="preview-footer">
+                <p>&copy; 2026 Huerta Urbana. Pilar, Buenos Aires.</p>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Floating Badge para cuando el tester está en modo preview desbloqueado -->
+    <div id="preview-tester-pill" class="preview-tester-pill" style="display: none;">
+        <span class="pill-dot"></span>
+        <span class="pill-text">Modo Prueba Activo</span>
+        <button type="button" id="preview-lock-btn" class="pill-action-btn" title="Cerrar vista previa y ver pantalla Próximamente">
+            Bloquear
+        </button>
+    </div>
+
     <!-- Banner PWA Install -->
     <div id="pwa-banner" class="pwa-banner" role="banner" aria-label="Instalar aplicación">
         <div class="pwa-banner-inner">
@@ -618,8 +774,63 @@
         </div>
     </div>
 
-    <script src="script.js?v=54.0"></script>
-    <script type="module" src="auth.js?v=51.0"></script>
+    <script>
+      // Lógica de desbloqueo y gestión de modo prueba
+      function handlePreviewCodeSubmit(e) {
+        if (e) e.preventDefault();
+        var input = document.getElementById('preview-code-input');
+        var error = document.getElementById('preview-code-error');
+        if (!input) return;
+        var val = (input.value || '').trim().toLowerCase();
+        if (val === 'huerta2026') {
+          localStorage.setItem('huerta_preview_unlocked', 'true');
+          var url = new URL(window.location.href);
+          url.searchParams.delete('preview');
+          window.location.href = url.pathname + url.search;
+        } else {
+          if (error) {
+            error.style.display = 'block';
+            input.classList.add('input-shake');
+            setTimeout(function() {
+              input.classList.remove('input-shake');
+            }, 600);
+          }
+        }
+      }
+
+      document.addEventListener('DOMContentLoaded', function() {
+        var toggleBtn = document.getElementById('preview-toggle-code-btn');
+        var codeForm = document.getElementById('preview-code-form');
+        var codeInput = document.getElementById('preview-code-input');
+        if (toggleBtn && codeForm) {
+          toggleBtn.addEventListener('click', function() {
+            var isHidden = codeForm.style.display === 'none' || codeForm.style.display === '';
+            codeForm.style.display = isHidden ? 'block' : 'none';
+            if (isHidden && codeInput) {
+              codeInput.focus();
+            }
+          });
+        }
+
+        var isUnlocked = localStorage.getItem('huerta_preview_unlocked') === 'true';
+        var testerPill = document.getElementById('preview-tester-pill');
+        if (testerPill && isUnlocked) {
+          testerPill.style.display = 'inline-flex';
+        }
+
+        var lockBtn = document.getElementById('preview-lock-btn');
+        if (lockBtn) {
+          lockBtn.addEventListener('click', function() {
+            localStorage.removeItem('huerta_preview_unlocked');
+            var url = new URL(window.location.href);
+            url.searchParams.delete('preview');
+            window.location.href = url.pathname;
+          });
+        }
+      });
+    </script>
+    <script src="script.js?v=55.0"></script>
+    <script type="module" src="auth.js?v=52.0"></script>
 </body>
 
 </html>

@@ -2865,4 +2865,464 @@ select option {
         font-size: 0.9rem;
     }
 }
+
+/* ========================================================
+   MODO PRÓXIMAMENTE (COMING SOON) & PREVIEW GATE SYSTEM
+   ======================================================== */
+
+/* En modo bloqueado ocultar todo el contenido normal del sitio */
+html.preview-locked body {
+    overflow-x: hidden;
+    background: #091708 !important;
+    color: #ffffff;
+    min-height: 100vh;
+}
+
+html.preview-locked body > *:not(#preview-screen) {
+    display: none !important;
+}
+
+html.preview-locked .pwa-banner,
+html.preview-locked .whatsapp-float,
+html.preview-locked .toast-notification,
+html.preview-locked .modal,
+html.preview-locked .modal-overlay,
+html.preview-locked .login-bottom-sheet-overlay,
+html.preview-locked .user-panel-overlay,
+html.preview-locked #preview-tester-pill {
+    display: none !important;
+}
+
+/* Ocultar la pantalla de vista previa cuando está desbloqueado */
+#preview-screen {
+    display: none;
+}
+
+/* Mostrar únicamente cuando html.preview-locked */
+html.preview-locked #preview-screen {
+    display: flex !important;
+    min-height: 100vh;
+    width: 100%;
+    position: relative;
+    align-items: center;
+    justify-content: center;
+    padding: 30px 20px;
+    background: radial-gradient(circle at 50% 15%, #183e15 0%, #0d230b 45%, #061105 100%);
+    box-sizing: border-box;
+    overflow-y: auto;
+    font-family: 'Inter', sans-serif;
+}
+
+/* Luces de fondo ambientales */
+.preview-backdrop-glow {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    pointer-events: none;
+    z-index: 1;
+}
+
+.preview-glow-1 {
+    width: 320px;
+    height: 320px;
+    background: rgba(34, 197, 94, 0.15);
+    top: 5%;
+    left: 15%;
+}
+
+.preview-glow-2 {
+    width: 280px;
+    height: 280px;
+    background: rgba(230, 126, 34, 0.12);
+    bottom: 10%;
+    right: 15%;
+}
+
+/* Tarjeta central */
+.preview-card {
+    position: relative;
+    z-index: 2;
+    width: 100%;
+    max-width: 540px;
+    background: rgba(18, 38, 16, 0.75);
+    backdrop-filter: blur(25px);
+    -webkit-backdrop-filter: blur(25px);
+    border: 1px solid rgba(74, 124, 68, 0.35);
+    border-radius: 28px;
+    padding: 44px 34px;
+    text-align: center;
+    box-shadow: 0 30px 70px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    animation: previewFadeIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes previewFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(24px) scale(0.98);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+/* Marca / Logo */
+.preview-brand {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.preview-logo-circle {
+    width: 72px;
+    height: 72px;
+    background: linear-gradient(135deg, #22c55e, #15803d);
+    border-radius: 22px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(34, 197, 94, 0.4), inset 0 2px 4px rgba(255, 255, 255, 0.3);
+    margin-bottom: 16px;
+    animation: previewPulse 3s infinite ease-in-out;
+}
+
+@keyframes previewPulse {
+    0%, 100% {
+        transform: scale(1);
+        box-shadow: 0 10px 25px rgba(34, 197, 94, 0.4);
+    }
+    50% {
+        transform: scale(1.04);
+        box-shadow: 0 12px 30px rgba(34, 197, 94, 0.6);
+    }
+}
+
+.preview-leaf-icon {
+    font-size: 38px;
+    color: #ffffff;
+}
+
+.preview-title {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    color: #ffffff;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+}
+
+.preview-subtitle {
+    font-size: 13px;
+    color: #9cb398;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+}
+
+/* Badge de Estado */
+.preview-badge-wrapper {
+    margin-bottom: 22px;
+}
+
+.preview-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 6px 16px;
+    background: rgba(34, 197, 94, 0.16);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    border-radius: 50px;
+    color: #4ade80;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+}
+
+.preview-badge-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 10px #22c55e;
+    animation: previewBlink 1.8s infinite;
+}
+
+@keyframes previewBlink {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: 0.4; transform: scale(0.85); }
+}
+
+/* Textos principales */
+.preview-headline {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 22px;
+    line-height: 1.35;
+    color: #ffffff;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.preview-description {
+    font-size: 14.5px;
+    color: #c2d6be;
+    line-height: 1.6;
+    margin-bottom: 26px;
+}
+
+/* Grid de caracteristicas */
+.preview-features-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 12px;
+    margin-bottom: 26px;
+    text-align: left;
+}
+
+.preview-feature-card {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    padding: 12px 16px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    transition: background 0.2s ease;
+}
+
+.preview-feature-card:hover {
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.preview-feature-icon {
+    font-size: 22px;
+    flex-shrink: 0;
+}
+
+.preview-feature-card strong {
+    display: block;
+    font-size: 13.5px;
+    color: #ffffff;
+    font-weight: 600;
+}
+
+.preview-feature-card small {
+    display: block;
+    font-size: 12px;
+    color: #9cb398;
+}
+
+/* Boton de WhatsApp */
+.preview-whatsapp-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    width: 100%;
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #25d366, #128c7e);
+    color: #ffffff !important;
+    font-family: 'Montserrat', sans-serif;
+    font-size: 15px;
+    font-weight: 700;
+    border-radius: 14px;
+    text-decoration: none;
+    box-shadow: 0 8px 24px rgba(37, 211, 102, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    margin-bottom: 16px;
+    box-sizing: border-box;
+}
+
+.preview-whatsapp-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 12px 28px rgba(37, 211, 102, 0.45);
+}
+
+.preview-whatsapp-btn ion-icon {
+    font-size: 22px;
+}
+
+/* Zonas de cobertura tag */
+.preview-zones-tagline {
+    font-size: 11.5px;
+    color: #7d9679;
+    line-height: 1.5;
+    margin-bottom: 26px;
+    padding: 0 10px;
+}
+
+/* Tester Section */
+.preview-tester-box {
+    border-top: 1px solid rgba(255, 255, 255, 0.08);
+    padding-top: 20px;
+    margin-top: 8px;
+}
+
+.preview-toggle-code-btn {
+    background: none;
+    border: none;
+    color: #8da48a;
+    font-size: 12.5px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    border-radius: 8px;
+    transition: color 0.2s ease, background 0.2s ease;
+    font-family: 'Inter', sans-serif;
+}
+
+.preview-toggle-code-btn:hover {
+    color: #bbf7d0;
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.preview-code-form {
+    margin-top: 14px;
+    animation: previewFadeIn 0.3s ease;
+}
+
+.preview-input-group {
+    display: flex;
+    gap: 8px;
+    max-width: 360px;
+    margin: 0 auto;
+}
+
+.preview-input-group input {
+    flex: 1;
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(74, 124, 68, 0.5);
+    color: #ffffff;
+    padding: 10px 14px;
+    font-size: 13.5px;
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    box-sizing: border-box;
+}
+
+.preview-input-group input:focus {
+    border-color: #22c55e;
+    box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.25);
+}
+
+.preview-code-submit {
+    background: #22c55e;
+    color: #091708;
+    border: none;
+    border-radius: 10px;
+    padding: 10px 18px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    transition: background 0.2s ease, transform 0.1s ease;
+}
+
+.preview-code-submit:hover {
+    background: #16a34a;
+}
+
+.preview-code-submit:active {
+    transform: scale(0.97);
+}
+
+.preview-code-error {
+    color: #f87171;
+    font-size: 12px;
+    margin-top: 8px;
+}
+
+.input-shake {
+    animation: inputShake 0.4s ease-in-out;
+}
+
+@keyframes inputShake {
+    0%, 100% { transform: translateX(0); }
+    20%, 60% { transform: translateX(-6px); }
+    40%, 80% { transform: translateX(6px); }
+}
+
+.preview-footer {
+    margin-top: 24px;
+    font-size: 11px;
+    color: #5d7559;
+}
+
+/* Floating Tester Pill cuando está desbloqueado */
+.preview-tester-pill {
+    position: fixed;
+    bottom: 22px;
+    left: 22px;
+    z-index: 9999;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(18, 38, 16, 0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(34, 197, 94, 0.4);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+    padding: 7px 14px;
+    border-radius: 50px;
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    font-family: 'Inter', sans-serif;
+}
+
+.preview-tester-pill .pill-dot {
+    width: 8px;
+    height: 8px;
+    background-color: #22c55e;
+    border-radius: 50%;
+    box-shadow: 0 0 6px #22c55e;
+}
+
+.preview-tester-pill .pill-text {
+    font-weight: 600;
+    color: #bbf7d0;
+}
+
+.preview-tester-pill .pill-action-btn {
+    background: rgba(255, 255, 255, 0.12);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #ffffff;
+    border-radius: 20px;
+    padding: 3px 9px;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.preview-tester-pill .pill-action-btn:hover {
+    background: #ef4444;
+    border-color: #ef4444;
+    color: #ffffff;
+}
+
+@media (max-width: 480px) {
+    .preview-card {
+        padding: 32px 20px;
+        border-radius: 22px;
+    }
+    .preview-headline {
+        font-size: 19px;
+    }
+    .preview-description {
+        font-size: 13.5px;
+    }
+    .preview-tester-pill {
+        bottom: 12px;
+        left: 12px;
+        font-size: 11px;
+        padding: 6px 12px;
+    }
+}
 

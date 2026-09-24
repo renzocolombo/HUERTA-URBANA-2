@@ -1,7 +1,7 @@
 /* HUERTA URBANA - LOGIC & CART SYSTEM (Catalogo Extendido) */
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js?v=76');
+  navigator.serviceWorker.register('sw.js?v=78');
 }
 
 /* ── PWA: Sistema de Instalación ─────────────────────── */
@@ -13,7 +13,7 @@ window.addEventListener('beforeinstallprompt', (e) => {
   deferredPrompt = e;
   console.log('PWA Evento capturado mostrando banner en 3 segundos');
   setTimeout(() => {
-    if (sessionStorage.getItem('pwa_dismissed') === 'true') return;
+    if (document.documentElement.classList.contains('preview-locked') || sessionStorage.getItem('pwa_dismissed') === 'true') return;
     const banner = document.getElementById('pwa-banner');
     if (banner) {
       banner.classList.add('pwa-visible');
@@ -31,7 +31,7 @@ setTimeout(() => {
   const isInstalled = window.matchMedia('(display-mode: standalone)').matches;
   const wasInstalledBefore = localStorage.getItem('huerta_pwa_instalada') === 'true';
   
-  if (isMobile && !isInstalled && !wasInstalledBefore && sessionStorage.getItem('pwa_dismissed') !== 'true') {
+  if (isMobile && !isInstalled && !wasInstalledBefore && sessionStorage.getItem('pwa_dismissed') !== 'true' && !document.documentElement.classList.contains('preview-locked')) {
     const banner = document.getElementById('pwa-banner');
     if (banner) {
       banner.classList.add('pwa-visible');

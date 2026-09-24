@@ -243,6 +243,7 @@ onAuthStateChanged(auth, async (user) => {
         // Mostrar Popup Bottom Sheet después de 5 seg
         if (popupTimeout) clearTimeout(popupTimeout);
         popupTimeout = setTimeout(() => {
+            if (document.documentElement.classList.contains('preview-locked')) return;
             if (sessionStorage.getItem('login_popup_cerrado') !== 'true' && !auth.currentUser) {
                 loginBottomSheet.classList.remove('hidden');
                 loginBottomSheet.style.display = 'flex';
