@@ -170,9 +170,17 @@ const PRODUCTS = {
     individual: {
         'verduras': [],
         'frutas': [],
-        'extras': []
+        'market': []
     }
 };
+
+// Compatibilidad por si algún script antiguo accede a .extras
+if (!PRODUCTS.individual.extras) {
+    Object.defineProperty(PRODUCTS.individual, 'extras', {
+        get() { return this.market; },
+        set(v) { this.market = v; }
+    });
+}
 
 const PRECIOS_JSON_URL = 'https://raw.githubusercontent.com/renzocolombo/HUERTA-URBANA-2/main/precios.json'
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzWSEDWrGAkLRPj_ugVL6ZIm9qZBxLu93VemH6eSXv0xx6RNSyakn-4q2T7Ik6TpyX7/exec';
@@ -232,67 +240,108 @@ function pluralizar(cantidad, palabra) {
   return palabra + 'es';
 }
 
-// Listas de palabras clave para clasificar productos (sin tildes, la función normaliza)
-const NOMBRES_VERDURAS = [
-  'papa', 'cebolla comun', 'cebolla', 'cebolla morada', 'tomate', 'tomate cherry', 
-  'zanahoria', 'lechuga', 'zapallito', 'zapallo blanco', 'morron', 'morron rojo',
-  'rucula', 'espinaca', 'remolacha', 'pepino', 'brocoli', 'cabutia', 
-  'ajo', 'berenjena'
-]
-const NOMBRES_FRUTAS = [
-  'palta', 'manzana roja', 'manzana verde', 'banana', 'naranja', 
-  'limon', 'durazno', 'pomelo', 'uva', 'arandano', 'choclo'
-]
+// Subcategorías internas de Market
+const SUBCATEGORIAS_MARKET = ['Almacén', 'Bebidas', 'Enlatados', 'Lácteos', 'Otros'];
+let activeMarketSubcategory = 'Almacén'; // Subcategoría activa por defecto dentro de Market
 
-function clasificarProducto(nombre) {
-  // Normalizar: minúsculas y sin tildes para comparar sin importar encoding
-  const n = nombre.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim()
-  
-  // Buscar coincidencia en verduras y frutas; si no, Extras
-  if (NOMBRES_VERDURAS.some(k => n.includes(k))) return 'verduras'
-  if (NOMBRES_FRUTAS.some(k => n.includes(k))) return 'frutas'
-  return 'extras'
+function determinarCategoria(p) {
+  // 1. Leer categoría real si viene asignada desde Google Sheet / Apps Script / Dashboard
+  const cat = (p.categoria || p.categoriaPrincipal || p.category || '').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  if (cat.includes('verdura')) return 'verduras';
+  if (cat.includes('fruta')) return 'frutas';
+  if (cat.includes('almacen') || cat.includes('market') || cat.includes('extra')) return 'market';
+
+  // Si tiene subcategoría asignada de almacén/market
+  if (p.subcategoria || p.subCategory) return 'market';
+
+  // 2. Fallback de contingencia (por si la API aún no tiene el campo categoria poblado)
+  const n = (p.nombre || '').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  if (n.includes('miel') || n.includes('huevo') || n.includes('maple')) return 'market';
+
+  // Frutas naturales (no procesadas / no latas)
+  const frutasConocidas = ['palta', 'manzana', 'banana', 'naranja', 'limon', 'durazno', 'pomelo', 'uva', 'arandano'];
+  if (frutasConocidas.some(f => n.includes(f))) return 'frutas';
+  if (n === 'choclo' || n.startsWith('choclo ')) return 'frutas';
+
+  // Productos de almacén/market comunes
+  const marketKeywords = [
+    'fideos', 'arroz', 'aceite', 'azucar', 'harina', 'yerba', 'atun', 
+    'pure de tomate', 'arveja', 'mayonesa', 'lata', 'coca', 'agua mineral', 
+    'soda', 'jugo', 'leche', 'yogur', 'queso', 'manteca', 'dulce de leche', 
+    'galletita', 'alfajor', 'snack', 'detergente', 'lavandina', 'jabon', 'papel'
+  ];
+  if (marketKeywords.some(k => n.includes(k))) return 'market';
+
+  return 'verduras';
+}
+
+function determinarSubcategoriaMarket(p) {
+  // Leer subcategoría real del Google Sheet / Apps Script / Dashboard
+  const sub = (p.subcategoria || p.subCategory || '').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  if (sub.includes('bebida')) return 'Bebidas';
+  if (sub.includes('enlatado') || sub.includes('conserva')) return 'Enlatados';
+  if (sub.includes('lacteo')) return 'Lácteos';
+  if (sub.includes('otro')) return 'Otros';
+  if (sub.includes('almacen')) return 'Almacén';
+
+  // Huevo y miel siempre en subcategoría Otros
+  const n = (p.nombre || '').toLowerCase().trim().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+  if (n.includes('miel') || n.includes('huevo') || n.includes('maple')) return 'Otros';
+
+  // Asignación por tipo de producto si la subcategoría viniese vacía
+  if (n.includes('lata') || n.includes('atun') || n.includes('arveja')) return 'Enlatados';
+  if (n.includes('coca') || n.includes('agua') || n.includes('soda') || n.includes('jugo')) return 'Bebidas';
+  if (n.includes('leche') || n.includes('yogur') || n.includes('queso') || n.includes('manteca') || n.includes('dulce de leche')) return 'Lácteos';
+
+  return 'Almacén';
 }
 
 function actualizarProductos(productosData) {
-  // Resetear las tres categorías
-  PRODUCTS.individual = { 'verduras': [], 'frutas': [], 'extras': [] }
+  // Resetear las tres categorías: verduras, frutas y market
+  PRODUCTS.individual = { 'verduras': [], 'frutas': [], 'market': [] };
 
   productosData.forEach((p, i) => {
-    if (p.activo === false) return
-    const categoria = clasificarProducto(p.nombre)
-    // Detectar unidad dinámica v4.1
-    let unit = p.unit || p.unidad || 'kg'
-    let step = (unit === 'kg') ? 0.5 : 1
-    let min = (unit === 'kg') ? 0.5 : 1
+    if (p.activo === false) return;
+    const categoria = determinarCategoria(p);
+    const subcategoria = (categoria === 'market') ? determinarSubcategoriaMarket(p) : '';
 
-    const nombreCrudo = p.nombre.toLowerCase()
-    const nombreCapitalizado = nombreCrudo.charAt(0).toUpperCase() + nombreCrudo.slice(1)
+    // Detectar unidad dinámica v4.1
+    let unit = p.unit || p.unidad || 'kg';
+    let step = (unit === 'kg') ? 0.5 : 1;
+    let min = (unit === 'kg') ? 0.5 : 1;
+
+    const nombreCrudo = p.nombre.toLowerCase();
+    const nombreCapitalizado = nombreCrudo.charAt(0).toUpperCase() + nombreCrudo.slice(1);
     
     PRODUCTS.individual[categoria].push({
       id: 'p' + i,
       name: nombreCapitalizado,
       price: p.precio,
-      unit, step, min
-    })
-  })
+      unit, step, min,
+      categoria,
+      subcategoria
+    });
+  });
 
   console.log('[PRODUCTOS] Clasificados:', {
     verduras: PRODUCTS.individual.verduras.length,
     frutas: PRODUCTS.individual.frutas.length,
-    extras: PRODUCTS.individual.extras.length
-  })
+    market: PRODUCTS.individual.market.length
+  });
 
-  // Ocultar pestaña Extras si no hay productos
-  const tabExtras = document.getElementById('tab-extras');
-  if (tabExtras) {
-    if (PRODUCTS.individual.extras.length === 0) {
-      tabExtras.style.display = 'none';
-      if (activeCategory === 'extras') switchCategory('verduras');
+  // Ocultar pestaña Market si no hay productos
+  const tabMarket = document.getElementById('tab-market') || document.getElementById('tab-extras');
+  if (tabMarket) {
+    if (PRODUCTS.individual.market.length === 0) {
+      tabMarket.style.display = 'none';
+      if (activeCategory === 'market' || activeCategory === 'extras') switchCategory('verduras');
     } else {
-      tabExtras.style.display = 'inline-block';
+      tabMarket.style.display = 'inline-block';
     }
   }
+
+  // Refrescar lista de productos en pantalla
+  renderCustomProducts();
 }
 
 function actualizarCombos(combosData) {
@@ -597,10 +646,27 @@ function updateCartModalContent() {
 }
 
 function switchCategory(cat) {
+    if (cat === 'extras') cat = 'market';
     activeCategory = cat;
     // Update tabs UI
     document.querySelectorAll('.tab-btn').forEach(btn => {
-        btn.classList.toggle('active', btn.getAttribute('onclick').includes(cat));
+        const onClick = btn.getAttribute('onclick') || '';
+        btn.classList.toggle('active', onClick.includes(cat) || (cat === 'market' && onClick.includes('extras')));
+    });
+
+    // Controlar visibilidad del selector de subcategorías de Market
+    const marketSubtabs = document.getElementById('market-subtabs');
+    if (marketSubtabs) {
+        marketSubtabs.style.display = (cat === 'market') ? 'flex' : 'none';
+    }
+
+    renderCustomProducts();
+}
+
+function switchMarketSubcategory(subcat) {
+    activeMarketSubcategory = subcat;
+    document.querySelectorAll('.subtab-btn').forEach(btn => {
+        btn.classList.toggle('active', btn.getAttribute('data-subcat') === subcat);
     });
     renderCustomProducts();
 }
@@ -644,12 +710,23 @@ function renderCombos() {
 
 function renderCustomProducts() {
     const container = document.getElementById('custom-products-container');
-    const prods = PRODUCTS.individual[activeCategory];
+    let prods = PRODUCTS.individual[activeCategory];
 
     // Verificación defensiva: la categoría puede estar vacía si el fetch aún no terminó
     if (!prods || prods.length === 0) {
-        container.innerHTML = '<p class="empty-msg" style="padding:20px;text-align:center;">Cargando productos...</p>';
+        container.innerHTML = '<p class="empty-msg" style="padding:20px;text-align:center;grid-column: 1 / -1;">Cargando productos...</p>';
         return;
+    }
+
+    // Filtrar subcategoría dentro de Market si aplica
+    if (activeCategory === 'market') {
+        if (activeMarketSubcategory && activeMarketSubcategory !== 'Todos') {
+            prods = prods.filter(p => (p.subcategoria || 'Almacén') === activeMarketSubcategory);
+        }
+        if (prods.length === 0) {
+            container.innerHTML = `<p class="empty-msg" style="padding:30px 20px;text-align:center;grid-column: 1 / -1;">No hay productos disponibles en <strong>${activeMarketSubcategory}</strong> por el momento.</p>`;
+            return;
+        }
     }
 
     container.innerHTML = prods.map(prod => {
@@ -686,7 +763,9 @@ function updateComboQty(id, delta) {
 }
 
 function updateCustomQty(id, delta, category) {
-    const prod = PRODUCTS.individual[category].find(p => p.id === id);
+    if (category === 'extras') category = 'market';
+    const prod = PRODUCTS.individual[category]?.find(p => p.id === id);
+    if (!prod) return;
     if (!cart[id]) {
         cart[id] = { ...prod, qty: 0, type: 'custom' };
     }

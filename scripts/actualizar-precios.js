@@ -20,14 +20,14 @@ const frutas = productosActivos
   .filter(p => FRUTAS.some(f => f.toLowerCase() === p.nombre.toLowerCase().trim()))
   .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'))
 
-const extras = productosActivos
+const marketProds = productosActivos
   .filter(p => !VERDURAS.some(v => v.toLowerCase() === p.nombre.toLowerCase().trim()) 
             && !FRUTAS.some(f => f.toLowerCase() === p.nombre.toLowerCase().trim()))
   .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'))
 
 console.log('📦 Verduras:', verduras.map(v => v.nombre))
 console.log('🍎 Frutas:', frutas.map(f => f.nombre))
-console.log('➕ Extras:', extras.map(e => e.nombre))
+console.log('🛒 Market:', marketProds.map(e => e.nombre))
 console.log('💰 Monto mínimo:', precios.monto_minimo)
 
 const capitalizar = str => str.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ')
@@ -44,7 +44,7 @@ const generarProductos = (productos) => productos.map(p => ({
 const todosProductos = {
   verduras: generarProductos(verduras),
   frutas: generarProductos(frutas),
-  extras: generarProductos(extras)
+  market: generarProductos(marketProds)
 }
 
 // Reemplazar SOLO el individual, no tocar los combos

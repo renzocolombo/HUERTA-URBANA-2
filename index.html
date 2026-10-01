@@ -326,7 +326,19 @@
                     <div class="tabs-header">
                         <button class="tab-btn active" onclick="switchCategory('verduras')">Verduras</button>
                         <button class="tab-btn" onclick="switchCategory('frutas')">Frutas</button>
-                        <button class="tab-btn" id="tab-extras" onclick="switchCategory('extras')">Extras</button>
+                        <button class="tab-btn" id="tab-market" onclick="switchCategory('market')">Market</button>
+                    </div>
+
+                    <!-- Selector de Subcategorías de Market (visible en pestaña Market) -->
+                    <div class="subtabs-container" id="market-subtabs" style="display: none;">
+                        <div class="subtabs-header">
+                            <button type="button" class="subtab-btn active" data-subcat="Almacén" onclick="switchMarketSubcategory('Almacén')">Almacén</button>
+                            <button type="button" class="subtab-btn" data-subcat="Bebidas" onclick="switchMarketSubcategory('Bebidas')">Bebidas</button>
+                            <button type="button" class="subtab-btn" data-subcat="Enlatados" onclick="switchMarketSubcategory('Enlatados')">Enlatados</button>
+                            <button type="button" class="subtab-btn" data-subcat="Lácteos" onclick="switchMarketSubcategory('Lácteos')">Lácteos</button>
+                            <button type="button" class="subtab-btn" data-subcat="Otros" onclick="switchMarketSubcategory('Otros')">Otros</button>
+                            <button type="button" class="subtab-btn" data-subcat="Todos" onclick="switchMarketSubcategory('Todos')">Todos</button>
+                        </div>
                     </div>
                 </div>
 
