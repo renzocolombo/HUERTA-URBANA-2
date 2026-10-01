@@ -207,9 +207,22 @@ async function cargarPrecios() {
       if (data.productos) actualizarProductos(data.productos)
       if (data.combos) actualizarCombos(data.combos)
       actualizarTextos()
+      return // éxito: salir
     }
   } catch (e) {
-    console.log('[PRECIOS] Usando datos locales')
+    console.warn('[PRECIOS] API no disponible, cargando desde precios.json local...')
+  }
+  // Fallback: cargar desde precios.json local (siempre disponible)
+  try {
+    const res = await fetch('./precios.json')
+    const local = await res.json()
+    if (local.monto_minimo) MIN_PURCHASE = local.monto_minimo
+    if (local.productos) actualizarProductos(local.productos)
+    if (local.combos) actualizarCombos(local.combos)
+    actualizarTextos()
+    console.log('[PRECIOS] Cargado desde precios.json local')
+  } catch (e2) {
+    console.warn('[PRECIOS] No se pudo cargar precios.json:', e2.message)
   }
 }
 
@@ -261,7 +274,8 @@ function determinarCategoria(p) {
   // Frutas naturales (no procesadas / no latas)
   const frutasConocidas = ['palta', 'manzana', 'banana', 'naranja', 'limon', 'durazno', 'pomelo', 'uva', 'arandano'];
   if (frutasConocidas.some(f => n.includes(f))) return 'frutas';
-  if (n === 'choclo' || n.startsWith('choclo ')) return 'frutas';
+  // Verduras naturales (Choclo es verdura, no fruta)
+  if (n === 'choclo' || n.startsWith('choclo ')) return 'verduras';
 
   // Productos de almacén/market comunes
   const marketKeywords = [
@@ -722,7 +736,11 @@ function renderCustomProducts() {
 
     // Verificación defensiva: la categoría puede estar vacía si el fetch aún no terminó
     if (!prods || prods.length === 0) {
-        container.innerHTML = '<p class="empty-msg" style="padding:20px;text-align:center;grid-column: 1 / -1;">Cargando productos...</p>';
+        if (activeCategory === 'market') {
+            container.innerHTML = '<p class="empty-msg" style="padding:30px 20px;text-align:center;grid-column: 1 / -1;">No hay productos de Market disponibles en este momento.</p>';
+        } else {
+            container.innerHTML = '<p class="empty-msg" style="padding:20px;text-align:center;grid-column: 1 / -1;">Cargando productos...</p>';
+        }
         return;
     }
 
