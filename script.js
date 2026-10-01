@@ -242,7 +242,7 @@ function pluralizar(cantidad, palabra) {
 
 // Subcategorías internas de Market
 const SUBCATEGORIAS_MARKET = ['Almacén', 'Bebidas', 'Enlatados', 'Lácteos', 'Otros'];
-let activeMarketSubcategory = 'Almacén'; // Subcategoría activa por defecto dentro de Market
+let activeMarketSubcategory = 'Todos'; // Mostrar todos los productos de Market por defecto
 
 function determinarCategoria(p) {
   // 1. Leer categoría real si viene asignada desde Google Sheet / Apps Script / Dashboard
@@ -658,6 +658,14 @@ function switchCategory(cat) {
     const marketSubtabs = document.getElementById('market-subtabs');
     if (marketSubtabs) {
         marketSubtabs.style.display = (cat === 'market') ? 'flex' : 'none';
+    }
+
+    // Al entrar a Market, mostrar 'Todos' por defecto
+    if (cat === 'market') {
+        activeMarketSubcategory = 'Todos';
+        document.querySelectorAll('.subtab-btn').forEach(btn => {
+            btn.classList.toggle('active', btn.getAttribute('data-subcat') === 'Todos');
+        });
     }
 
     renderCustomProducts();
