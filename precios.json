@@ -310,6 +310,15 @@
       "activo": true
     },
     {
+      "nombre": "Harina 0000",
+      "precio": 8888,
+      "unidad": "",
+      "categoria": "Almacén",
+      "categoriaPrincipal": "Almacén",
+      "subcategoria": "Almacén",
+      "activo": true
+    },
+    {
       "nombre": "Sal fina",
       "precio": 46784,
       "unidad": "",
