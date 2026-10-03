@@ -308,6 +308,24 @@
       "categoriaPrincipal": "Almacén",
       "subcategoria": "Almacén",
       "activo": true
+    },
+    {
+      "nombre": "Sal fina",
+      "precio": 46784,
+      "unidad": "",
+      "categoria": "Almacén",
+      "categoriaPrincipal": "Almacén",
+      "subcategoria": "Almacén",
+      "activo": true
+    },
+    {
+      "nombre": "Alfajor de chocolate",
+      "precio": 16000,
+      "unidad": "",
+      "categoria": "Almacén",
+      "categoriaPrincipal": "Almacén",
+      "subcategoria": "Golosinas",
+      "activo": true
     }
   ],
   "combos": [
