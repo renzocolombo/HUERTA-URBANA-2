@@ -310,6 +310,15 @@
       "activo": true
     },
     {
+      "nombre": "Harina leudante Favorita",
+      "precio": 77,
+      "unidad": "",
+      "categoria": "Almacén",
+      "categoriaPrincipal": "Almacén",
+      "subcategoria": "Almacén",
+      "activo": true
+    },
+    {
       "nombre": "Harina 0000",
       "precio": 4000,
       "unidad": "",
@@ -348,6 +357,15 @@
     {
       "nombre": "Yerba mate",
       "precio": 4,
+      "unidad": "",
+      "categoria": "Almacén",
+      "categoriaPrincipal": "Almacén",
+      "subcategoria": "Almacén",
+      "activo": true
+    },
+    {
+      "nombre": "Atún al natural",
+      "precio": 473,
       "unidad": "",
       "categoria": "Almacén",
       "categoriaPrincipal": "Almacén",
