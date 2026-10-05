@@ -319,6 +319,15 @@
       "activo": true
     },
     {
+      "nombre": "Arroz blanco",
+      "precio": 1600,
+      "unidad": "",
+      "categoria": "Almacén",
+      "categoriaPrincipal": "Almacén",
+      "subcategoria": "Almacén",
+      "activo": true
+    },
+    {
       "nombre": "Azúcar común",
       "precio": 2666,
       "unidad": "",
