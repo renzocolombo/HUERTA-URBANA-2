@@ -319,8 +319,26 @@
       "activo": true
     },
     {
+      "nombre": "Azúcar común",
+      "precio": 2666,
+      "unidad": "",
+      "categoria": "Almacén",
+      "categoriaPrincipal": "Almacén",
+      "subcategoria": "Almacén",
+      "activo": true
+    },
+    {
       "nombre": "Sal fina",
       "precio": 2400,
+      "unidad": "",
+      "categoria": "Almacén",
+      "categoriaPrincipal": "Almacén",
+      "subcategoria": "Almacén",
+      "activo": true
+    },
+    {
+      "nombre": "Yerba mate",
+      "precio": 4,
       "unidad": "",
       "categoria": "Almacén",
       "categoriaPrincipal": "Almacén",
