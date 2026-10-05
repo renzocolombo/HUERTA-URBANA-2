@@ -346,6 +346,15 @@
       "activo": true
     },
     {
+      "nombre": "Puré de tomate",
+      "precio": 3614,
+      "unidad": "",
+      "categoria": "Almacén",
+      "categoriaPrincipal": "Almacén",
+      "subcategoria": "Almacén",
+      "activo": true
+    },
+    {
       "nombre": "Alfajor de chocolate",
       "precio": 16000,
       "unidad": "",
