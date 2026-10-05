@@ -337,8 +337,8 @@
       "activo": true
     },
     {
-      "nombre": "Azúcar común",
-      "precio": 2666,
+      "nombre": "Aceite de girasol",
+      "precio": 73,
       "unidad": "",
       "categoria": "Almacén",
       "categoriaPrincipal": "Almacén",
@@ -346,8 +346,8 @@
       "activo": true
     },
     {
-      "nombre": "Sal fina",
-      "precio": 2400,
+      "nombre": "Azúcar común",
+      "precio": 2666,
       "unidad": "",
       "categoria": "Almacén",
       "categoriaPrincipal": "Almacén",
@@ -379,15 +379,6 @@
       "categoria": "Almacén",
       "categoriaPrincipal": "Almacén",
       "subcategoria": "Almacén",
-      "activo": true
-    },
-    {
-      "nombre": "Alfajor de chocolate",
-      "precio": 16000,
-      "unidad": "",
-      "categoria": "Almacén",
-      "categoriaPrincipal": "Almacén",
-      "subcategoria": "Golosinas",
       "activo": true
     }
   ],
