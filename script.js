@@ -1,7 +1,7 @@
 /* HUERTA URBANA - LOGIC & CART SYSTEM (Catalogo Extendido) */
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js?v=78');
+  navigator.serviceWorker.register('sw.js?v=81');
 }
 
 /* ── PWA: Sistema de Instalación ─────────────────────── */
@@ -966,6 +966,12 @@ function updateSummary() {
 async function handleOrderSubmit(e) {
     e.preventDefault();
     
+    // Bloqueo estricto si la tienda está en modo Próximamente
+    if (document.documentElement.classList.contains('preview-locked') || localStorage.getItem('huerta_preview_unlocked_v2') !== 'true') {
+        alert('La tienda está en modo Próximamente. No se pueden realizar pedidos por el momento.');
+        return;
+    }
+
     // Validación de seguridad adicional
     if (Object.keys(cart).length === 0) {
         alert('El carrito está vacío');

@@ -61,16 +61,16 @@ if (individualRegex.test(html)) {
 const monto = Math.floor(precios.monto_minimo).toLocaleString('es-AR')
 
 html = html.replace(
-  /(<span id="envio-gratis-monto">)[^<]*/,
-  (_, p1) => `${p1}$${monto}`
+  /<span id="envio-gratis-monto">[\s\S]*?<\/span>/,
+  `<span id="envio-gratis-monto">$${monto}</span>`
 )
 html = html.replace(
-  /(<span id="compra-minima-monto">)[^<]*/,
-  (_, p1) => `${p1}$${monto}`
+  /<span id="compra-minima-monto">[\s\S]*?<\/span>/,
+  `<span id="compra-minima-monto">$${monto}</span>`
 )
 html = html.replace(
-  /(<span id="footer-minima-monto">)[^<]*/,
-  (_, p1) => `${p1}$${monto}`
+  /<span id="footer-minima-monto">[\s\S]*?<\/span>/,
+  `<span id="footer-minima-monto">$${monto}</span>`
 )
 
 fs.writeFileSync('index.html', html)
