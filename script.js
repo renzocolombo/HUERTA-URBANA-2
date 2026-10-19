@@ -1,7 +1,7 @@
 /* HUERTA URBANA - LOGIC & CART SYSTEM (Catalogo Extendido) */
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js?v=82');
+  navigator.serviceWorker.register('sw.js?v=83');
 }
 
 /* ── PWA: Sistema de Instalación ─────────────────────── */
@@ -198,31 +198,147 @@ let codigo_referido_usado = ''; // código de referido  → campo V del webhook
 let creditoAplicado = 0; // v5.5
 let credito_usado = 0;   // v5.6 - monto real aplicado al pedido
 
-async function cargarPrecios() {
-  try {
-    const response = await fetch(APPS_SCRIPT_URL + '?accion=getPreciosWeb')
-    const data = await response.json()
-    if (data.success) {
-      if (data.monto_minimo) MIN_PURCHASE = data.monto_minimo
-      if (data.productos) actualizarProductos(data.productos)
-      if (data.combos) actualizarCombos(data.combos)
-      actualizarTextos()
-      return // éxito: salir
-    }
-  } catch (e) {
-    console.warn('[PRECIOS] API no disponible, cargando desde precios.json local...')
+function normalizarIdProducto(nombre) {
+  return (nombre || '')
+    .toLowerCase()
+    .trim()
+    .normalize('NFD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .replace(/\s+/g, '-');
+}
+
+function mostrarAviso(mensaje) {
+  let toast = document.getElementById('huerta-toast-aviso');
+  if (!toast) {
+    toast = document.createElement('div');
+    toast.id = 'huerta-toast-aviso';
+    toast.style.cssText = 'position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(100px);background:#1a1a1a;color:#fff;padding:12px 24px;border-radius:30px;font-size:14px;font-weight:600;box-shadow:0 10px 25px rgba(0,0,0,0.35);z-index:999999;display:flex;align-items:center;gap:10px;opacity:0;pointer-events:none;transition:all 0.3s cubic-bezier(0.16,1,0.3,1);max-width:90vw;border:1px solid #333;';
+    document.body.appendChild(toast);
   }
-  // Fallback: cargar desde precios.json local (siempre disponible)
+  toast.innerHTML = `<span>🔄</span> <span>${mensaje}</span>`;
+  requestAnimationFrame(() => {
+    toast.style.transform = 'translateX(-50%) translateY(0)';
+    toast.style.opacity = '1';
+    toast.style.pointerEvents = 'auto';
+  });
+
+  if (window._huertaToastTimer) clearTimeout(window._huertaToastTimer);
+  window._huertaToastTimer = setTimeout(() => {
+    toast.style.transform = 'translateX(-50%) translateY(100px)';
+    toast.style.opacity = '0';
+    toast.style.pointerEvents = 'none';
+  }, 4500);
+}
+
+function buscarProductoCatalogo(id, type) {
+  if (type === 'combo') {
+    return PRODUCTS.combos?.find(c => c.id === id) || null;
+  }
+  for (const cat of ['verduras', 'frutas', 'market']) {
+    const prod = PRODUCTS.individual[cat]?.find(p => p.id === id);
+    if (prod) return prod;
+  }
+  return PRODUCTS.combos?.find(c => c.id === id) || null;
+}
+
+function recalcularCarrito() {
+  let huboCambios = false;
+  let cambiosPrecio = false;
+  let productosQuitados = false;
+
+  const itemIds = Object.keys(cart);
+  if (itemIds.length === 0) {
+    return { huboCambios: false, cambiosPrecio: false, productosQuitados: false };
+  }
+
+  itemIds.forEach(id => {
+    const cartItem = cart[id];
+    if (!cartItem) return;
+
+    const productoActual = buscarProductoCatalogo(id, cartItem.type);
+
+    if (!productoActual) {
+      // El producto ya no existe en el catálogo o está inactivo (apagado)
+      delete cart[id];
+      huboCambios = true;
+      productosQuitados = true;
+    } else {
+      if (cartItem.price !== productoActual.price) {
+        cartItem.price = productoActual.price;
+        huboCambios = true;
+        cambiosPrecio = true;
+      }
+      if (productoActual.name && cartItem.name !== productoActual.name) {
+        cartItem.name = productoActual.name;
+      }
+      if (productoActual.unit && cartItem.unit !== productoActual.unit) {
+        cartItem.unit = productoActual.unit;
+      }
+    }
+  });
+
+  if (huboCambios) {
+    mostrarAviso('Actualizamos los precios de tu carrito');
+    updateSummary();
+    renderCombos();
+    renderCustomProducts();
+  }
+
+  return { huboCambios, cambiosPrecio, productosQuitados };
+}
+
+let cargandoPreciosPromise = null;
+let ultimoFetchPrecios = 0;
+
+async function cargarPrecios(force = false) {
+  if (cargandoPreciosPromise) {
+    return cargandoPreciosPromise;
+  }
+  if (!force && Date.now() - ultimoFetchPrecios < 3000) {
+    return { huboCambios: false, cambiosPrecio: false, productosQuitados: false };
+  }
+
+  cargandoPreciosPromise = (async () => {
+    let cargoExitoso = false;
+    ultimoFetchPrecios = Date.now();
+    try {
+      const response = await fetch(APPS_SCRIPT_URL + '?accion=getPreciosWeb&t=' + Date.now());
+      const data = await response.json();
+      if (data.success) {
+        if (data.monto_minimo) MIN_PURCHASE = data.monto_minimo;
+        if (data.productos) actualizarProductos(data.productos);
+        if (data.combos) actualizarCombos(data.combos);
+        actualizarTextos();
+        renderCombos();
+        cargoExitoso = true;
+      }
+    } catch (e) {
+      console.warn('[PRECIOS] API no disponible, cargando desde precios.json local...');
+    }
+
+    if (!cargoExitoso) {
+      // Fallback: cargar desde precios.json local (siempre disponible)
+      try {
+        const res = await fetch('./precios.json?t=' + Date.now());
+        const local = await res.json();
+        if (local.monto_minimo) MIN_PURCHASE = local.monto_minimo;
+        if (local.productos) actualizarProductos(local.productos);
+        if (local.combos) actualizarCombos(local.combos);
+        actualizarTextos();
+        renderCombos();
+        console.log('[PRECIOS] Cargado desde precios.json local');
+      } catch (e2) {
+        console.warn('[PRECIOS] No se pudo cargar precios.json:', e2.message);
+      }
+    }
+
+    return recalcularCarrito();
+  })();
+
   try {
-    const res = await fetch('./precios.json')
-    const local = await res.json()
-    if (local.monto_minimo) MIN_PURCHASE = local.monto_minimo
-    if (local.productos) actualizarProductos(local.productos)
-    if (local.combos) actualizarCombos(local.combos)
-    actualizarTextos()
-    console.log('[PRECIOS] Cargado desde precios.json local')
-  } catch (e2) {
-    console.warn('[PRECIOS] No se pudo cargar precios.json:', e2.message)
+    return await cargandoPreciosPromise;
+  } finally {
+    cargandoPreciosPromise = null;
   }
 }
 
@@ -328,7 +444,7 @@ function actualizarProductos(productosData) {
     const nombreCapitalizado = nombreCrudo.charAt(0).toUpperCase() + nombreCrudo.slice(1);
     
     PRODUCTS.individual[categoria].push({
-      id: 'p' + i,
+      id: normalizarIdProducto(p.nombre),
       name: nombreCapitalizado,
       price: p.precio,
       unit, step, min,
@@ -387,6 +503,18 @@ document.addEventListener('DOMContentLoaded', async () => {
     renderCustomProducts();
     actualizarTextos();
     updateSummary();
+
+    // Actualización periódica cada 5 minutos con la página abierta
+    setInterval(() => {
+        cargarPrecios();
+    }, 5 * 60 * 1000);
+
+    // Actualización cuando la pestaña vuelve a estar visible
+    document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+            cargarPrecios();
+        }
+    });
 
     // Corrección automática de desfasaje de scroll en carga inicial (v50.0)
     if (window.location.hash === '#formulario') {
@@ -720,7 +848,7 @@ function renderCombos() {
                         <span class="price">$${Math.floor(combo.price).toLocaleString('es-AR')}</span>
                         <div class="qty-control" onclick="event.stopPropagation()">
                             <button type="button" class="qty-btn" onclick="updateComboQty('${combo.id}', -1)"><ion-icon name="remove-circle-outline"></ion-icon></button>
-                            <span class="qty-val" id="qty-combo-${combo.id}">0</span>
+                            <span class="qty-val" id="qty-combo-${combo.id}">${cart[combo.id]?.qty || 0}</span>
                             <button type="button" class="qty-btn" onclick="updateComboQty('${combo.id}', 1)"><ion-icon name="add-circle-outline"></ion-icon></button>
                         </div>
                     </div>
@@ -1013,6 +1141,16 @@ async function processOrder(form) {
         alert("Por favor, completa los campos de nombre, teléfono y dirección.");
         submitBtn.disabled = false;
         submitBtn.innerText = originalBtnText;
+        return;
+    }
+
+    // Volver a ejecutar cargarPrecios justo antes de enviar el pedido
+    // Si hubo cambios de precio o catálogo, no enviarlo y mostrar aviso para revisar el total
+    const resPrecios = await cargarPrecios(true);
+    if (resPrecios && resPrecios.huboCambios) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalBtnText;
+        alert("Actualizamos los precios de tu carrito. Por favor, revisá el nuevo total antes de enviar el pedido.");
         return;
     }
 

@@ -1,4 +1,4 @@
-const CACHE_NAME = 'huerta-urbana-static-v82';
+const CACHE_NAME = 'huerta-urbana-static-v83';
 const ASSETS = [
   './',
   './style.css?v=60.0',
@@ -40,7 +40,11 @@ self.addEventListener('fetch', (e) => {
   const url = new URL(e.request.url);
 
   // 1. Datos externos y Precios: Network Only (Siempre red, nunca caché)
-  if (url.pathname.includes('precios.json') || url.hostname.includes('script.google.com')) {
+  if (
+    url.pathname.includes('precios.json') || 
+    url.hostname.includes('script.google.com') ||
+    url.search.includes('getPreciosWeb')
+  ) {
     e.respondWith(fetch(e.request));
     return;
   }
