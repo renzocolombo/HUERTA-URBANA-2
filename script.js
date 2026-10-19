@@ -1,7 +1,7 @@
 /* HUERTA URBANA - LOGIC & CART SYSTEM (Catalogo Extendido) */
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js?v=81');
+  navigator.serviceWorker.register('sw.js?v=82');
 }
 
 /* ── PWA: Sistema de Instalación ─────────────────────── */
@@ -1269,3 +1269,16 @@ function updateCreditUI() {
         formCredits.innerText = fmtCredits;
     }
 }
+
+// Función global expuesta para auth.js al cerrar sesión
+window.resetCreditoCarrito = function() {
+    creditoAplicado = 0;
+    credito_usado = 0;
+    const creditBtn = document.getElementById('btn-aplicar-credito');
+    if (creditBtn) {
+        creditBtn.innerText = 'Aplicar';
+    }
+    if (typeof updateSummary === 'function') {
+        updateSummary();
+    }
+};

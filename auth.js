@@ -238,6 +238,16 @@ onAuthStateChanged(auth, async (user) => {
             creditMsg.className = 'cupon-mensaje';
         }
 
+        const headerCredits = document.getElementById('credito-referidos');
+        if (headerCredits) headerCredits.innerText = '$0 créditos de referidos';
+
+        const panelCredits = document.querySelector('.credit-amount');
+        if (panelCredits) panelCredits.innerText = '$0';
+
+        if (typeof window.resetCreditoCarrito === 'function') {
+            window.resetCreditoCarrito();
+        }
+
         closeUserPanel();
 
         // Mostrar Popup Bottom Sheet después de 5 seg
