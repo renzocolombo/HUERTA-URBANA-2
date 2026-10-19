@@ -506,7 +506,10 @@
                             <button type="submit" id="submit-btn" class="btn btn-full btn-disabled" disabled>Confirmar Pedido</button>
                             <div class="terms-legal-container">
                                 <span>Al confirmar aceptás nuestros</span>
-                                <button type="button" class="btn-link-terms" onclick="openTermsModalManual()">Términos y Privacidad</button>
+                                <div style="display: flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin-top: 4px;">
+                                    <a href="terminos.html" class="btn-link-terms" target="_blank" rel="noopener noreferrer">Términos y Condiciones</a>
+                                    <a href="privacidad.html" class="btn-link-terms" target="_blank" rel="noopener noreferrer">Política de Privacidad</a>
+                                </div>
                             </div>
                         </form>
                     </div>
@@ -524,6 +527,10 @@
                 </div>
                 <p>Calidad premium y frescura garantizada en cada entrega. <br> Compra mínima: <span id="footer-minima-monto"><span id="footer-minima-monto">00</span></p>
                 <a href="mailto:huertaurbana.market@gmail.com" class="footer-email">huertaurbana.market@gmail.com</a>
+                <div class="footer-legal-links" style="margin-top: 15px; display: flex; gap: 15px; font-size: 0.85rem;">
+                    <a href="terminos.html" style="color: #bbbbbb; text-decoration: underline;">Términos y Condiciones</a>
+                    <a href="privacidad.html" style="color: #bbbbbb; text-decoration: underline;">Política de Privacidad</a>
+                </div>
             </div>
             <div class="social-links">
                 <a href="https://www.instagram.com/huertaurbana.market" class="social-btn instagram" title="Instagram" target="_blank" rel="noopener noreferrer">
@@ -535,7 +542,7 @@
             </div>
         </div>
         <div class="footer-bottom">
-            <p>&copy; 2026 Huerta Urbana. Todos los derechos reservados.</p>
+            <p>&copy; 2026 Huerta Urbana. Todos los derechos reservados. · <a href="terminos.html" style="color: #888; text-decoration: none;">Términos y Condiciones</a> · <a href="privacidad.html" style="color: #888; text-decoration: none;">Política de Privacidad</a></p>
         </div>
     </footer>
 
@@ -610,7 +617,9 @@
                     <span>huertaurbana.market@gmail.com</span>
                 </a>
             </div>
-            <p class="copyright">&copy; 2026 Huerta Urbana. Todos los derechos reservados.</p>
+            <p class="copyright">&copy; 2026 Huerta Urbana. Todos los derechos reservados. <br>
+                <a href="terminos.html" style="color: #888; text-decoration: underline;">Términos y Condiciones</a> · <a href="privacidad.html" style="color: #888; text-decoration: underline;">Política de Privacidad</a>
+            </p>
         </div>
     </footer>
 
@@ -706,6 +715,10 @@
             <footer class="terms-footer">
                 <div class="terms-actions">
                     <button type="button" onclick="closeTermsModal()" class="btn btn-primary btn-full">Cerrar</button>
+                    <div style="text-align: center; margin-top: 10px; font-size: 0.85rem;">
+                        <a href="terminos.html" target="_blank" style="color: var(--primary); font-weight: 600; text-decoration: underline;">Ver Términos completos</a> · 
+                        <a href="privacidad.html" target="_blank" style="color: var(--primary); font-weight: 600; text-decoration: underline;">Ver Privacidad completa</a>
+                    </div>
                 </div>
             </footer>
         </div>

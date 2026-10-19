@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="es" class="notranslate" translate="no">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Política de Privacidad | Huerta Urbana</title>
+    
+    <!-- SEO -->
+    <meta name="description" content="Política de Privacidad de Huerta Urbana. Conocé cómo protegemos y gestionamos tus datos personales según la Ley 25.326.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://huertaurbana.com.ar/privacidad.html">
+
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://huertaurbana.com.ar/privacidad.html">
+    <meta property="og:title" content="Política de Privacidad | Huerta Urbana">
+    <meta property="og:description" content="Conocé cómo protegemos y gestionamos tus datos personales en Huerta Urbana según la Ley 25.326.">
+    <meta property="og:image" content="https://huertaurbana.com.ar/img/favicon.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="img/favicon.png">
+    <link rel="apple-touch-icon" href="img/favicon.png">
+    
+    <!-- Ionicons -->
+    <script type="module" src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.esm.js"></script>
+    <script nomodule src="https://unpkg.com/ionicons@7.1.0/dist/ionicons/ionicons.js"></script>
+
+    <link rel="stylesheet" href="style.css?v=60.6">
+    <meta name="theme-color" content="#2d5a27">
+
+    <style>
+        .legal-page-wrapper {
+            background-color: var(--bg-light);
+            min-height: calc(100vh - 180px);
+            padding: 40px 0 70px;
+        }
+
+        .legal-container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .legal-breadcrumb {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+        }
+
+        .legal-breadcrumb a {
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .legal-breadcrumb a:hover {
+            text-decoration: underline;
+        }
+
+        .legal-card {
+            background: #ffffff;
+            border-radius: 20px;
+            padding: 45px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            border: 1px solid rgba(45, 90, 39, 0.08);
+        }
+
+        .legal-header {
+            border-bottom: 1px solid #edf2ed;
+            padding-bottom: 25px;
+            margin-bottom: 35px;
+        }
+
+        .legal-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: rgba(45, 90, 39, 0.1);
+            color: var(--primary);
+            padding: 6px 14px;
+            border-radius: 30px;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 14px;
+        }
+
+        .legal-title {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 2.2rem;
+            color: var(--text-dark);
+            margin-bottom: 10px;
+            line-height: 1.2;
+        }
+
+        .legal-updated {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .legal-intro {
+            font-size: 1.05rem;
+            line-height: 1.7;
+            color: #333333;
+            margin-bottom: 30px;
+            background: #f7faf7;
+            padding: 20px 24px;
+            border-left: 4px solid var(--primary);
+            border-radius: 8px;
+        }
+
+        .legal-section {
+            margin-bottom: 32px;
+        }
+
+        .legal-section h2 {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.25rem;
+            color: var(--primary);
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legal-section h2 ion-icon {
+            font-size: 1.35rem;
+            color: var(--primary-light);
+        }
+
+        .legal-section p {
+            font-size: 0.96rem;
+            line-height: 1.7;
+            color: #444444;
+            margin-bottom: 12px;
+        }
+
+        .legal-section ul {
+            list-style: none;
+            padding-left: 0;
+            margin: 12px 0;
+        }
+
+        .legal-section ul li {
+            position: relative;
+            padding-left: 26px;
+            margin-bottom: 10px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+            color: #444444;
+        }
+
+        .legal-section ul li::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            top: 0;
+            color: var(--success);
+            font-weight: 800;
+        }
+
+        .legal-callout-aaip {
+            background: #fffdf5;
+            border: 1px solid #f2e2b0;
+            border-left: 5px solid #d4a017;
+            padding: 20px 24px;
+            border-radius: 12px;
+            margin: 25px 0;
+        }
+
+        .legal-callout-aaip strong {
+            display: block;
+            color: #7d5b00;
+            margin-bottom: 8px;
+            font-size: 0.95rem;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .legal-callout-aaip p {
+            color: #5c4300;
+            font-size: 0.92rem;
+            line-height: 1.65;
+            margin: 0;
+            font-style: italic;
+        }
+
+        .legal-contact-box {
+            background: linear-gradient(135deg, rgba(45, 90, 39, 0.05) 0%, rgba(74, 124, 68, 0.1) 100%);
+            border: 1px solid rgba(45, 90, 39, 0.15);
+            border-radius: 14px;
+            padding: 24px;
+            margin-top: 35px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .legal-contact-box strong {
+            color: var(--primary);
+            font-size: 1.05rem;
+        }
+
+        .legal-contact-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 5px;
+        }
+
+        .legal-contact-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 10px 18px;
+            border-radius: 10px;
+            font-weight: 600;
+            font-size: 0.9rem;
+            text-decoration: none;
+            transition: var(--transition);
+        }
+
+        .legal-contact-btn.btn-mail {
+            background: var(--primary);
+            color: #ffffff;
+        }
+
+        .legal-contact-btn.btn-mail:hover {
+            background: var(--primary-light);
+            transform: translateY(-2px);
+        }
+
+        .legal-contact-btn.btn-wsp {
+            background: #25d366;
+            color: #ffffff;
+        }
+
+        .legal-contact-btn.btn-wsp:hover {
+            background: #1eb956;
+            transform: translateY(-2px);
+        }
+
+        .header-back-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: var(--primary);
+            color: #ffffff !important;
+            padding: 10px 18px;
+            border-radius: 30px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            text-decoration: none;
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(45, 90, 39, 0.2);
+        }
+
+        .header-back-btn:hover {
+            background: var(--primary-light);
+            transform: translateY(-1px);
+        }
+
+        @media (max-width: 768px) {
+            .legal-card {
+                padding: 25px 20px;
+                border-radius: 16px;
+            }
+
+            .legal-title {
+                font-size: 1.65rem;
+            }
+
+            .legal-page-wrapper {
+                padding: 20px 0 50px;
+            }
+
+            .legal-contact-links {
+                flex-direction: column;
+            }
+
+            .header-back-btn span {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Header -->
+    <header id="header">
+        <div class="container header-container">
+            <div class="header-left">
+                <a href="index.html" class="logo">
+                    <ion-icon name="leaf" class="logo-icon"></ion-icon>
+                    <div class="logo-text-wrapper">
+                        <span class="logo-main-text">HUERTA URBANA</span>
+                        <small class="logo-subtitle">Un compromiso familiar en cada entrega</small>
+                    </div>
+                </a>
+            </div>
+
+            <nav class="header-nav-desktop">
+                <a href="index.html#hero" class="nav-link">Inicio</a>
+                <a href="index.html#combos-estandar" class="nav-link">Combos</a>
+                <a href="index.html#personalizado" class="nav-link">Armar Pedido</a>
+                <a href="terminos.html" class="nav-link">Términos</a>
+            </nav>
+
+            <div>
+                <a href="index.html" class="header-back-btn" title="Volver a la tienda">
+                    <ion-icon name="arrow-back-outline"></ion-icon>
+                    <span>Volver a la tienda</span>
+                </a>
+            </div>
+        </div>
+    </header>
+
+    <main class="legal-page-wrapper">
+        <div class="legal-container">
+            <!-- Breadcrumb -->
+            <div class="legal-breadcrumb">
+                <a href="index.html">Inicio</a>
+                <span>/</span>
+                <span>Legales</span>
+                <span>/</span>
+                <span>Política de Privacidad</span>
+            </div>
+
+            <!-- Card de Contenido -->
+            <article class="legal-card">
+                <header class="legal-header">
+                    <div class="legal-badge">
+                        <ion-icon name="shield-checkmark-outline"></ion-icon>
+                        <span>Protección de Datos Personales</span>
+                    </div>
+                    <h1 class="legal-title">Política de Privacidad</h1>
+                    <div class="legal-updated">
+                        <ion-icon name="calendar-outline"></ion-icon>
+                        <span>Última actualización: 19 de octubre de 2026</span>
+                    </div>
+                </header>
+
+                <div class="legal-intro">
+                    En <strong>Huerta Urbana</strong> nos comprometemos a proteger la privacidad y los datos personales de nuestros usuarios y clientes, en estricto cumplimiento con la <strong>Ley de Protección de Datos Personales Nº 25.326</strong> de la República Argentina y sus normas complementarias. A continuación, detallamos de forma transparente cómo recolectamos, utilizamos, almacenamos y resguardamos tu información.
+                </div>
+
+                <!-- 1. Responsable -->
+                <section class="legal-section">
+                    <h2><ion-icon name="business-outline"></ion-icon> 1. Responsable del Tratamiento de los Datos</h2>
+                    <p>
+                        El responsable del tratamiento de los datos recabados en este sitio web es <strong>Huerta Urbana</strong>, emprendimiento familiar con base de operaciones y logística en el <strong>Partido de Pilar, Provincia de Buenos Aires, República Argentina</strong>.
+                    </p>
+                    <p>
+                        Para cualquier consulta, solicitud o ejercicio de derechos sobre tus datos personales, podés contactarnos a través de nuestra casilla de correo electrónico oficial: <a href="mailto:huertaurbana.market@gmail.com" style="color: var(--primary); font-weight: 600;">huertaurbana.market@gmail.com</a>.
+                    </p>
+                </section>
+
+                <!-- 2. Datos que recolectamos -->
+                <section class="legal-section">
+                    <h2><ion-icon name="file-tray-full-outline"></ion-icon> 2. Datos que Recolectamos</h2>
+                    <p>Recolectamos únicamente la información necesaria para brindarte nuestro servicio de venta y entrega de alimentos frescos:</p>
+                    <ul>
+                        <li><strong>Datos de autenticación y perfil:</strong> Al iniciar sesión con tu cuenta de Google (a través de Firebase Authentication), recopilamos tu nombre completo, dirección de correo electrónico (email) y foto de perfil.</li>
+                        <li><strong>Datos de entrega y contacto:</strong> Número de teléfono / WhatsApp, dirección de entrega (calle, numeración, observaciones de entrega) y localidad dentro del Partido de Pilar.</li>
+                        <li><strong>Datos de cuenta y fidelización:</strong> Historial de pedidos realizados, saldo de créditos acumulados por el programa de referidos y tu código de referido asignado.</li>
+                    </ul>
+                </section>
+
+                <!-- 3. Para qué los usamos -->
+                <section class="legal-section">
+                    <h2><ion-icon name="construct-outline"></ion-icon> 3. Finalidad del Tratamiento de los Datos</h2>
+                    <p>Utilizamos la información recolectada con las siguientes finalidades específicas y legítimas:</p>
+                    <ul>
+                        <li><strong>Procesamiento y logística de pedidos:</strong> Preparar tu canasta de frutas y verduras, coordinar la ruta de reparto y efectuar la entrega en tu domicilio en el día y franja horaria seleccionados.</li>
+                        <li><strong>Gestión de beneficios y fidelidad:</strong> Administrar tu saldo de créditos, aplicar descuentos y gestionar el programa de clientes referidos.</li>
+                        <li><strong>Comunicación operativa:</strong> Contactarte por WhatsApp o correo electrónico ante novedades sobre tu entrega, confirmación de pedidos o resolución de incidencias.</li>
+                        <li><strong>Comunicaciones comerciales:</strong> Solo si brindaste tu consentimiento expreso, enviarte novedades de estación, promociones exclusivas o nuevos lanzamientos. Podés darte de baja en cualquier momento.</li>
+                    </ul>
+                </section>
+
+                <!-- 4. Con quién se comparten -->
+                <section class="legal-section">
+                    <h2><ion-icon name="share-social-outline"></ion-icon> 4. Destinatarios y Proveedores de Servicios</h2>
+                    <p>
+                        <strong>Huerta Urbana no vende, no alquila y no comercializa tus datos personales a terceros bajo ninguna circunstancia.</strong>
+                    </p>
+                    <p>Compartimos información únicamente con proveedores tecnológicos indispensables para la correcta prestación del servicio:</p>
+                    <ul>
+                        <li><strong>Mercado Pago:</strong> Plataforma para el procesamiento seguro de pagos online. <em>Huerta Urbana no accede, no procesa ni almacena ningún dato de tus tarjetas de crédito, débito o cuentas bancarias.</em></li>
+                        <li><strong>Google / Firebase:</strong> Infraestructura segura para la autenticación de usuarios y alojamiento de bases de datos bajo estándares internacionales de seguridad.</li>
+                        <li><strong>Herramientas de automatización logística (Make):</strong> Integraciones seguras empleadas para registrar los pedidos y coordinar las rutas de entrega de nuestro equipo de reparto.</li>
+                    </ul>
+                </section>
+
+                <!-- 5. Cookies y medición -->
+                <section class="legal-section">
+                    <h2><ion-icon name="pie-chart-outline"></ion-icon> 5. Cookies, Almacenamiento Local y Medición</h2>
+                    <p>
+                        Nuestro sitio web utiliza <strong>almacenamiento local (localStorage)</strong> en tu navegador para funciones técnicas esenciales, tales como mantener los productos guardados en tu carrito de compras mientras navegás y conservar tu sesión activa.
+                    </p>
+                    <p>
+                        Asimismo, el sitio puede emplear cookies y tecnologías de medición (incluyendo píxeles como Meta Pixel, Google Analytics y TikTok) con fines estadísticos, de análisis de tráfico, rendimiento de la plataforma y optimización de anuncios publicitarios orientados a personas interesadas en productos saludables en Pilar. Podés configurar tu navegador para bloquear o rechazar las cookies en cualquier momento.
+                    </p>
+                </section>
+
+                <!-- 6. Derechos del titular y AAIP -->
+                <section class="legal-section">
+                    <h2><ion-icon name="key-outline"></ion-icon> 6. Derechos del Titular de los Datos Personales</h2>
+                    <p>
+                        De conformidad con la Ley Nº 25.326, el titular de los datos personales tiene derecho a solicitar y obtener información de sus datos personales incluidos en los bancos de datos de Huerta Urbana.
+                    </p>
+                    <p>
+                        Podés ejercer gratuitamente tus derechos de <strong>acceso, rectificación, actualización o supresión (eliminación)</strong> de tus datos personales enviando un correo electrónico a <a href="mailto:huertaurbana.market@gmail.com" style="color: var(--primary); font-weight: 600;">huertaurbana.market@gmail.com</a> con el asunto "Protección de Datos Personales", acreditando tu identidad.
+                    </p>
+
+                    <!-- Cuadro Obligatorio AAIP -->
+                    <div class="legal-callout-aaip">
+                        <strong>Información reglamentaria exigida por la AAIP:</strong>
+                        <p>
+                            "La AGENCIA DE ACCESO A LA INFORMACIÓN PÚBLICA, en su carácter de Órgano de Control de la Ley N° 25.326, tiene la atribución de atender las denuncias y reclamos que interpongan quienes resulten afectados en sus derechos por incumplimiento de las normas vigentes en materia de protección de datos personales."
+                        </p>
+                    </div>
+                </section>
+
+                <!-- 7. Modificaciones -->
+                <section class="legal-section">
+                    <h2><ion-icon name="refresh-outline"></ion-icon> 7. Modificaciones a la Política</h2>
+                    <p>
+                        Huerta Urbana se reserva el derecho de actualizar la presente Política de Privacidad periódicamente para reflejar cambios legales o de nuestros servicios. La versión más reciente estará siempre disponible en esta página con su correspondiente fecha de actualización.
+                    </p>
+                </section>
+
+                <!-- Box de Contacto -->
+                <div class="legal-contact-box">
+                    <strong>¿Tenés dudas sobre el tratamiento de tus datos?</strong>
+                    <p style="margin: 0; font-size: 0.92rem; color: #555;">Estamos a tu disposición para ayudarte con cualquier consulta o gestión que necesites realizar:</p>
+                    <div class="legal-contact-links">
+                        <a href="mailto:huertaurbana.market@gmail.com" class="legal-contact-btn btn-mail">
+                            <ion-icon name="mail-outline"></ion-icon>
+                            <span>huertaurbana.market@gmail.com</span>
+                        </a>
+                        <a href="https://wa.me/5491161771376" target="_blank" rel="noopener noreferrer" class="legal-contact-btn btn-wsp">
+                            <ion-icon name="logo-whatsapp"></ion-icon>
+                            <span>WhatsApp: 11 6177-1376</span>
+                        </a>
+                    </div>
+                </div>
+            </article>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container footer-content">
+            <div class="footer-info">
+                <div class="logo logo-light">
+                    <ion-icon name="leaf" class="logo-icon"></ion-icon>
+                    <span>HUERTA URBANA</span>
+                </div>
+                <p>Calidad premium y frescura garantizada en cada entrega. <br> Pilar, Buenos Aires, Argentina.</p>
+                <a href="mailto:huertaurbana.market@gmail.com" class="footer-email">huertaurbana.market@gmail.com</a>
+                <div style="margin-top: 15px; display: flex; gap: 15px; font-size: 0.85rem;">
+                    <a href="terminos.html" style="color: #bbbbbb; text-decoration: underline;">Términos y Condiciones</a>
+                    <a href="privacidad.html" style="color: var(--accent); font-weight: 600; text-decoration: none;">Política de Privacidad</a>
+                </div>
+            </div>
+            <div class="social-links">
+                <a href="https://www.instagram.com/huertaurbana.market" class="social-btn instagram" title="Instagram" target="_blank" rel="noopener noreferrer">
+                    <ion-icon name="logo-instagram"></ion-icon>
+                </a>
+                <a href="https://wa.me/5491161771376" class="social-btn" style="background:#25d366; color:white;" title="WhatsApp" target="_blank" rel="noopener noreferrer">
+                    <ion-icon name="logo-whatsapp"></ion-icon>
+                </a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2026 Huerta Urbana. Todos los derechos reservados. · <a href="terminos.html" style="color: #888; text-decoration: none;">Términos y Condiciones</a> · <a href="privacidad.html" style="color: #888; text-decoration: none;">Política de Privacidad</a></p>
+        </div>
+    </footer>
+</body>
+
+</html>
