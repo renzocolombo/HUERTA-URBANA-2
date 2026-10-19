@@ -292,15 +292,6 @@
       "activo": true
     },
     {
-      "nombre": "Lata de choclo",
-      "precio": 1280,
-      "unidad": "",
-      "categoria": "Almacén",
-      "categoriaPrincipal": "Almacén",
-      "subcategoria": "Almacén",
-      "activo": true
-    },
-    {
       "nombre": "Fideos spaghetti 500g",
       "precio": 1520,
       "unidad": "",
@@ -356,7 +347,7 @@
     },
     {
       "nombre": "Yerba mate",
-      "precio": 4,
+      "precio": 5333,
       "unidad": "",
       "categoria": "Almacén",
       "categoriaPrincipal": "Almacén",
@@ -373,12 +364,93 @@
       "activo": true
     },
     {
-      "nombre": "Puré de tomate",
-      "precio": 3614,
+      "nombre": "Arvejas en lata",
+      "precio": 8000,
       "unidad": "",
       "categoria": "Almacén",
       "categoriaPrincipal": "Almacén",
       "subcategoria": "Almacén",
+      "activo": true
+    },
+    {
+      "nombre": "Latas de choclo",
+      "precio": 0,
+      "unidad": "",
+      "categoria": "Verduras",
+      "categoriaPrincipal": "Verduras",
+      "subcategoria": "Almacén",
+      "activo": true
+    },
+    {
+      "nombre": "Puré de tomate",
+      "precio": 0,
+      "unidad": "",
+      "categoria": "Verduras",
+      "categoriaPrincipal": "Verduras",
+      "subcategoria": "Almacén",
+      "activo": true
+    },
+    {
+      "nombre": "Soda sifón",
+      "precio": 0,
+      "unidad": "",
+      "categoria": "Verduras",
+      "categoriaPrincipal": "Verduras",
+      "subcategoria": "Bebidas",
+      "activo": true
+    },
+    {
+      "nombre": "Jugo de naranja",
+      "precio": 0,
+      "unidad": "",
+      "categoria": "Frutas",
+      "categoriaPrincipal": "Frutas",
+      "subcategoria": "Bebidas",
+      "activo": true
+    },
+    {
+      "nombre": "Papel higiénico x4",
+      "precio": 0,
+      "unidad": "",
+      "categoria": "Verduras",
+      "categoriaPrincipal": "Verduras",
+      "subcategoria": "Limpieza",
+      "activo": true
+    },
+    {
+      "nombre": "Rollo de cocina",
+      "precio": 0,
+      "unidad": "",
+      "categoria": "Verduras",
+      "categoriaPrincipal": "Verduras",
+      "subcategoria": "Limpieza",
+      "activo": true
+    },
+    {
+      "nombre": "Manteca 200g",
+      "precio": 0,
+      "unidad": "",
+      "categoria": "Verduras",
+      "categoriaPrincipal": "Verduras",
+      "subcategoria": "Lácteos",
+      "activo": true
+    },
+    {
+      "nombre": "Alfajor de chocolate",
+      "precio": 0,
+      "unidad": "",
+      "categoria": "Verduras",
+      "categoriaPrincipal": "Verduras",
+      "subcategoria": "Golosinas",
+      "activo": true
+    },
+    {
+      "nombre": "Snack papas fritas",
+      "precio": 0,
+      "unidad": "",
+      "categoria": "Verduras",
+      "categoriaPrincipal": "Verduras",
+      "subcategoria": "Golosinas",
       "activo": true
     }
   ],
