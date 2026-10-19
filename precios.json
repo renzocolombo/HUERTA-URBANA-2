@@ -121,15 +121,6 @@
       "activo": true
     },
     {
-      "nombre": "Cebolla morada",
-      "precio": 2199,
-      "unidad": "kg",
-      "categoria": "Verduras",
-      "categoriaPrincipal": "Verduras",
-      "subcategoria": "",
-      "activo": true
-    },
-    {
       "nombre": "Cabutia",
       "precio": 1342,
       "unidad": "kg",
