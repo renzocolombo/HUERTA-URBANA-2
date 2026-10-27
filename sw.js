@@ -1,8 +1,9 @@
-const CACHE_NAME = 'huerta-urbana-static-v83';
+const CACHE_NAME = 'huerta-urbana-static-v84';
 const ASSETS = [
   './',
-  './style.css?v=60.0',
-  './script.js?v=58.0',
+  './style.css?v=61.0',
+  './entregaCalendario.js?v=1.0',
+  './script.js?v=59.0',
   './auth.js?v=53.0',
   './img/favicon.png',
   './manifest.json',
@@ -54,6 +55,7 @@ self.addEventListener('fetch', (e) => {
     url.pathname.endsWith('index.html') || 
     url.pathname === '/' ||
     url.pathname.includes('script.js') ||
+    url.pathname.includes('entregaCalendario.js') ||
     url.pathname.includes('style.css') ||
     url.pathname.includes('auth.js');
 
