@@ -1,4 +1,10 @@
 import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const rootDir = path.resolve(__dirname, '..');
 
 console.log("==================================================================");
 console.log("SUITE DE PRUEBAS SIN NAVEGADOR: PRECIOS, REINTENTO, AVISO Y PAYLOAD");
@@ -21,11 +27,11 @@ function assert(condition, testName) {
 // 1. Validar eliminación de precios.json y scripts/actualizar-precios.js
 // -----------------------------------------------------------------------------
 console.log("\n1. Verificación de archivos eliminados y referencias");
-assert(!fs.existsSync('precios.json'), "precios.json no existe en el sistema de archivos");
-assert(!fs.existsSync('scripts/actualizar-precios.js'), "scripts/actualizar-precios.js no existe en el sistema de archivos");
+assert(!fs.existsSync(path.join(rootDir, 'precios.json')), "precios.json no existe en el sistema de archivos");
+assert(!fs.existsSync(path.join(rootDir, 'scripts/actualizar-precios.js')), "scripts/actualizar-precios.js no existe en el sistema de archivos");
 
-const scriptContent = fs.readFileSync('script.js', 'utf8');
-const swContent = fs.readFileSync('sw.js', 'utf8');
+const scriptContent = fs.readFileSync(path.join(rootDir, 'script.js'), 'utf8');
+const swContent = fs.readFileSync(path.join(rootDir, 'sw.js'), 'utf8');
 
 assert(!scriptContent.includes('precios.json'), "script.js no contiene ninguna referencia a precios.json");
 assert(!scriptContent.includes('PRECIOS_JSON_URL'), "script.js no contiene PRECIOS_JSON_URL");

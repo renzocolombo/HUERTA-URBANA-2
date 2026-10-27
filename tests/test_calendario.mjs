@@ -1,4 +1,4 @@
-import * as C from "./entregaCalendario.js";
+import * as C from "../entregaCalendario.js";
 let ok = 0, fail = 0;
 function t(n, real, esp) { const a = JSON.stringify(real), b = JSON.stringify(esp); if (a === b) ok++; else { fail++; console.log("FALLA", n, a, "esperado", b); } }
 const AR = (s) => new Date(s + "-03:00");

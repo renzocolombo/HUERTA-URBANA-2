@@ -1,4 +1,4 @@
-import * as C from "./entregaCalendario.js";
+import * as C from "../entregaCalendario.js";
 
 console.log("==================================================================");
 console.log("PRUEBAS DEL SELECTOR CON RELOJES SIMULADOS (CON Y SIN FERIADO)");
