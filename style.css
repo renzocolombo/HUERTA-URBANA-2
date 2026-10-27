@@ -1512,6 +1512,35 @@ select option {
     color: #333333;
 }
 
+/* Delivery Selector & Hint */
+#delivery-day {
+    width: 100%;
+    min-height: 44px;
+    font-size: 0.95rem;
+    cursor: pointer;
+}
+
+#delivery-day optgroup {
+    font-weight: 700;
+    color: var(--primary);
+    background-color: #f4f8f4;
+    padding: 4px 0;
+}
+
+#delivery-day option {
+    font-weight: 500;
+    color: var(--text-dark);
+    background-color: #ffffff;
+    padding: 6px 10px;
+}
+
+.delivery-hint {
+    font-size: 0.8rem;
+    color: #666;
+    margin-top: 6px;
+    line-height: 1.35;
+}
+
 #submit-btn {
     width: 100%;
     margin-top: 3px;
@@ -3447,4 +3476,88 @@ html.preview-locked #preview-screen {
         padding: 6px 12px;
     }
 }
+
+/* ── Aviso de Error al cargar precios en vivo ── */
+.aviso-error-precios {
+    width: 100%;
+    background: linear-gradient(135deg, #b91c1c 0%, #991b1b 100%);
+    color: #ffffff;
+    padding: 12px 16px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+    z-index: 9998;
+    border-bottom: 2px solid rgba(255, 255, 255, 0.2);
+    animation: slideDownAviso 0.3s ease-out;
+}
+
+@keyframes slideDownAviso {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.aviso-error-precios-inner {
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.aviso-error-precios-msg {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.aviso-error-precios-msg .aviso-icon {
+    font-size: 18px;
+    flex-shrink: 0;
+}
+
+.btn-reintentar-precios {
+    background: #ffffff;
+    color: #991b1b;
+    border: none;
+    padding: 7px 18px;
+    font-size: 13px;
+    font-weight: 700;
+    border-radius: 8px;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.btn-reintentar-precios:hover:not(:disabled) {
+    background: #f3f4f6;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.btn-reintentar-precios:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+    .aviso-error-precios-inner {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 10px;
+    }
+    .btn-reintentar-precios {
+        width: 100%;
+        text-align: center;
+    }
+}
+
 
