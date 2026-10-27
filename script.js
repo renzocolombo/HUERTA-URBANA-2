@@ -198,6 +198,139 @@ let codigo_referido_usado = ''; // código de referido  → campo V del webhook
 let creditoAplicado = 0; // v5.5
 let credito_usado = 0;   // v5.6 - monto real aplicado al pedido
 
+// ==================== CALENDARIO Y ENTREGAS (v2) ====================
+let serverTimeOffset = 0;
+let feriadosCerrados = [];
+
+async function sincronizarFeriadosYReloj() {
+    try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 4000);
+
+        const response = await fetch(APPS_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'text/plain' },
+            body: JSON.stringify({ accion: 'getFeriados', action: 'getFeriados' }),
+            signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+
+        if (!response.ok) throw new Error('Respuesta HTTP no exitosa: ' + response.status);
+        const data = await response.json();
+        if (data && data.ahora) {
+            const parsedServer = Date.parse(data.ahora);
+            if (!isNaN(parsedServer)) {
+                serverTimeOffset = parsedServer - Date.now();
+            }
+        }
+        if (data && Array.isArray(data.feriados)) {
+            feriadosCerrados = data.feriados;
+        }
+    } catch (e) {
+        console.warn('No se pudo sincronizar feriados/reloj con el servidor (fallback reloj local y feriados vacíos):', e);
+        serverTimeOffset = 0;
+        feriadosCerrados = [];
+    }
+}
+
+function obtenerAhoraServidor() {
+    return new Date(Date.now() + serverTimeOffset);
+}
+
+function actualizarSelectorEntregas() {
+    const select = document.getElementById('delivery-day');
+    const hiddenTime = document.getElementById('delivery-time');
+    if (!select) return;
+
+    const ahora = obtenerAhoraServidor();
+    const horizonte = (typeof HORIZONTE_DIAS !== 'undefined' ? HORIZONTE_DIAS : 14);
+    const disponibles = (typeof bloquesDisponibles === 'function' 
+        ? bloquesDisponibles(ahora, feriadosCerrados, horizonte) 
+        : (window.EntregaCalendario ? window.EntregaCalendario.bloquesDisponibles(ahora, feriadosCerrados, horizonte) : []));
+
+    const valorPrevio = select.value;
+    select.innerHTML = '';
+
+    if (!disponibles || disponibles.length === 0) {
+        const opt = document.createElement('option');
+        opt.value = '';
+        opt.textContent = 'No hay entregas disponibles';
+        opt.disabled = true;
+        opt.selected = true;
+        select.appendChild(opt);
+        if (hiddenTime) hiddenTime.value = '';
+        return;
+    }
+
+    const gruposPorDia = {};
+    disponibles.forEach(({ ymd, bloque }) => {
+        if (!gruposPorDia[ymd]) gruposPorDia[ymd] = [];
+        gruposPorDia[ymd].push(bloque);
+    });
+
+    let primeraOpcionValida = null;
+    let opcionCoincidente = null;
+    const diasNombres = (typeof DIAS !== 'undefined' ? DIAS : ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"]);
+
+    Object.keys(gruposPorDia).forEach((ymd) => {
+        const [y, m, d] = ymd.split('-');
+        const dow = (typeof dowDeYmd === 'function' ? dowDeYmd(ymd) : new Date(Date.UTC(Number(y), Number(m)-1, Number(d))).getUTCDay());
+        const labelDia = `${diasNombres[dow]} ${d}/${m}`;
+
+        const optgroup = document.createElement('optgroup');
+        optgroup.label = labelDia;
+
+        gruposPorDia[ymd].forEach((bloque) => {
+            const opt = document.createElement('option');
+            const val = (typeof formatoDiaEntrega === 'function' 
+                ? formatoDiaEntrega(ymd, bloque) 
+                : `${diasNombres[dow]} ${d}/${m}/${y} ${bloque === 'M' ? 'Mañana' : 'Tarde'}`);
+            opt.value = val;
+            opt.dataset.ymd = ymd;
+            opt.dataset.bloque = bloque;
+            opt.textContent = (typeof etiquetaBloque === 'function' 
+                ? etiquetaBloque(bloque) 
+                : (bloque === 'M' ? 'Mañana (8 a 12 h)' : 'Tarde (14 a 17 h)'));
+
+            if (!primeraOpcionValida) {
+                primeraOpcionValida = val;
+            }
+            if (val === valorPrevio) {
+                opcionCoincidente = val;
+            }
+
+            optgroup.appendChild(opt);
+        });
+
+        select.appendChild(optgroup);
+    });
+
+    select.value = opcionCoincidente || primeraOpcionValida;
+    sincronizarHorarioEntrega();
+}
+
+function sincronizarHorarioEntrega() {
+    const select = document.getElementById('delivery-day');
+    const hiddenTime = document.getElementById('delivery-time');
+    if (!select || !hiddenTime) return;
+
+    const opt = select.selectedOptions && select.selectedOptions[0];
+    if (opt && opt.dataset.bloque) {
+        hiddenTime.value = (typeof etiquetaBloque === 'function' 
+            ? etiquetaBloque(opt.dataset.bloque) 
+            : (opt.dataset.bloque === 'M' ? 'Mañana (8 a 12 h)' : 'Tarde (14 a 17 h)'));
+    } else {
+        const parsed = (typeof parseDiaEntrega === 'function' ? parseDiaEntrega(select.value) : null);
+        if (parsed && parsed.bloque) {
+            hiddenTime.value = (typeof etiquetaBloque === 'function' 
+                ? etiquetaBloque(parsed.bloque) 
+                : (parsed.bloque === 'M' ? 'Mañana (8 a 12 h)' : 'Tarde (14 a 17 h)'));
+        } else {
+            hiddenTime.value = '';
+        }
+    }
+}
+
 function normalizarIdProducto(nombre) {
   return (nombre || '')
     .toLowerCase()
@@ -497,22 +630,39 @@ function actualizarCombos(combosData) {
 
 // Inicialización
 document.addEventListener('DOMContentLoaded', async () => {
-    await cargarPrecios();
+    // Sincronizar feriados, hora de servidor y catálogo en paralelo
+    await Promise.all([
+        sincronizarFeriadosYReloj(),
+        cargarPrecios()
+    ]);
+    actualizarSelectorEntregas();
+    loadCustomerData();
+
     initUI();
     renderCombos();
     renderCustomProducts();
     actualizarTextos();
     updateSummary();
 
+    const deliveryDaySelect = document.getElementById('delivery-day');
+    if (deliveryDaySelect) {
+        deliveryDaySelect.addEventListener('change', () => {
+            sincronizarHorarioEntrega();
+            saveCustomerData();
+        });
+    }
+
     // Actualización periódica cada 5 minutos con la página abierta
     setInterval(() => {
         cargarPrecios();
+        actualizarSelectorEntregas();
     }, 5 * 60 * 1000);
 
     // Actualización cuando la pestaña vuelve a estar visible
     document.addEventListener('visibilitychange', () => {
         if (document.visibilityState === 'visible') {
             cargarPrecios();
+            actualizarSelectorEntregas();
         }
     });
 
@@ -653,8 +803,16 @@ function loadCustomerData() {
             if (data.email) document.getElementById('email').value = data.email;
             if (data.address) document.getElementById('address').value = data.address;
             if (data.phone) document.getElementById('phone').value = data.phone;
-            if (data.deliveryDay) document.getElementById('delivery-day').value = data.deliveryDay;
-            if (data.deliveryTime) document.getElementById('delivery-time').value = data.deliveryTime;
+            if (data.deliveryDay) {
+                const deliverySelect = document.getElementById('delivery-day');
+                if (deliverySelect) {
+                    const existe = Array.from(deliverySelect.options).some(o => o.value === data.deliveryDay);
+                    if (existe) {
+                        deliverySelect.value = data.deliveryDay;
+                        sincronizarHorarioEntrega();
+                    }
+                }
+            }
 
             // Validar si el botón debe habilitarse si ya hay datos y carrito
             updateSummary();
@@ -666,13 +824,15 @@ function loadCustomerData() {
 
 function saveCustomerData() {
     try {
+        const deliveryDayEl = document.getElementById('delivery-day');
+        const deliveryTimeEl = document.getElementById('delivery-time');
         const data = {
             fullname: document.getElementById('fullname').value,
             email: document.getElementById('email').value,
             address: document.getElementById('address').value,
             phone: document.getElementById('phone').value,
-            deliveryDay: document.getElementById('delivery-day').value,
-            deliveryTime: document.getElementById('delivery-time').value
+            deliveryDay: deliveryDayEl ? deliveryDayEl.value : '',
+            deliveryTime: deliveryTimeEl ? deliveryTimeEl.value : ''
         };
         localStorage.setItem('customer_data', JSON.stringify(data));
     } catch (e) {
@@ -1154,18 +1314,40 @@ async function processOrder(form) {
         return;
     }
 
+    // Revalidación de entrega en base a la hora actual del servidor
+    const ahoraReval = obtenerAhoraServidor();
+    const diaSeleccionado = document.querySelector('[name="dia_entrega"]').value;
+    const entregaParseada = (typeof parseDiaEntrega === 'function' ? parseDiaEntrega(diaSeleccionado) : null);
+    const horizonte = (typeof HORIZONTE_DIAS !== 'undefined' ? HORIZONTE_DIAS : 14);
+
+    const esValida = entregaParseada && (typeof validarEntrega === 'function'
+        ? validarEntrega(entregaParseada.ymd, entregaParseada.bloque, ahoraReval, feriadosCerrados, horizonte)
+        : true);
+
+    if (!esValida) {
+        submitBtn.disabled = false;
+        submitBtn.innerText = originalBtnText;
+        actualizarSelectorEntregas();
+        alert("Paso el horario de corte: elegi una nueva entrega");
+        const selectEntrega = document.getElementById('delivery-day');
+        if (selectEntrega) {
+            selectEntrega.focus();
+            selectEntrega.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+        return;
+    }
+
+    sincronizarHorarioEntrega();
+    const horarioSeleccionado = document.querySelector('[name="horario_entrega"]')?.value || '';
+
     // 5. Construcción del objeto JSON PLANO (16 campos para Google Sheets)
     // Generar datos adicionales y sincronizar campos ocultos en el DOM
     const numeroPedido = 'HU-' + Date.now().toString().slice(-6);
     const fechaActual = new Date().toLocaleString('es-AR');
 
-    // Capturar valor de día de entrega para fecha_entrega
-    const diaSeleccionado = document.querySelector('[name="dia_entrega"]').value;
-    const horarioSeleccionado = document.querySelector('[name="horario_entrega"]').value;
-
     document.querySelector('[name="numero_pedido"]').value = numeroPedido;
     document.querySelector('[name="fecha"]').value = fechaActual;
-    document.querySelector('[name="fecha_entrega"]').value = diaSeleccionado + " (" + horarioSeleccionado + ")";
+    document.querySelector('[name="fecha_entrega"]').value = diaSeleccionado + (horarioSeleccionado ? " (" + horarioSeleccionado + ")" : "");
     document.querySelector('[name="ficha_entrega"]').value = `https://www.huertaurbana.com.ar/pedido/${numeroPedido}`;
 
     // Captura robusta de datos del formulario usando FormData

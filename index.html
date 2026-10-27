@@ -6,20 +6,20 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, interactive-widget=resizes-content">
     <title>Huerta Urbana | Frutas y Verduras Frescas a Domicilio en Pilar</title>
     <!-- SEO -->
-    <meta name="description" content="Huerta Urbana — Frutas y verduras frescas a domicilio en el Partido de Pilar. Entregamos los martes y jueves en Del Viso, Manuel Alberti, Presidente Derqui, Villa Rosa, Pilar y más localidades.">
+    <meta name="description" content="Huerta Urbana — Frutas y verduras frescas a domicilio en el Partido de Pilar. Entregas programadas de lunes a sábado en Del Viso, Manuel Alberti, Presidente Derqui, Villa Rosa, Pilar y más localidades.">
     <meta name="keywords" content="verduras a domicilio Pilar, frutas delivery Pilar, delivery verduras Del Viso, frutas frescas Partido de Pilar, alimentacion saludable Pilar, verduras Manuel Alberti, delivery frutas verduras Pilar Buenos Aires, comida saludable Pilar, dieta Pilar, gimnasio Pilar alimentacion">
 
     <!-- Open Graph -->
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://huertaurbana.com.ar">
     <meta property="og:title" content="Huerta Urbana | Frutas y Verduras Frescas a Domicilio en Pilar">
-    <meta property="og:description" content="Pedí tus frutas y verduras frescas. Entregamos martes y jueves en todo el Partido de Pilar. Envío gratis a partir de $35.000.">
+    <meta property="og:description" content="Pedí tus frutas y verduras frescas. Entregas de lunes a sábado en todo el Partido de Pilar. Envío gratis a partir de $35.000.">
     <meta property="og:image" content="https://huertaurbana.com.ar/img/favicon.png">
 
     <!-- Twitter/X -->
     <meta name="twitter:card" content="summary_large_image">
     <meta name="twitter:title" content="Huerta Urbana | Frutas y Verduras a Domicilio en Pilar">
-    <meta name="twitter:description" content="Frutas y verduras frescas a domicilio en el Partido de Pilar. Martes y jueves.">
+    <meta name="twitter:description" content="Frutas y verduras frescas a domicilio en el Partido de Pilar. Entregas de lunes a sábado.">
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -150,7 +150,7 @@
                         <span class="preview-feature-icon">🚚</span>
                         <div>
                             <strong>Entregas Programadas</strong>
-                            <small>Martes y Jueves</small>
+                            <small>Lunes a Sábado</small>
                         </div>
                     </div>
                     <div class="preview-feature-card">
@@ -456,21 +456,13 @@
                             </div>
 
                             <div class="form-row">
-                                <div class="form-group">
-                                    <label for="delivery-day">Día de Entrega</label>
+                                <div class="form-group full-width-group">
+                                    <label for="delivery-day">Fecha y Horario de Entrega</label>
                                     <select id="delivery-day" name="dia_entrega" required>
-                                        <option value="" disabled selected>Seleccionar día</option>
-                                        <option value="Martes">Martes</option>
-                                        <option value="Jueves">Jueves</option>
+                                        <option value="" disabled selected>Cargando fechas de entrega...</option>
                                     </select>
-                                </div>
-                                <div class="form-group">
-                                    <label for="delivery-time">Rango Horario</label>
-                                    <select id="delivery-time" name="horario_entrega" required>
-                                        <option value="" disabled selected>Seleccionar rango</option>
-                                        <option value="8 a 12 hs">8:00hs a 12:00hs</option>
-                                        <option value="14 a 18 hs">14:00hs a 18:00hs</option>
-                                    </select>
+                                    <input type="hidden" id="delivery-time" name="horario_entrega" value="">
+                                    <p class="delivery-hint">Entregas de lunes a viernes por la mañana (8 a 12 h) o tarde (14 a 17 h) y sabados por la mañana. Preparamos tu pedido con un bloque de anticipacion.</p>
                                 </div>
                             </div>
 
@@ -888,7 +880,8 @@
         }
       });
     </script>
-    <script src="script.js?v=58.0"></script>
+    <script src="entregaCalendario.js?v=1.0"></script>
+    <script src="script.js?v=59.0"></script>
     <script type="module" src="auth.js?v=53.0"></script>
 </body>
 
