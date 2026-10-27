@@ -387,6 +387,12 @@
                                 </div>
                                 <p class="shipping-info"><ion-icon name="bicycle-outline"></ion-icon> Envíos gratis a partir de <span id="envio-gratis-monto">$35.000</span></p>
                                 <p id="min-purchase-msg" class="warning-text">Compra mínima: <span id="compra-minima-monto">$35.000</span></p>
+                                <div class="payment-policy-box">
+                                    <ion-icon name="wallet-outline" class="payment-policy-icon"></ion-icon>
+                                    <p class="payment-policy-text">
+                                        <strong>Pagás al recibir tu pedido:</strong> QR, transferencia, tarjeta de débito o crédito (no efectivo). El monto final puede variar levemente según el peso real de los productos.
+                                    </p>
+                                </div>
                             </div>
                         </div>
 
@@ -467,13 +473,28 @@
                             </div>
 
                             <div class="form-row">
-                                <div class="form-group full-width-group">
-                                    <label for="delivery-day">Fecha y Horario de Entrega</label>
-                                    <select id="delivery-day" name="dia_entrega" required>
-                                        <option value="" disabled selected>Cargando fechas de entrega...</option>
-                                    </select>
-                                    <input type="hidden" id="delivery-time" name="horario_entrega" value="">
-                                    <p class="delivery-hint">Entregas de lunes a viernes por la mañana (8 a 12 h) o tarde (14 a 17 h) y sabados por la mañana. Preparamos tu pedido con un bloque de anticipacion.</p>
+                                <div class="form-group full-width-group" id="delivery-section">
+                                    <label>Entrega de tu pedido</label>
+                                    <div id="delivery-auto-card" class="delivery-auto-card">
+                                        <div class="delivery-auto-info">
+                                            <ion-icon name="calendar-outline" class="delivery-auto-icon"></ion-icon>
+                                            <div class="delivery-auto-text-wrap">
+                                                <span class="delivery-auto-label">Te lo llevamos:</span>
+                                                <strong id="delivery-auto-text" class="delivery-auto-text">Calculando próxima entrega...</strong>
+                                            </div>
+                                        </div>
+                                        <button type="button" id="btn-cambiar-entrega" class="btn-cambiar-entrega">
+                                            <ion-icon name="calendar-number-outline"></ion-icon> Programar otro día
+                                        </button>
+                                    </div>
+                                    <div id="delivery-manual-container" class="delivery-manual-container" style="display: none;">
+                                        <label for="delivery-day" class="delivery-manual-label">Elegí otro día y horario:</label>
+                                        <select id="delivery-day" name="dia_entrega" required>
+                                            <option value="" disabled selected>Cargando fechas de entrega...</option>
+                                        </select>
+                                        <input type="hidden" id="delivery-time" name="horario_entrega" value="">
+                                        <p class="delivery-hint">Entregas de lunes a viernes por la mañana (8 a 12 h) o tarde (14 a 17 h) y sábados por la mañana. Preparamos tu pedido con un bloque de anticipación.</p>
+                                    </div>
                                 </div>
                             </div>
 
@@ -555,6 +576,12 @@
             <ion-icon name="checkmark-circle" class="success-icon"></ion-icon>
             <h2>Pedido enviado correctamente</h2>
             <p id="success-message">Gracias por confiar en Huerta Urbana. Nos contactaremos pronto por WhatsApp.</p>
+            <div class="payment-policy-box modal-payment-box">
+                <ion-icon name="wallet-outline" class="payment-policy-icon"></ion-icon>
+                <p class="payment-policy-text">
+                    <strong>Pagás al recibir tu pedido:</strong> QR, transferencia, tarjeta de débito o crédito (no efectivo). El monto final puede variar levemente según el peso real de los productos.
+                </p>
+            </div>
             <button onclick="closeModal()" class="btn btn-primary">Cerrar</button>
         </div>
     </div>
@@ -696,7 +723,7 @@
                         <li><strong>SERVICIO:</strong> Venta y entrega de frutas y verduras en el Partido de Pilar.</li>
                         <li><strong>ZONA DE ENTREGA:</strong> Del Viso, Fátima, La Lonja, Manuel Alberti, Manzanares, Manzone, Pilar, Presidente Derqui, Villa Astolfi, Villa Rosa y Zelaya.</li>
                         <li><strong>PEDIDOS:</strong> Monto mínimo <span id="terms-minima-monto">$35.000</span>. Precios sujetos a variaciones del mercado.</li>
-                        <li><strong>PAGOS:</strong> A través de Mercado Pago. El pedido se confirma al acreditarse el pago.</li>
+                        <li><strong>PAGOS:</strong> Pagás al recibir tu pedido: QR, transferencia, tarjeta de débito o crédito (no efectivo). El monto final puede variar levemente según el peso real de los productos.</li>
                         <li><strong>CUPONES:</strong> Uso personal e intransferible. El crédito por referidos no es canjeable por dinero.</li>
                         <li><strong>CALIDAD:</strong> Productos frescos garantizados. Reclamos dentro de las 24hs al WhatsApp 11 6177-1376.</li>
                         <li><strong>CANCELACIONES:</strong> Hasta 24hs antes de la entrega al WhatsApp 11 6177-1376.</li>
