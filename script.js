@@ -1,7 +1,7 @@
 /* HUERTA URBANA - LOGIC & CART SYSTEM (Catalogo Extendido) */
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js?v=83');
+  navigator.serviceWorker.register('sw.js?v=85');
 }
 
 /* ── PWA: Sistema de Instalación ─────────────────────── */
@@ -258,6 +258,7 @@ function actualizarSelectorEntregas() {
         opt.selected = true;
         select.appendChild(opt);
         if (hiddenTime) hiddenTime.value = '';
+        actualizarTextoEntregaAuto(null);
         return;
     }
 
@@ -306,6 +307,45 @@ function actualizarSelectorEntregas() {
 
     select.value = opcionCoincidente || primeraOpcionValida;
     sincronizarHorarioEntrega();
+    actualizarTextoEntregaAuto(select.value);
+}
+
+function actualizarTextoEntregaAuto(valorSeleccionado) {
+    const autoTextEl = document.getElementById('delivery-auto-text');
+    if (!autoTextEl) return;
+
+    if (!valorSeleccionado) {
+        autoTextEl.textContent = 'No hay entregas disponibles';
+        return;
+    }
+
+    const parsed = (typeof parseDiaEntrega === 'function' ? parseDiaEntrega(valorSeleccionado) : null);
+    if (parsed && parsed.ymd && parsed.bloque) {
+        const [y, m, d] = parsed.ymd.split('-');
+        const dow = (typeof dowDeYmd === 'function' 
+            ? dowDeYmd(parsed.ymd) 
+            : new Date(Date.UTC(Number(y), Number(m) - 1, Number(d))).getUTCDay());
+        const diasNombres = (typeof DIAS !== 'undefined' 
+            ? DIAS 
+            : ["Domingo", "Lunes", "Martes", "Miercoles", "Jueves", "Viernes", "Sabado"]);
+        const nombresConTilde = {
+            "Domingo": "Domingo",
+            "Lunes": "Lunes",
+            "Martes": "Martes",
+            "Miercoles": "Miércoles",
+            "Miércoles": "Miércoles",
+            "Jueves": "Jueves",
+            "Viernes": "Viernes",
+            "Sabado": "Sábado",
+            "Sábado": "Sábado"
+        };
+        const rawDia = diasNombres[dow] || 'Día';
+        const diaLindo = nombresConTilde[rawDia] || rawDia;
+        const bloqueTexto = parsed.bloque === 'M' ? 'la Mañana' : 'la Tarde';
+        autoTextEl.textContent = `${diaLindo} ${d}/${m} por ${bloqueTexto}`;
+    } else {
+        autoTextEl.textContent = valorSeleccionado;
+    }
 }
 
 function sincronizarHorarioEntrega() {
@@ -731,6 +771,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     if (deliveryDaySelect) {
         deliveryDaySelect.addEventListener('change', () => {
             sincronizarHorarioEntrega();
+            actualizarTextoEntregaAuto(deliveryDaySelect.value);
             saveCustomerData();
         });
     }
@@ -893,6 +934,7 @@ function loadCustomerData() {
                     if (existe) {
                         deliverySelect.value = data.deliveryDay;
                         sincronizarHorarioEntrega();
+                        actualizarTextoEntregaAuto(data.deliveryDay);
                     }
                 }
             }
@@ -966,6 +1008,23 @@ function initUI() {
     });
 
     btnFinal?.addEventListener('click', confirmarPedidoFinal);
+
+    // Toggle selector manual de entrega
+    const btnCambiarEntrega = document.getElementById('btn-cambiar-entrega');
+    const manualSelector = document.getElementById('delivery-manual-container');
+    if (btnCambiarEntrega && manualSelector) {
+        btnCambiarEntrega.addEventListener('click', () => {
+            const isHidden = manualSelector.style.display === 'none';
+            manualSelector.style.display = isHidden ? 'block' : 'none';
+            btnCambiarEntrega.innerHTML = isHidden 
+                ? '<ion-icon name="close-circle-outline"></ion-icon> Ocultar selector' 
+                : '<ion-icon name="calendar-number-outline"></ion-icon> Programar otro día';
+            if (isHidden) {
+                const deliverySelect = document.getElementById('delivery-day');
+                if (deliverySelect) deliverySelect.focus();
+            }
+        });
+    }
 }
 
 function showCartModal() {
