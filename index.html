@@ -241,6 +241,17 @@
         </div>
     </div>
 
+    <!-- Aviso de Error al cargar precios -->
+    <div id="aviso-error-precios" class="aviso-error-precios" role="alert" style="display: none;">
+        <div class="aviso-error-precios-inner">
+            <div class="aviso-error-precios-msg">
+                <span class="aviso-icon">⚠️</span>
+                <span class="aviso-texto">No pudimos cargar los precios actualizados. Reintenta en unos minutos</span>
+            </div>
+            <button type="button" id="btn-reintentar-precios" class="btn-reintentar-precios">Reintentar</button>
+        </div>
+    </div>
+
     <header id="header">
         <div class="container header-container">
             <!-- Izquierda: Logo + Slogan -->
@@ -374,8 +385,8 @@
                                     <span>Total:</span>
                                     <span id="summary-total">$0</span>
                                 </div>
-                                <p class="shipping-info"><ion-icon name="bicycle-outline"></ion-icon> Envíos gratis a partir de <span id="envio-gratis-monto"><span id="envio-gratis-monto">00</span></p>
-                                <p id="min-purchase-msg" class="warning-text">Compra mínima: <span id="compra-minima-monto"><span id="compra-minima-monto">00</span></p>
+                                <p class="shipping-info"><ion-icon name="bicycle-outline"></ion-icon> Envíos gratis a partir de <span id="envio-gratis-monto">$35.000</span></p>
+                                <p id="min-purchase-msg" class="warning-text">Compra mínima: <span id="compra-minima-monto">$35.000</span></p>
                             </div>
                         </div>
 
@@ -517,7 +528,7 @@
                     <ion-icon name="leaf" class="logo-icon"></ion-icon>
                     <span>HUERTA URBANA</span>
                 </div>
-                <p>Calidad premium y frescura garantizada en cada entrega. <br> Compra mínima: <span id="footer-minima-monto"><span id="footer-minima-monto">00</span></p>
+                <p>Calidad premium y frescura garantizada en cada entrega. <br> Compra mínima: <span id="footer-minima-monto">$35.000</span></p>
                 <a href="mailto:huertaurbana.market@gmail.com" class="footer-email">huertaurbana.market@gmail.com</a>
                 <div class="footer-legal-links" style="margin-top: 15px; display: flex; gap: 15px; font-size: 0.85rem;">
                     <a href="terminos.html" style="color: #bbbbbb; text-decoration: underline;">Términos y Condiciones</a>

@@ -41,7 +41,6 @@ self.addEventListener('fetch', (e) => {
 
   // 1. Datos externos y Precios: Network Only (Siempre red, nunca caché)
   if (
-    url.pathname.includes('precios.json') || 
     url.hostname.includes('script.google.com') ||
     url.search.includes('getPreciosWeb')
   ) {

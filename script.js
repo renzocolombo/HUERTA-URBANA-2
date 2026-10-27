@@ -182,7 +182,6 @@ if (!PRODUCTS.individual.extras) {
     });
 }
 
-const PRECIOS_JSON_URL = 'https://raw.githubusercontent.com/renzocolombo/HUERTA-URBANA-2/main/precios.json'
 const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzWSEDWrGAkLRPj_ugVL6ZIm9qZBxLu93VemH6eSXv0xx6RNSyakn-4q2T7Ik6TpyX7/exec';
 
 let MIN_PURCHASE = 35000;
@@ -425,6 +424,77 @@ function recalcularCarrito() {
 
 let cargandoPreciosPromise = null;
 let ultimoFetchPrecios = 0;
+let preciosCargadosOk = false;
+
+function deshabilitarBotonFinalizar() {
+  const submitBtn = document.getElementById('submit-btn');
+  if (submitBtn) {
+    submitBtn.disabled = true;
+    submitBtn.classList.add('btn-disabled');
+  }
+}
+
+function mostrarAvisoErrorPrecios() {
+  let aviso = document.getElementById('aviso-error-precios');
+  if (!aviso) {
+    aviso = document.createElement('div');
+    aviso.id = 'aviso-error-precios';
+    aviso.className = 'aviso-error-precios';
+    aviso.setAttribute('role', 'alert');
+    aviso.innerHTML = `
+      <div class="aviso-error-precios-inner">
+        <div class="aviso-error-precios-msg">
+          <span class="aviso-icon">⚠️</span>
+          <span class="aviso-texto">No pudimos cargar los precios actualizados. Reintenta en unos minutos</span>
+        </div>
+        <button type="button" id="btn-reintentar-precios" class="btn-reintentar-precios">Reintentar</button>
+      </div>
+    `;
+    const target = document.getElementById('header') || (typeof document !== 'undefined' && document.body ? document.body.firstChild : null);
+    if (target && target.parentNode) {
+      target.parentNode.insertBefore(aviso, target);
+    } else if (typeof document !== 'undefined' && document.body) {
+      document.body.prepend(aviso);
+    }
+  }
+
+  aviso.style.display = 'block';
+
+  const btn = document.getElementById('btn-reintentar-precios');
+  if (btn) {
+    btn.onclick = async () => {
+      btn.disabled = true;
+      btn.textContent = 'Cargando...';
+      try {
+        await cargarPrecios(true);
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Reintentar';
+      }
+    };
+  }
+
+  deshabilitarBotonFinalizar();
+}
+
+function ocultarAvisoErrorPrecios() {
+  const aviso = document.getElementById('aviso-error-precios');
+  if (aviso) {
+    aviso.style.display = 'none';
+  }
+}
+
+async function fetchPreciosWeb() {
+  const response = await fetch(APPS_SCRIPT_URL + '?accion=getPreciosWeb&t=' + Date.now());
+  if (!response.ok) {
+    throw new Error('HTTP ' + response.status);
+  }
+  const data = await response.json();
+  if (!data || !data.success) {
+    throw new Error((data && data.error) ? data.error : 'Respuesta sin éxito de getPreciosWeb');
+  }
+  return data;
+}
 
 async function cargarPrecios(force = false) {
   if (cargandoPreciosPromise) {
@@ -437,38 +507,48 @@ async function cargarPrecios(force = false) {
   cargandoPreciosPromise = (async () => {
     let cargoExitoso = false;
     ultimoFetchPrecios = Date.now();
+
+    let data = null;
     try {
-      const response = await fetch(APPS_SCRIPT_URL + '?accion=getPreciosWeb&t=' + Date.now());
-      const data = await response.json();
-      if (data.success) {
-        if (data.monto_minimo) MIN_PURCHASE = data.monto_minimo;
-        if (data.productos) actualizarProductos(data.productos);
-        if (data.combos) actualizarCombos(data.combos);
-        actualizarTextos();
-        renderCombos();
-        cargoExitoso = true;
-      }
-    } catch (e) {
-      console.warn('[PRECIOS] API no disponible, cargando desde precios.json local...');
+      data = await fetchPreciosWeb();
+    } catch (e1) {
+      console.warn('[PRECIOS] Falló intento 1 de getPreciosWeb:', e1.message);
     }
 
-    if (!cargoExitoso) {
-      // Fallback: cargar desde precios.json local (siempre disponible)
+    // Reintentar una vez a los 2 segundos si falló el primer intento
+    if (!data) {
+      console.log('[PRECIOS] Reintentando getPreciosWeb en 2 segundos...');
+      await new Promise(resolve => setTimeout(resolve, 2000));
       try {
-        const res = await fetch('./precios.json?t=' + Date.now());
-        const local = await res.json();
-        if (local.monto_minimo) MIN_PURCHASE = local.monto_minimo;
-        if (local.productos) actualizarProductos(local.productos);
-        if (local.combos) actualizarCombos(local.combos);
-        actualizarTextos();
-        renderCombos();
-        console.log('[PRECIOS] Cargado desde precios.json local');
+        data = await fetchPreciosWeb();
       } catch (e2) {
-        console.warn('[PRECIOS] No se pudo cargar precios.json:', e2.message);
+        console.warn('[PRECIOS] Falló intento 2 (reintento) de getPreciosWeb:', e2.message);
       }
     }
 
-    return recalcularCarrito();
+    if (data && data.success) {
+      if (data.monto_minimo !== undefined && data.monto_minimo !== null && !isNaN(Number(data.monto_minimo))) {
+        MIN_PURCHASE = Number(data.monto_minimo);
+      }
+      if (data.productos) actualizarProductos(data.productos);
+      if (data.combos) actualizarCombos(data.combos);
+      actualizarTextos();
+      renderCombos();
+      cargoExitoso = true;
+      preciosCargadosOk = true;
+      ocultarAvisoErrorPrecios();
+    } else {
+      // Si vuelve a fallar tras el reintento: mostrar aviso claro y deshabilitar botón de finalizar
+      cargoExitoso = false;
+      preciosCargadosOk = false;
+      mostrarAvisoErrorPrecios();
+    }
+
+    const res = recalcularCarrito();
+    if (!cargoExitoso) {
+      deshabilitarBotonFinalizar();
+    }
+    return res;
   })();
 
   try {
@@ -1236,9 +1316,14 @@ function updateSummary() {
         if (headerMsg) headerMsg.className = 'shipping-header-msg status-green';
         if (minMsg) minMsg.style.color = '#27ae60';
         
-        // Habilitar botón de envío
-        submitBtn.disabled = false;
-        submitBtn.classList.remove('btn-disabled');
+        // Habilitar botón de envío SOLO si los precios se cargaron exitosamente
+        if (preciosCargadosOk) {
+            submitBtn.disabled = false;
+            submitBtn.classList.remove('btn-disabled');
+        } else {
+            submitBtn.disabled = true;
+            submitBtn.classList.add('btn-disabled');
+        }
     } else {
         // Estado: Pendiente de monto
         if (headerMsg) headerMsg.textContent = 'Envío gratis a partir de ' + montoStr;
@@ -1260,6 +1345,13 @@ async function handleOrderSubmit(e) {
     // Bloqueo estricto si la tienda está en modo Próximamente
     if (document.documentElement.classList.contains('preview-locked') || localStorage.getItem('huerta_preview_unlocked_v2') !== 'true') {
         alert('La tienda está en modo Próximamente. No se pueden realizar pedidos por el momento.');
+        return;
+    }
+
+    // Bloqueo estricto si los precios no están cargados correctamente
+    if (!preciosCargadosOk) {
+        deshabilitarBotonFinalizar();
+        alert("No pudimos cargar los precios actualizados. Reintenta en unos minutos");
         return;
     }
 
@@ -1310,6 +1402,12 @@ async function processOrder(form) {
     // Volver a ejecutar cargarPrecios justo antes de enviar el pedido
     // Si hubo cambios de precio o catálogo, no enviarlo y mostrar aviso para revisar el total
     const resPrecios = await cargarPrecios(true);
+    if (!preciosCargadosOk) {
+        deshabilitarBotonFinalizar();
+        submitBtn.innerText = originalBtnText;
+        alert("No pudimos cargar los precios actualizados. Reintenta en unos minutos");
+        return;
+    }
     if (resPrecios && resPrecios.huboCambios) {
         submitBtn.disabled = false;
         submitBtn.innerText = originalBtnText;
