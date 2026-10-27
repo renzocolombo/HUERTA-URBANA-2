@@ -314,20 +314,23 @@ function sincronizarHorarioEntrega() {
     const hiddenTime = document.getElementById('delivery-time');
     if (!select || !hiddenTime) return;
 
+    let bloque = null;
     const opt = select.selectedOptions && select.selectedOptions[0];
     if (opt && opt.dataset.bloque) {
-        hiddenTime.value = (typeof etiquetaBloque === 'function' 
-            ? etiquetaBloque(opt.dataset.bloque) 
-            : (opt.dataset.bloque === 'M' ? 'Mañana (8 a 12 h)' : 'Tarde (14 a 17 h)'));
+        bloque = opt.dataset.bloque;
     } else {
         const parsed = (typeof parseDiaEntrega === 'function' ? parseDiaEntrega(select.value) : null);
         if (parsed && parsed.bloque) {
-            hiddenTime.value = (typeof etiquetaBloque === 'function' 
-                ? etiquetaBloque(parsed.bloque) 
-                : (parsed.bloque === 'M' ? 'Mañana (8 a 12 h)' : 'Tarde (14 a 17 h)'));
-        } else {
-            hiddenTime.value = '';
+            bloque = parsed.bloque;
         }
+    }
+
+    if (bloque === 'M') {
+        hiddenTime.value = '8 a 12 hs';
+    } else if (bloque === 'T') {
+        hiddenTime.value = '14 a 17 hs';
+    } else {
+        hiddenTime.value = '';
     }
 }
 

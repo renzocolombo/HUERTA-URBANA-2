@@ -64,7 +64,7 @@ const ahoraSim = new Date("2026-11-06T11:30:00-03:00");
 const feriadosSim = [];
 const primera = C.primeraEntrega(ahoraSim, feriadosSim);
 const diaEntregaPayload = C.formatoDiaEntrega(primera.ymd, primera.bloque);
-const horarioEntregaPayload = C.etiquetaBloque(primera.bloque);
+const horarioEntregaPayload = primera.bloque === "M" ? "8 a 12 hs" : "14 a 17 hs";
 
 const payloadSimulado = {
   "numero_pedido": "HU-123456",
