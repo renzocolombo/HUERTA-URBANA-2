@@ -1,8 +1,14 @@
 /* HUERTA URBANA - LOGIC & CART SYSTEM (Catalogo Extendido) */
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js?v=85');
+  navigator.serviceWorker.register('sw.js?v=86');
 }
+
+// Constantes y estado de método de pago
+const METODO_PAGO_ONLINE = 'mercadopago';
+const METODO_PAGO_AL_RECIBIR = 'efectivo'; // TODO: cambiar si en Make se define otro valor
+let metodoPagoSeleccionado = METODO_PAGO_ONLINE;
+let orderSubmitting = false;
 
 /* ── PWA: Sistema de Instalación ─────────────────────── */
 let deferredPrompt = null;
@@ -471,6 +477,9 @@ function deshabilitarBotonFinalizar() {
   if (submitBtn) {
     submitBtn.disabled = true;
     submitBtn.classList.add('btn-disabled');
+    if (typeof actualizarTextoBotonFinalizar === 'function') {
+      actualizarTextoBotonFinalizar();
+    }
   }
 }
 
@@ -762,6 +771,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadCustomerData();
 
     initUI();
+    seleccionarMetodoPago(METODO_PAGO_ONLINE);
     renderCombos();
     renderCustomProducts();
     actualizarTextos();
@@ -1025,6 +1035,12 @@ function initUI() {
             }
         });
     }
+
+    // Selector de método de pago
+    const btnPayOnline = document.getElementById('btn-pay-online');
+    const btnPayDelivery = document.getElementById('btn-pay-delivery');
+    btnPayOnline?.addEventListener('click', () => seleccionarMetodoPago(METODO_PAGO_ONLINE));
+    btnPayDelivery?.addEventListener('click', () => seleccionarMetodoPago(METODO_PAGO_AL_RECIBIR));
 }
 
 function showCartModal() {
@@ -1324,6 +1340,13 @@ function updateSummary() {
     summaryTotal.innerText = `$${totalFinal.toLocaleString('es-AR')}`;
     headerTotal.innerText = `$${totalFinal.toLocaleString('es-AR')}`;
 
+    // Actualizar montos en las tarjetas del selector de pago
+    const payOnlineAmountEl = document.getElementById('pay-online-amount');
+    const payDeliveryAmountEl = document.getElementById('pay-delivery-amount');
+    const fmtTotalFinal = `$${totalFinal.toLocaleString('es-AR')}`;
+    if (payOnlineAmountEl) payOnlineAmountEl.innerText = fmtTotalFinal;
+    if (payDeliveryAmountEl) payDeliveryAmountEl.innerText = fmtTotalFinal;
+
     // Sincronizar con campo de producto para el JSON de Make
     const hiddenDetails = document.getElementById('hidden-details');
 
@@ -1373,7 +1396,10 @@ function updateSummary() {
         if (spanMinima) spanMinima.textContent = 'ALCANZADO';
 
         if (headerMsg) headerMsg.className = 'shipping-header-msg status-green';
-        if (minMsg) minMsg.style.color = '#27ae60';
+        if (minMsg) {
+            minMsg.style.color = '#27ae60';
+            minMsg.innerHTML = 'Compra mínima: <span id="compra-minima-monto">ALCANZADO</span>';
+        }
         
         // Habilitar botón de envío SOLO si los precios se cargaron exitosamente
         if (preciosCargadosOk) {
@@ -1391,11 +1417,18 @@ function updateSummary() {
         if (spanMinima) spanMinima.textContent = montoStr;
 
         if (headerMsg) headerMsg.className = 'shipping-header-msg status-red';
-        if (minMsg) minMsg.style.color = '#e74c3c';
+        if (minMsg) {
+            minMsg.style.color = '#e74c3c';
+            const faltante = Math.ceil(MIN_PURCHASE - total);
+            const faltanteStr = `$${faltante.toLocaleString('es-AR')}`;
+            minMsg.innerHTML = `Compra mínima: <span id="compra-minima-monto">${montoStr}</span> · <span class="min-faltante-text">Te faltan ${faltanteStr} para el pedido mínimo</span>`;
+        }
 
         submitBtn.disabled = true;
         submitBtn.classList.add('btn-disabled');
     }
+
+    actualizarTextoBotonFinalizar();
 }
 
 async function handleOrderSubmit(e) {
@@ -1434,17 +1467,25 @@ async function handleOrderSubmit(e) {
 }
 
 async function processOrder(form) {
+    if (orderSubmitting) return;
+    orderSubmitting = true;
+
     const submitBtn = document.getElementById('submit-btn');
-    const originalBtnText = submitBtn.innerText;
+    if (submitBtn) {
+        submitBtn.disabled = true;
+        submitBtn.innerText = 'Enviando...';
+    }
 
     // Validación de seguridad adicional
     if (Object.keys(cart).length === 0) {
         alert('El carrito está vacío');
+        orderSubmitting = false;
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            actualizarTextoBotonFinalizar();
+        }
         return;
     }
-
-    submitBtn.disabled = true;
-    submitBtn.innerText = 'Enviando...';
 
     // 4. Capturar campos obligatorios y validar (Evitar envíos vacíos)
     const nombre = document.querySelector('[name="nombre"]').value.trim();
@@ -1453,8 +1494,11 @@ async function processOrder(form) {
 
     if (!nombre || !telefono || !direccion) {
         alert("Por favor, completa los campos de nombre, teléfono y dirección.");
-        submitBtn.disabled = false;
-        submitBtn.innerText = originalBtnText;
+        orderSubmitting = false;
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            actualizarTextoBotonFinalizar();
+        }
         return;
     }
 
@@ -1463,13 +1507,16 @@ async function processOrder(form) {
     const resPrecios = await cargarPrecios(true);
     if (!preciosCargadosOk) {
         deshabilitarBotonFinalizar();
-        submitBtn.innerText = originalBtnText;
+        orderSubmitting = false;
         alert("No pudimos cargar los precios actualizados. Reintenta en unos minutos");
         return;
     }
     if (resPrecios && resPrecios.huboCambios) {
-        submitBtn.disabled = false;
-        submitBtn.innerText = originalBtnText;
+        orderSubmitting = false;
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            actualizarTextoBotonFinalizar();
+        }
         alert("Actualizamos los precios de tu carrito. Por favor, revisá el nuevo total antes de enviar el pedido.");
         return;
     }
@@ -1485,8 +1532,11 @@ async function processOrder(form) {
         : true);
 
     if (!esValida) {
-        submitBtn.disabled = false;
-        submitBtn.innerText = originalBtnText;
+        orderSubmitting = false;
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            actualizarTextoBotonFinalizar();
+        }
         actualizarSelectorEntregas();
         alert("Paso el horario de corte: elegi una nueva entrega");
         const selectEntrega = document.getElementById('delivery-day');
@@ -1512,7 +1562,7 @@ async function processOrder(form) {
 
     // Captura robusta de datos del formulario usando FormData
     const formData = new FormData(form);
-    const metodoPago = 'mercadopago';
+    const metodoPago = metodoPagoSeleccionado;
 
     console.log("Método de pago detectado:", metodoPago);
 
@@ -1563,68 +1613,158 @@ async function processOrder(form) {
             body: JSON.stringify(orderData)
         });
 
-        if (response.ok) {
-            const textResponse = await response.text();
-            console.log("Respuesta de Make:", textResponse);
-            
-            let data = {};
-            try {
-                data = JSON.parse(textResponse);
-            } catch (e) {
-                console.warn("Respuesta de webhook no es JSON válido. Intentando parsear como texto.");
-                if (textResponse.trim().startsWith('http')) {
-                    data = { url: textResponse.trim() };
-                }
+        if (!response.ok) {
+            throw new Error(`Error en el servidor de Make (HTTP ${response.status})`);
+        }
+
+        // Si es pago al recibir: muestra cartel de confirmación sin buscar link ni depender del body
+        if (metodoPago === METODO_PAGO_AL_RECIBIR) {
+            mostrarConfirmacionAlRecibir(numeroPedido, totalNum, diaSeleccionado, horarioSeleccionado);
+            return;
+        }
+
+        // Flujo ONLINE (Mercado Pago): queda EXACTAMENTE como hoy
+        const textResponse = await response.text();
+        console.log("Respuesta de Make:", textResponse);
+
+        let data = {};
+        try {
+            data = JSON.parse(textResponse) || {};
+        } catch (e) {
+            console.warn("Respuesta de webhook no es JSON válido. Intentando parsear como texto.");
+            if (textResponse && textResponse.trim().startsWith('http')) {
+                data = { url: textResponse.trim() };
             }
+        }
 
-            // Redirección Automática (Mercado Pago)
-            if (metodoPago === 'mercadopago') {
-                if (data.url) {
-                    window.location.href = data.url;
-                } else {
-                    console.error("Error: URL de pago no encontrada en la respuesta");
-                    alert("Hubo un error al generar el link de pago. Por favor intentá de nuevo o contactanos por WhatsApp al 11 6177-1376");
-                    submitBtn.disabled = false;
-                    submitBtn.innerText = originalBtnText;
-                }
-                return;
-            }
+        const mpUrl = data.url || data.init_point;
+        const esMpValido = mpUrl && typeof mpUrl === 'string' && (
+            mpUrl.startsWith('https://www.mercadopago.com') ||
+            mpUrl.startsWith('https://mercadopago.com') ||
+            mpUrl.startsWith('https://www.mercadopago.com.ar') ||
+            mpUrl.startsWith('https://mercadopago.com.ar')
+        );
 
-            // 2. Caso Efectivo: Mostrar mensaje de éxito local y limpiar
-            document.getElementById('order-form').reset();
-            cart = {};
-            updateSummary();
-
-            const successModal = document.getElementById('success-modal');
-            const successMsg = document.getElementById('success-message');
-
-            if (orderData.metodo_pago === 'efectivo' && successMsg) {
-                successMsg.innerText = "Pedido recibido. Se paga en efectivo al momento de la entrega.";
-            }
-
-            if (successModal) successModal.style.display = 'flex';
-
+        if (esMpValido) {
+            window.location.href = mpUrl;
+            return;
         } else {
-            throw new Error('Error en el servidor de Make');
+            console.error("Error: URL de pago no encontrada o inválida en la respuesta", data);
+            alert("Hubo un error al generar el link de pago. Por favor intentá de nuevo o contactanos por WhatsApp al 11 6177-1376");
+            return;
         }
     } catch (error) {
-        console.error('Error:', error);
+        console.error('Error al enviar el pedido:', error);
         alert('Hubo un error al enviar el pedido. Por favor, intenta de nuevo o contáctanos por WhatsApp.');
     } finally {
-        submitBtn.disabled = false;
-        submitBtn.innerText = originalBtnText;
+        orderSubmitting = false;
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            actualizarTextoBotonFinalizar();
+        }
     }
 }
 
+function mostrarConfirmacionAlRecibir(numeroPedido, totalNum, diaSeleccionado, horarioSeleccionado) {
+    const orderNumEl = document.getElementById('success-order-num');
+    const orderTotalEl = document.getElementById('success-order-total');
+    const orderDeliveryEl = document.getElementById('success-order-delivery');
+    const waBtn = document.getElementById('success-whatsapp-btn');
+
+    if (orderNumEl) orderNumEl.textContent = numeroPedido;
+    if (orderTotalEl) orderTotalEl.textContent = `$${Math.round(totalNum).toLocaleString('es-AR')}`;
+    if (orderDeliveryEl) {
+        orderDeliveryEl.textContent = formatearEntregaParaResumen(diaSeleccionado, horarioSeleccionado);
+    }
+    if (waBtn) {
+        const msg = encodeURIComponent(`Hola, consulta por mi pedido ${numeroPedido}`);
+        waBtn.href = `https://wa.me/5491161771376?text=${msg}`;
+    }
+
+    const orderForm = document.getElementById('order-form');
+    if (orderForm) orderForm.reset();
+    cart = {};
+    updateSummary();
+
+    const successModal = document.getElementById('success-modal');
+    if (successModal) successModal.style.display = 'flex';
+}
+
+function formatearEntregaParaResumen(diaStr, horarioStr) {
+    if (!diaStr) return 'A coordinar';
+    const parsed = (typeof parseDiaEntrega === 'function' ? parseDiaEntrega(diaStr) : null);
+    if (parsed && parsed.ymd && parsed.bloque) {
+        const [y, m, d] = parsed.ymd.split('-');
+        const dow = (typeof dowDeYmd === 'function' 
+            ? dowDeYmd(parsed.ymd) 
+            : new Date(Date.UTC(Number(y), Number(m)-1, Number(d))).getUTCDay());
+        const diasNombres = (typeof DIAS !== 'undefined' 
+            ? DIAS 
+            : ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"]);
+        const nombresConTilde = {
+            "Domingo": "Domingo", "Lunes": "Lunes", "Martes": "Martes",
+            "Miercoles": "Miércoles", "Miércoles": "Miércoles",
+            "Jueves": "Jueves", "Viernes": "Viernes", "Sabado": "Sábado", "Sábado": "Sábado"
+        };
+        const rawDia = diasNombres[dow] || 'Día';
+        const diaLindo = nombresConTilde[rawDia] || rawDia;
+        const bloqueTexto = parsed.bloque === 'M' ? 'Mañana' : 'Tarde';
+        const hor = horarioStr || (parsed.bloque === 'M' ? '8 a 12 h' : '14 a 17 h');
+        const horLimpio = hor.replace(/hs$/i, 'h');
+        return `${diaLindo} ${d}/${m} · ${bloqueTexto}, ${horLimpio}`;
+    }
+    return diaStr + (horarioStr ? ` · ${horarioStr}` : '');
+}
+
+function seleccionarMetodoPago(metodo) {
+    if (metodo !== METODO_PAGO_ONLINE && metodo !== METODO_PAGO_AL_RECIBIR) return;
+    metodoPagoSeleccionado = metodo;
+
+    const btnOnline = document.getElementById('btn-pay-online');
+    const btnDelivery = document.getElementById('btn-pay-delivery');
+    if (btnOnline) btnOnline.classList.toggle('active', metodo === METODO_PAGO_ONLINE);
+    if (btnDelivery) btnDelivery.classList.toggle('active', metodo === METODO_PAGO_AL_RECIBIR);
+
+    const policyIcon = document.getElementById('payment-policy-icon');
+    const policyText = document.getElementById('payment-policy-text');
+
+    if (policyText) {
+        if (metodo === METODO_PAGO_ONLINE) {
+            policyText.textContent = 'Pagás ahora de forma segura con Mercado Pago';
+            if (policyIcon) policyIcon.setAttribute('name', 'shield-checkmark-outline');
+        } else {
+            policyText.innerHTML = '<strong>Pagás al recibir tu pedido:</strong> QR, transferencia, tarjeta de débito o crédito (no efectivo). El monto final puede variar levemente según el peso real de los productos.';
+            if (policyIcon) policyIcon.setAttribute('name', 'wallet-outline');
+        }
+    }
+
+    actualizarTextoBotonFinalizar();
+}
+
+function actualizarTextoBotonFinalizar() {
+    const submitBtn = document.getElementById('submit-btn');
+    if (!submitBtn) return;
+    if (orderSubmitting) {
+        submitBtn.innerText = 'Enviando...';
+        return;
+    }
+    if (metodoPagoSeleccionado === METODO_PAGO_ONLINE) {
+        submitBtn.innerText = 'Ir a pagar';
+    } else {
+        submitBtn.innerText = 'Confirmar pedido';
+    }
+}
 
 function closeModal() {
-    document.getElementById('success-modal').style.display = 'none';
+    const successModal = document.getElementById('success-modal');
+    if (successModal) successModal.style.display = 'none';
     cart = {};
-    document.getElementById('order-form').reset();
+    const orderForm = document.getElementById('order-form');
+    if (orderForm) orderForm.reset();
     renderCombos();
     renderCustomProducts();
     updateSummary();
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.location.hash = '';
 }
 
 function showComboDetails(id) {
