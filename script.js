@@ -1,13 +1,14 @@
 /* HUERTA URBANA - LOGIC & CART SYSTEM (Catalogo Extendido) */
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js?v=87');
+  navigator.serviceWorker.register('sw.js?v=88');
 }
 
 // Constantes y estado de método de pago
+const PAGO_ONLINE_HABILITADO = false;
 const METODO_PAGO_ONLINE = 'mercadopago';
 const METODO_PAGO_AL_RECIBIR = 'efectivo'; // TODO: cambiar si en Make se define otro valor
-let metodoPagoSeleccionado = METODO_PAGO_ONLINE;
+let metodoPagoSeleccionado = PAGO_ONLINE_HABILITADO ? METODO_PAGO_ONLINE : METODO_PAGO_AL_RECIBIR;
 let orderSubmitting = false;
 let openedFromCart = false;
 
@@ -193,6 +194,14 @@ const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzWSEDWrGAkLRPj
 
 let MIN_PURCHASE = 35000;
 let cart = {};
+try {
+    const savedCart = sessionStorage.getItem('huerta_cart');
+    if (savedCart) {
+        cart = JSON.parse(savedCart);
+    }
+} catch (e) {
+    cart = {};
+}
 let activeCategory = 'verduras';
 
 const CUPONES_VALIDOS = {
@@ -772,7 +781,7 @@ document.addEventListener('DOMContentLoaded', async () => {
     loadCustomerData();
 
     initUI();
-    seleccionarMetodoPago(METODO_PAGO_ONLINE);
+    seleccionarMetodoPago(PAGO_ONLINE_HABILITADO ? METODO_PAGO_ONLINE : METODO_PAGO_AL_RECIBIR);
     renderCombos();
     renderCustomProducts();
     actualizarTextos();
@@ -1277,6 +1286,9 @@ function updateCustomQty(id, delta, category) {
 }
 
 function updateSummary() {
+    try {
+        sessionStorage.setItem('huerta_cart', JSON.stringify(cart));
+    } catch (e) {}
     const summaryItems = document.getElementById('summary-items');
     const summaryTotal = document.getElementById('summary-total');
     const headerTotal = document.getElementById('cart-total-header');
@@ -1488,6 +1500,25 @@ async function processOrder(form) {
     if (submitBtn) {
         submitBtn.disabled = true;
         submitBtn.innerText = 'Enviando...';
+    }
+
+    // Validación de LOGIN obligatorio antes de enviar pedido
+    if (!window.userUID) {
+        orderSubmitting = false;
+        if (submitBtn) {
+            submitBtn.disabled = false;
+            actualizarTextoBotonFinalizar();
+        }
+        window.continuarCheckoutPostLogin = true;
+        const mensajeLogin = "Ingresá con Google para finalizar tu pedido: así guardamos tu cupón de bienvenida y tus créditos y te contactamos por tu pedido";
+        if (typeof window.solicitarLoginGoogle === 'function') {
+            window.solicitarLoginGoogle(mensajeLogin);
+        } else {
+            alert(mensajeLogin);
+            const btnLogin = document.getElementById('btn-login-google-popup');
+            if (btnLogin) btnLogin.click();
+        }
+        return;
     }
 
     // Validación de seguridad adicional
@@ -1817,6 +1848,49 @@ function abrirEleccionPago(origen) {
     }
 
     const baseTotal = Object.values(cart).reduce((acc, item) => acc + (item.price * item.qty), 0);
+    if (baseTotal < MIN_PURCHASE) {
+        const faltante = MIN_PURCHASE - baseTotal;
+        alert(`El monto mínimo de compra es de ${MIN_PURCHASE.toLocaleString('es-AR')}. Te faltan ${faltante.toLocaleString('es-AR')} para alcanzarlo.`);
+        return;
+    }
+
+    // Validación de LOGIN obligatorio al finalizar
+    if (!window.userUID) {
+        window.continuarCheckoutPostLogin = true;
+        window.checkoutOrigen = origen;
+        const cartModal = document.getElementById('cart-modal');
+        if (cartModal) {
+            cartModal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        }
+        const mensajeLogin = "Ingresá con Google para finalizar tu pedido: así guardamos tu cupón de bienvenida y tus créditos y te contactamos por tu pedido";
+        if (typeof window.solicitarLoginGoogle === 'function') {
+            window.solicitarLoginGoogle(mensajeLogin);
+        } else {
+            alert(mensajeLogin);
+            const btnLogin = document.getElementById('btn-login-google-popup');
+            if (btnLogin) btnLogin.click();
+        }
+        return;
+    }
+
+    // Con PAGO_ONLINE_HABILITADO = false: NO aparece la pantalla de elegir pago;
+    // se abre directo el formulario con metodo_pago = METODO_PAGO_AL_RECIBIR
+    if (!PAGO_ONLINE_HABILITADO) {
+        seleccionarMetodoPago(METODO_PAGO_AL_RECIBIR);
+        const cartModal = document.getElementById('cart-modal');
+        if (cartModal) {
+            cartModal.style.display = 'none';
+        }
+        document.body.style.overflow = 'auto';
+        const formSection = document.getElementById('formulario') || document.getElementById('order-form');
+        if (formSection) {
+            formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+        return;
+    }
+
+    // Si PAGO_ONLINE_HABILITADO = true, comportamiento idéntico al original
     let descuentoCupon = 0;
     if (cuponAplicado && cuponAplicado.tipo === 'porcentaje') {
         descuentoCupon = Math.floor(baseTotal * cuponAplicado.valor / 100);
@@ -1828,13 +1902,7 @@ function abrirEleccionPago(origen) {
     }
     const totalFinal = Math.ceil(subtotalPostCupon - actualDescuentoCredito);
 
-    if (baseTotal < MIN_PURCHASE) {
-        const faltante = MIN_PURCHASE - baseTotal;
-        alert(`El monto mínimo de compra es de $${MIN_PURCHASE.toLocaleString('es-AR')}. Te faltan $${faltante.toLocaleString('es-AR')} para alcanzarlo.`);
-        return;
-    }
-
-    const fmtTotal = `$${totalFinal.toLocaleString('es-AR')}`;
+    const fmtTotal = `${totalFinal.toLocaleString('es-AR')}`;
     const choiceOnlineEl = document.getElementById('choice-online-amount');
     const choiceDeliveryEl = document.getElementById('choice-delivery-amount');
     if (choiceOnlineEl) choiceOnlineEl.textContent = fmtTotal;
@@ -1898,6 +1966,23 @@ function actualizarBannerPagoElegido() {
     const bannerIcon = document.getElementById('selected-payment-icon');
     const policyIcon = document.getElementById('payment-policy-icon');
     const policyText = document.getElementById('payment-policy-text');
+    const btnChange = document.getElementById('btn-change-payment');
+    const labelElegida = document.querySelector('.selected-payment-label');
+
+    if (!PAGO_ONLINE_HABILITADO) {
+        if (bannerName) bannerName.textContent = 'Pago contra entrega:';
+        if (bannerSub) bannerSub.textContent = 'pagás al recibir con QR, transferencia, tarjeta de débito o crédito (no efectivo). El monto final se calcula con el peso real de los productos.';
+        if (bannerIcon) bannerIcon.setAttribute('name', 'wallet-outline');
+        if (btnChange) btnChange.style.display = 'none';
+        if (labelElegida) labelElegida.style.display = 'none';
+        if (policyText) policyText.innerHTML = '<strong>Pago al recibir:</strong> pagás al recibir con QR, transferencia, tarjeta de débito o crédito (no efectivo). El pago online no está disponible por ahora. El monto final se calcula con el peso real de los productos.';
+        if (policyIcon) policyIcon.setAttribute('name', 'wallet-outline');
+        actualizarTextoBotonFinalizar();
+        return;
+    }
+
+    if (btnChange) btnChange.style.display = '';
+    if (labelElegida) labelElegida.style.display = '';
 
     if (metodoPagoSeleccionado === METODO_PAGO_ONLINE) {
         if (bannerName) bannerName.textContent = 'Pago online (Mercado Pago)';
