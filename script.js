@@ -1,7 +1,7 @@
 /* HUERTA URBANA - LOGIC & CART SYSTEM (Catalogo Extendido) */
 
 if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js?v=86');
+  navigator.serviceWorker.register('sw.js?v=87');
 }
 
 // Constantes y estado de método de pago
@@ -9,6 +9,7 @@ const METODO_PAGO_ONLINE = 'mercadopago';
 const METODO_PAGO_AL_RECIBIR = 'efectivo'; // TODO: cambiar si en Make se define otro valor
 let metodoPagoSeleccionado = METODO_PAGO_ONLINE;
 let orderSubmitting = false;
+let openedFromCart = false;
 
 /* ── PWA: Sistema de Instalación ─────────────────────── */
 let deferredPrompt = null;
@@ -996,10 +997,12 @@ function initUI() {
         const cartModal = document.getElementById('cart-modal');
         const comboModal = document.getElementById('combo-modal');
         const successModal = document.getElementById('success-modal');
+        const paymentChoiceModal = document.getElementById('payment-choice-modal');
 
         if (e.target === cartModal) closeCartModal();
         if (e.target === comboModal) closeComboModal();
         if (e.target === successModal) closeModal();
+        if (e.target === paymentChoiceModal) cerrarEleccionPago(true);
         if (e.target === document.getElementById('terms-modal')) closeTermsModal();
     });
 
@@ -1036,11 +1039,18 @@ function initUI() {
         });
     }
 
-    // Selector de método de pago
+    // Selector de método de pago y banner
     const btnPayOnline = document.getElementById('btn-pay-online');
     const btnPayDelivery = document.getElementById('btn-pay-delivery');
     btnPayOnline?.addEventListener('click', () => seleccionarMetodoPago(METODO_PAGO_ONLINE));
     btnPayDelivery?.addEventListener('click', () => seleccionarMetodoPago(METODO_PAGO_AL_RECIBIR));
+
+    const btnChoiceOnline = document.getElementById('btn-choice-online');
+    const btnChoiceDelivery = document.getElementById('btn-choice-delivery');
+    btnChoiceOnline?.addEventListener('click', () => seleccionarYContinuar(METODO_PAGO_ONLINE));
+    btnChoiceDelivery?.addEventListener('click', () => seleccionarYContinuar(METODO_PAGO_AL_RECIBIR));
+
+    actualizarBannerPagoElegido();
 }
 
 function showCartModal() {
@@ -1343,9 +1353,13 @@ function updateSummary() {
     // Actualizar montos en las tarjetas del selector de pago
     const payOnlineAmountEl = document.getElementById('pay-online-amount');
     const payDeliveryAmountEl = document.getElementById('pay-delivery-amount');
+    const choiceOnlineAmountEl = document.getElementById('choice-online-amount');
+    const choiceDeliveryAmountEl = document.getElementById('choice-delivery-amount');
     const fmtTotalFinal = `$${totalFinal.toLocaleString('es-AR')}`;
     if (payOnlineAmountEl) payOnlineAmountEl.innerText = fmtTotalFinal;
     if (payDeliveryAmountEl) payDeliveryAmountEl.innerText = fmtTotalFinal;
+    if (choiceOnlineAmountEl) choiceOnlineAmountEl.innerText = fmtTotalFinal;
+    if (choiceDeliveryAmountEl) choiceDeliveryAmountEl.innerText = fmtTotalFinal;
 
     // Sincronizar con campo de producto para el JSON de Make
     const hiddenDetails = document.getElementById('hidden-details');
@@ -1619,7 +1633,15 @@ async function processOrder(form) {
 
         // Si es pago al recibir: muestra cartel de confirmación sin buscar link ni depender del body
         if (metodoPago === METODO_PAGO_AL_RECIBIR) {
-            mostrarConfirmacionAlRecibir(numeroPedido, totalNum, diaSeleccionado, horarioSeleccionado);
+            mostrarConfirmacionAlRecibir({
+                numeroPedido,
+                totalNum,
+                diaSeleccionado,
+                horarioSeleccionado,
+                direccion,
+                localidad: formData.get("localidad") || '',
+                cartSnapshot: { ...cart }
+            });
             return;
         }
 
@@ -1665,20 +1687,88 @@ async function processOrder(form) {
     }
 }
 
-function mostrarConfirmacionAlRecibir(numeroPedido, totalNum, diaSeleccionado, horarioSeleccionado) {
+function mostrarConfirmacionAlRecibir(arg1, arg2, arg3, arg4) {
+    let datos = {};
+    if (typeof arg1 === 'object' && arg1 !== null) {
+        datos = arg1;
+    } else {
+        datos = {
+            numeroPedido: arg1,
+            totalNum: arg2,
+            diaSeleccionado: arg3,
+            horarioSeleccionado: arg4,
+            direccion: document.querySelector('[name="direccion"]')?.value || '',
+            localidad: document.querySelector('[name="localidad"]')?.value || '',
+            cartSnapshot: { ...cart }
+        };
+    }
+
+    const { numeroPedido, totalNum, diaSeleccionado, horarioSeleccionado, direccion, localidad, cartSnapshot } = datos;
+
     const orderNumEl = document.getElementById('success-order-num');
     const orderTotalEl = document.getElementById('success-order-total');
     const orderDeliveryEl = document.getElementById('success-order-delivery');
+    const orderAddressEl = document.getElementById('success-order-address');
+    const orderProductsEl = document.getElementById('success-order-products');
     const waBtn = document.getElementById('success-whatsapp-btn');
 
-    if (orderNumEl) orderNumEl.textContent = numeroPedido;
-    if (orderTotalEl) orderTotalEl.textContent = `$${Math.round(totalNum).toLocaleString('es-AR')}`;
-    if (orderDeliveryEl) {
-        orderDeliveryEl.textContent = formatearEntregaParaResumen(diaSeleccionado, horarioSeleccionado);
+    if (orderNumEl) orderNumEl.textContent = numeroPedido || 'HU-000000';
+    const totalFormateado = `$${Math.round(totalNum || 0).toLocaleString('es-AR')}`;
+    if (orderTotalEl) orderTotalEl.textContent = totalFormateado;
+
+    const entregaFormateada = formatearEntregaParaResumen(diaSeleccionado, horarioSeleccionado);
+    if (orderDeliveryEl) orderDeliveryEl.textContent = entregaFormateada;
+
+    const dirTexto = [direccion, localidad].filter(Boolean).join(', ') || 'Dirección registrada en el pedido';
+    if (orderAddressEl) orderAddressEl.textContent = dirTexto;
+
+    // Detalle de productos con cantidades
+    const items = Object.values(cartSnapshot && Object.keys(cartSnapshot).length > 0 ? cartSnapshot : cart);
+    let productsListHtml = '';
+    const productosTextoList = [];
+
+    items.forEach(item => {
+        const unitLabel = item.unit || item.unidad || 'kg';
+        const displayQty = item.qty === 0.5 ? '1/2' : item.qty;
+        let itemText;
+        if (unitLabel.toLowerCase() === 'unidad' || unitLabel === '') {
+            itemText = `${displayQty} ${pluralizar(item.qty, item.name)}`;
+        } else if (unitLabel.toLowerCase().includes('kg') || unitLabel.toLowerCase().includes('kilo')) {
+            const uKilo = item.qty <= 1 ? 'kilo' : 'kilos';
+            itemText = `${displayQty} ${uKilo} ${item.name}`;
+        } else {
+            itemText = `${displayQty} ${pluralizar(item.qty, unitLabel)} ${item.name}`;
+        }
+        let subtotal = (item.unit === 'g') ? (item.price / 1000) * item.qty : item.price * item.qty;
+        const subtotalStr = `$${Math.floor(subtotal).toLocaleString('es-AR')}`;
+
+        productsListHtml += `
+            <div class="success-product-row">
+                <span class="success-product-name">${itemText}</span>
+                <span class="success-product-subtotal">${subtotalStr}</span>
+            </div>
+        `;
+        productosTextoList.push(`• ${itemText} (${subtotalStr})`);
+    });
+
+    if (orderProductsEl) {
+        orderProductsEl.innerHTML = productsListHtml || '<div class="success-product-row"><span>Productos seleccionados</span></div>';
     }
+
     if (waBtn) {
-        const msg = encodeURIComponent(`Hola, consulta por mi pedido ${numeroPedido}`);
-        waBtn.href = `https://wa.me/5491161771376?text=${msg}`;
+        const textoProductos = productosTextoList.length > 0 ? productosTextoList.join('\n') : 'Productos del pedido';
+        const mensajeWa = `¡Hola Huerta Urbana! Quiero enviar el detalle de mi pedido:
+*Pedido:* ${numeroPedido}
+*Estado:* Pendiente de pago (pagás al recibir)
+*Productos:*
+${textoProductos}
+*Total estimado:* ${totalFormateado} (puede variar según el peso real)
+*Dirección:* ${dirTexto}
+*Entrega:* ${entregaFormateada}
+
+Por favor confírmenme la recepción. ¡Muchas gracias!`;
+
+        waBtn.href = `https://wa.me/5491161771376?text=${encodeURIComponent(mensajeWa)}`;
     }
 
     const orderForm = document.getElementById('order-form');
@@ -1687,7 +1777,10 @@ function mostrarConfirmacionAlRecibir(numeroPedido, totalNum, diaSeleccionado, h
     updateSummary();
 
     const successModal = document.getElementById('success-modal');
-    if (successModal) successModal.style.display = 'flex';
+    if (successModal) {
+        successModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
 }
 
 function formatearEntregaParaResumen(diaStr, horarioStr) {
@@ -1716,26 +1809,108 @@ function formatearEntregaParaResumen(diaStr, horarioStr) {
     return diaStr + (horarioStr ? ` · ${horarioStr}` : '');
 }
 
+function abrirEleccionPago(origen) {
+    const totalItems = Object.keys(cart).length;
+    if (totalItems === 0) {
+        alert("Tu carrito está vacío. Agregá productos para continuar con tu compra.");
+        return;
+    }
+
+    const baseTotal = Object.values(cart).reduce((acc, item) => acc + (item.price * item.qty), 0);
+    let descuentoCupon = 0;
+    if (cuponAplicado && cuponAplicado.tipo === 'porcentaje') {
+        descuentoCupon = Math.floor(baseTotal * cuponAplicado.valor / 100);
+    }
+    const subtotalPostCupon = baseTotal - descuentoCupon;
+    let actualDescuentoCredito = 0;
+    if (creditoAplicado > 0) {
+        actualDescuentoCredito = Math.floor(Math.min(subtotalPostCupon, creditoAplicado));
+    }
+    const totalFinal = Math.ceil(subtotalPostCupon - actualDescuentoCredito);
+
+    if (baseTotal < MIN_PURCHASE) {
+        const faltante = MIN_PURCHASE - baseTotal;
+        alert(`El monto mínimo de compra es de $${MIN_PURCHASE.toLocaleString('es-AR')}. Te faltan $${faltante.toLocaleString('es-AR')} para alcanzarlo.`);
+        return;
+    }
+
+    const fmtTotal = `$${totalFinal.toLocaleString('es-AR')}`;
+    const choiceOnlineEl = document.getElementById('choice-online-amount');
+    const choiceDeliveryEl = document.getElementById('choice-delivery-amount');
+    if (choiceOnlineEl) choiceOnlineEl.textContent = fmtTotal;
+    if (choiceDeliveryEl) choiceDeliveryEl.textContent = fmtTotal;
+
+    const cartModal = document.getElementById('cart-modal');
+    openedFromCart = (origen === 'cart' || (cartModal && cartModal.style.display === 'flex'));
+    if (cartModal) {
+        cartModal.style.display = 'none';
+    }
+
+    const choiceModal = document.getElementById('payment-choice-modal');
+    if (choiceModal) {
+        choiceModal.style.display = 'flex';
+        document.body.style.overflow = 'hidden';
+    }
+}
+
+function cerrarEleccionPago(volverAlCarrito = true) {
+    const choiceModal = document.getElementById('payment-choice-modal');
+    if (choiceModal) {
+        choiceModal.style.display = 'none';
+    }
+
+    if (volverAlCarrito && openedFromCart) {
+        showCartModal();
+    } else {
+        document.body.style.overflow = 'auto';
+    }
+}
+
+function seleccionarYContinuar(metodo) {
+    seleccionarMetodoPago(metodo);
+    cerrarEleccionPago(false);
+    const formSection = document.getElementById('formulario') || document.getElementById('order-form');
+    if (formSection) {
+        formSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+}
+
 function seleccionarMetodoPago(metodo) {
     if (metodo !== METODO_PAGO_ONLINE && metodo !== METODO_PAGO_AL_RECIBIR) return;
     metodoPagoSeleccionado = metodo;
+
+    const btnChoiceOnline = document.getElementById('btn-choice-online');
+    const btnChoiceDelivery = document.getElementById('btn-choice-delivery');
+    if (btnChoiceOnline) btnChoiceOnline.classList.toggle('active', metodo === METODO_PAGO_ONLINE);
+    if (btnChoiceDelivery) btnChoiceDelivery.classList.toggle('active', metodo === METODO_PAGO_AL_RECIBIR);
 
     const btnOnline = document.getElementById('btn-pay-online');
     const btnDelivery = document.getElementById('btn-pay-delivery');
     if (btnOnline) btnOnline.classList.toggle('active', metodo === METODO_PAGO_ONLINE);
     if (btnDelivery) btnDelivery.classList.toggle('active', metodo === METODO_PAGO_AL_RECIBIR);
 
+    actualizarBannerPagoElegido();
+}
+
+function actualizarBannerPagoElegido() {
+    const bannerName = document.getElementById('selected-payment-name');
+    const bannerSub = document.getElementById('selected-payment-sub');
+    const bannerIcon = document.getElementById('selected-payment-icon');
     const policyIcon = document.getElementById('payment-policy-icon');
     const policyText = document.getElementById('payment-policy-text');
 
-    if (policyText) {
-        if (metodo === METODO_PAGO_ONLINE) {
-            policyText.textContent = 'Pagás ahora de forma segura con Mercado Pago';
-            if (policyIcon) policyIcon.setAttribute('name', 'shield-checkmark-outline');
-        } else {
-            policyText.innerHTML = '<strong>Pagás al recibir tu pedido:</strong> QR, transferencia, tarjeta de débito o crédito (no efectivo). El monto final puede variar levemente según el peso real de los productos.';
-            if (policyIcon) policyIcon.setAttribute('name', 'wallet-outline');
-        }
+    if (metodoPagoSeleccionado === METODO_PAGO_ONLINE) {
+        if (bannerName) bannerName.textContent = 'Pago online (Mercado Pago)';
+        if (bannerSub) bannerSub.textContent = 'Pagás ahora de forma segura con Mercado Pago';
+        if (bannerIcon) bannerIcon.setAttribute('name', 'card-outline');
+        if (policyText) policyText.textContent = 'Pagás ahora de forma segura con Mercado Pago';
+        if (policyIcon) policyIcon.setAttribute('name', 'shield-checkmark-outline');
+    } else {
+        if (bannerName) bannerName.textContent = 'Pago contra entrega (al recibir tu pedido)';
+        if (bannerSub) bannerSub.textContent = 'QR, transferencia, débito o crédito (no se acepta efectivo)';
+        if (bannerIcon) bannerIcon.setAttribute('name', 'wallet-outline');
+        if (policyText) policyText.innerHTML = '<strong>Pagás al recibir tu pedido:</strong> QR, transferencia, tarjeta de débito o crédito (no efectivo). El monto final puede variar levemente según el peso real de los productos.';
+        if (policyIcon) policyIcon.setAttribute('name', 'wallet-outline');
     }
 
     actualizarTextoBotonFinalizar();

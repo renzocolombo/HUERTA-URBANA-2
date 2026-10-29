@@ -1,6 +1,6 @@
 /**
- * SUITE DE PRUEBAS NODE: SELECTOR DE PAGO, FLUJO ONLINE Y PAGO AL RECIBIR
- * HUERTA URBANA
+ * SUITE DE PRUEBAS NODE: ELECCIÓN DE PAGO (ONLINE Y CONTRA ENTREGA)
+ * Huerta Urbana - feat/web-pago-elegir
  */
 
 import assert from "node:assert";
@@ -8,7 +8,7 @@ import fs from "node:fs";
 import path from "node:path";
 
 console.log("==================================================================");
-console.log("SUITE DE PRUEBAS: ELECCIÓN DE PAGO (ONLINE Y AL RECIBIR)");
+console.log("SUITE DE PRUEBAS: ELECCIÓN DE PAGO (ONLINE Y CONTRA ENTREGA)");
 console.log("==================================================================");
 
 let testsPassed = 0;
@@ -74,7 +74,7 @@ const htmlCode = fs.readFileSync(path.resolve("index.html"), "utf8");
 // -----------------------------------------------------------------------------
 console.log("\n1. Constantes y estructura de Payload con cada opción:");
 
-test("script.js define METODO_PAGO_ONLINE y METODO_PAGO_AL_RECIBIR", () => {
+test("script.js define METODO_PAGO_ONLINE ('mercadopago') y METODO_PAGO_AL_RECIBIR ('efectivo')", () => {
   assert(scriptCode.includes("const METODO_PAGO_ONLINE = 'mercadopago'"), "Debe definir METODO_PAGO_ONLINE = 'mercadopago'");
   assert(scriptCode.includes("const METODO_PAGO_AL_RECIBIR = 'efectivo'"), "Debe definir METODO_PAGO_AL_RECIBIR = 'efectivo'");
 });
@@ -167,9 +167,9 @@ test("Online NO redirige ante dominio externo no autorizado", () => {
 });
 
 // -----------------------------------------------------------------------------
-// 3. Simulación de Flujos de Envío (con Mock DOM y Mock Fetch)
+// 3. Simulación de Flujos de Selección y Pantalla Previa
 // -----------------------------------------------------------------------------
-console.log("\n3. Simulación de Flujos de Envío en Node:");
+console.log("\n3. Simulación de Flujos de Elección Pre-formulario y Modales:");
 
 class MockElement {
   constructor(id, tag = 'div') {
@@ -206,16 +206,26 @@ class MockElement {
 function crearEntornoSimulado() {
   const elements = {
     'submit-btn': new MockElement('submit-btn', 'button'),
-    'btn-pay-online': new MockElement('btn-pay-online', 'button'),
-    'btn-pay-delivery': new MockElement('btn-pay-delivery', 'button'),
-    'pay-online-amount': new MockElement('pay-online-amount', 'div'),
-    'pay-delivery-amount': new MockElement('pay-delivery-amount', 'div'),
+    'btn-cart-checkout': new MockElement('btn-cart-checkout', 'button'),
+    'btn-summary-checkout': new MockElement('btn-summary-checkout', 'button'),
+    'payment-choice-modal': new MockElement('payment-choice-modal', 'div'),
+    'btn-choice-online': new MockElement('btn-choice-online', 'button'),
+    'btn-choice-delivery': new MockElement('btn-choice-delivery', 'button'),
+    'choice-online-amount': new MockElement('choice-online-amount', 'strong'),
+    'choice-delivery-amount': new MockElement('choice-delivery-amount', 'strong'),
+    'selected-payment-banner': new MockElement('selected-payment-banner', 'div'),
+    'selected-payment-name': new MockElement('selected-payment-name', 'strong'),
+    'selected-payment-sub': new MockElement('selected-payment-sub', 'span'),
+    'selected-payment-icon': new MockElement('selected-payment-icon', 'ion-icon'),
+    'btn-change-payment': new MockElement('btn-change-payment', 'button'),
     'payment-policy-icon': new MockElement('payment-policy-icon', 'ion-icon'),
     'payment-policy-text': new MockElement('payment-policy-text', 'p'),
     'success-modal': new MockElement('success-modal', 'div'),
     'success-order-num': new MockElement('success-order-num', 'strong'),
     'success-order-total': new MockElement('success-order-total', 'strong'),
     'success-order-delivery': new MockElement('success-order-delivery', 'strong'),
+    'success-order-address': new MockElement('success-order-address', 'strong'),
+    'success-order-products': new MockElement('success-order-products', 'div'),
     'success-whatsapp-btn': new MockElement('success-whatsapp-btn', 'a'),
     'summary-items': new MockElement('summary-items', 'div'),
     'summary-total': new MockElement('summary-total', 'span'),
@@ -229,105 +239,157 @@ function crearEntornoSimulado() {
     'delivery-time': new MockElement('delivery-time', 'input')
   };
 
+  elements['payment-choice-modal'].style.display = 'none';
+  elements['cart-modal'].style.display = 'none';
   elements['success-modal'].style.display = 'none';
 
-  const doc = {
-    getElementById: (id) => elements[id] || null,
-    querySelector: (sel) => {
-      if (sel.includes('name="dia_entrega"')) return { value: 'Miércoles 04/11/2026 Tarde' };
-      if (sel.includes('name="horario_entrega"')) return { value: '14 a 17 hs' };
-      if (sel.includes('name="numero_pedido"')) return { value: '' };
-      if (sel.includes('name="fecha"')) return { value: '' };
-      if (sel.includes('name="fecha_entrega"')) return { value: '' };
-      if (sel.includes('name="ficha_entrega"')) return { value: '' };
-      if (sel.includes('name="nombre"')) return { value: 'Cliente Prueba' };
-      if (sel.includes('name="telefono"')) return { value: '11 9999 8888' };
-      if (sel.includes('name="direccion"')) return { value: 'Calle Test 456' };
-      if (sel.includes('name="total"')) return { value: '38000' };
-      if (sel.includes('name="cantidad"')) return { value: '2' };
-      if (sel.includes('name="credito_usado"')) return { value: '0' };
-      return new MockElement('generic');
-    },
-    documentElement: { classList: new Set() }
-  };
-
-  return { elements, doc };
+  return elements;
 }
 
-test("Al cambiar de método de pago se actualiza el texto del botón y clases activas", () => {
-  const { elements, doc } = crearEntornoSimulado();
-  let metodoActual = 'mercadopago';
+test("Al tocar botón de finalizar (carrito o resumen) se abre la pantalla de elección antes del formulario", () => {
+  const elements = crearEntornoSimulado();
+  let openedFromCart = false;
 
-  function seleccionarMetodo(metodo) {
-    metodoActual = metodo;
-    elements['btn-pay-online'].classList[metodo === 'mercadopago' ? 'add' : 'delete']('active');
-    elements['btn-pay-delivery'].classList[metodo === 'efectivo' ? 'add' : 'delete']('active');
-    if (metodo === 'mercadopago') {
-      elements['submit-btn'].innerText = 'Ir a pagar';
-      elements['payment-policy-text'].textContent = 'Pagás ahora de forma segura con Mercado Pago';
-    } else {
-      elements['submit-btn'].innerText = 'Confirmar pedido';
-      elements['payment-policy-text'].textContent = 'Pagás al recibir tu pedido...';
+  function abrirEleccionPago(origen) {
+    openedFromCart = (origen === 'cart');
+    if (elements['cart-modal'].style.display === 'flex') {
+      elements['cart-modal'].style.display = 'none';
+    }
+    elements['choice-online-amount'].textContent = '$35.000';
+    elements['choice-delivery-amount'].textContent = '$35.000';
+    elements['payment-choice-modal'].style.display = 'flex';
+  }
+
+  // 1. Abrir desde modal de carrito
+  elements['cart-modal'].style.display = 'flex';
+  abrirEleccionPago('cart');
+  assert.strictEqual(elements['payment-choice-modal'].style.display, 'flex', "Debe abrirse el modal de elección");
+  assert.strictEqual(elements['cart-modal'].style.display, 'none', "Debe cerrarse el modal de carrito");
+  assert.strictEqual(openedFromCart, true);
+
+  // 2. Si el cliente cierra la ventana, vuelve al carrito sin perder nada
+  function cerrarEleccionPago(volverAlCarrito) {
+    elements['payment-choice-modal'].style.display = 'none';
+    if (volverAlCarrito && openedFromCart) {
+      elements['cart-modal'].style.display = 'flex';
     }
   }
 
-  // 1. Por defecto online
-  seleccionarMetodo('mercadopago');
-  assert.strictEqual(elements['submit-btn'].innerText, 'Ir a pagar');
-  assert(elements['btn-pay-online'].classList.has('active'));
-  assert(!elements['btn-pay-delivery'].classList.has('active'));
+  cerrarEleccionPago(true);
+  assert.strictEqual(elements['payment-choice-modal'].style.display, 'none', "Debe cerrarse el modal de elección");
+  assert.strictEqual(elements['cart-modal'].style.display, 'flex', "Debe volver a mostrarse el modal de carrito");
 
-  // 2. Cambiar a al recibir
-  seleccionarMetodo('efectivo');
+  // 3. Abrir desde resumen
+  abrirEleccionPago('summary');
+  assert.strictEqual(elements['payment-choice-modal'].style.display, 'flex');
+  assert.strictEqual(openedFromCart, false);
+});
+
+test("Al elegir una opción se actualiza el banner, el botón del form y el método de pago", () => {
+  const elements = crearEntornoSimulado();
+  let metodoPagoSeleccionado = 'mercadopago';
+
+  function seleccionarMetodoPago(metodo) {
+    metodoPagoSeleccionado = metodo;
+    if (metodo === 'mercadopago') {
+      elements['selected-payment-name'].textContent = 'Pago online (Mercado Pago)';
+      elements['submit-btn'].innerText = 'Ir a pagar';
+      elements['payment-policy-text'].textContent = 'Pagás ahora de forma segura con Mercado Pago';
+    } else {
+      elements['selected-payment-name'].textContent = 'Pago contra entrega (al recibir tu pedido)';
+      elements['submit-btn'].innerText = 'Confirmar pedido';
+      elements['payment-policy-text'].innerHTML = '<strong>Pagás al recibir tu pedido:</strong> QR, transferencia, tarjeta de débito o crédito (no efectivo). El monto final puede variar levemente según el peso real de los productos.';
+    }
+    elements['payment-choice-modal'].style.display = 'none';
+  }
+
+  // Elegir contra entrega
+  seleccionarMetodoPago('efectivo');
+  assert.strictEqual(metodoPagoSeleccionado, 'efectivo');
+  assert.strictEqual(elements['selected-payment-name'].textContent, 'Pago contra entrega (al recibir tu pedido)');
   assert.strictEqual(elements['submit-btn'].innerText, 'Confirmar pedido');
-  assert(!elements['btn-pay-online'].classList.has('active'));
-  assert(elements['btn-pay-delivery'].classList.has('active'));
+  assert(elements['payment-policy-text'].innerHTML.includes('QR, transferencia, tarjeta de débito o crédito (no efectivo)'));
 
-  // 3. Volver a online
-  seleccionarMetodo('mercadopago');
+  // Cambiar forma de pago a online
+  seleccionarMetodoPago('mercadopago');
+  assert.strictEqual(metodoPagoSeleccionado, 'mercadopago');
+  assert.strictEqual(elements['selected-payment-name'].textContent, 'Pago online (Mercado Pago)');
   assert.strictEqual(elements['submit-btn'].innerText, 'Ir a pagar');
 });
 
-test("Al recibir con 200 (incluso texto plano 'Accepted'): muestra cartel con todos los datos y no busca link", () => {
-  const { elements } = crearEntornoSimulado();
-  let cart = { prod1: { name: 'Tomate', price: 35000, qty: 1 } };
+test("Flujo contra entrega exitoso: muestra confirmación con todos los datos y URL de WhatsApp precargada", () => {
+  const elements = crearEntornoSimulado();
+  let cart = {
+    prod1: { name: 'Tomate Redondo', price: 3500, qty: 2, unit: 'kg' },
+    prod2: { name: 'Banana Ecuador', price: 4000, qty: 1, unit: 'kg' }
+  };
 
-  function simularMostrarConfirmacionAlRecibir(numeroPedido, totalNum, dia, horario) {
-    elements['success-order-num'].textContent = numeroPedido;
-    elements['success-order-total'].textContent = `$${Math.round(totalNum).toLocaleString('es-AR')}`;
+  function simularConfirmacionContraEntrega(datos) {
+    elements['success-order-num'].textContent = datos.numeroPedido;
+    elements['success-order-total'].textContent = `$${Math.round(datos.totalNum).toLocaleString('es-AR')}`;
+    elements['success-order-address'].textContent = `${datos.direccion}, ${datos.localidad}`;
     elements['success-order-delivery'].textContent = "Miércoles 04/11 · Tarde, 14 a 17 h";
-    elements['success-whatsapp-btn'].href = `https://wa.me/5491161771376?text=Hola%2C%20consulta%20por%20mi%20pedido%20${numeroPedido}`;
-    cart = {};
+
+    // Productos
+    const prodsTexto = Object.values(datos.cartSnapshot).map(p => `• ${p.qty} kg ${p.name} ($${p.price * p.qty})`).join('\n');
+    elements['success-order-products'].innerHTML = prodsTexto;
+
+    // WhatsApp
+    const msgWa = `¡Hola Huerta Urbana! Quiero enviar el detalle de mi pedido:
+*Pedido:* ${datos.numeroPedido}
+*Estado:* Pendiente de pago (pagás al recibir)
+*Productos:*
+${prodsTexto}
+*Total estimado:* $${Math.round(datos.totalNum).toLocaleString('es-AR')} (puede variar según el peso real)
+*Dirección:* ${datos.direccion}, ${datos.localidad}
+*Entrega:* Miércoles 04/11 · Tarde, 14 a 17 h
+
+Por favor confírmenme la recepción. ¡Muchas gracias!`;
+
+    elements['success-whatsapp-btn'].href = `https://wa.me/5491161771376?text=${encodeURIComponent(msgWa)}`;
     elements['success-modal'].style.display = 'flex';
+    cart = {};
   }
 
-  // Simulación: status 200, texto no JSON "Accepted"
-  const responseStatus = 200;
-  const responseText = "Accepted";
+  simularConfirmacionContraEntrega({
+    numeroPedido: "HU-654321",
+    totalNum: 11000,
+    diaSeleccionado: "Miércoles 04/11/2026 Tarde",
+    horarioSeleccionado: "14 a 17 hs",
+    direccion: "Av. Maipú 123",
+    localidad: "Del Viso",
+    cartSnapshot: { ...cart }
+  });
 
-  if (responseStatus >= 200 && responseStatus < 300) {
-    simularMostrarConfirmacionAlRecibir("HU-998877", 35000, "Miércoles 04/11/2026 Tarde", "14 a 17 hs");
-  }
-
-  assert.strictEqual(elements['success-modal'].style.display, 'flex', "Debe mostrar success-modal");
-  assert.strictEqual(elements['success-order-num'].textContent, "HU-998877");
-  assert.strictEqual(elements['success-order-total'].textContent, "$35.000");
+  assert.strictEqual(elements['success-modal'].style.display, 'flex');
+  assert.strictEqual(elements['success-order-num'].textContent, "HU-654321");
+  assert.strictEqual(elements['success-order-total'].textContent, "$11.000");
+  assert.strictEqual(elements['success-order-address'].textContent, "Av. Maipú 123, Del Viso");
   assert.strictEqual(elements['success-order-delivery'].textContent, "Miércoles 04/11 · Tarde, 14 a 17 h");
-  assert(elements['success-whatsapp-btn'].href.includes("HU-998877"), "Debe tener link de WhatsApp precargado");
-  assert.strictEqual(Object.keys(cart).length, 0, "Debe vaciar el carrito tras éxito");
+  assert(elements['success-order-products'].innerHTML.includes("Tomate Redondo"));
+  assert(elements['success-order-products'].innerHTML.includes("Banana Ecuador"));
+
+  // Verificación de URL de WhatsApp y codificación
+  assert(elements['success-whatsapp-btn'].href.startsWith("https://wa.me/5491161771376?text="));
+  const decodedWaText = decodeURIComponent(elements['success-whatsapp-btn'].href.split("?text=")[1]);
+  assert(decodedWaText.includes("HU-654321"), "Debe incluir número de pedido");
+  assert(decodedWaText.includes("Tomate Redondo"), "Debe incluir productos");
+  assert(decodedWaText.includes("$11.000"), "Debe incluir total");
+  assert(decodedWaText.includes("Av. Maipú 123, Del Viso"), "Debe incluir dirección y localidad");
+  assert(decodedWaText.includes("Miércoles 04/11 · Tarde, 14 a 17 h"), "Debe incluir día y rango horario");
+
+  assert.strictEqual(Object.keys(cart).length, 0, "Debe vaciar el carrito tras confirmación");
 });
 
-test("Error de red en al recibir (ej. status 500 o network reject): no vacía el carrito", async () => {
+test("Error de red en al recibir (ej. status 500): no vacía el carrito", async () => {
   let cart = { prod1: { name: 'Tomate', price: 35000, qty: 1 } };
   let errorMostrado = false;
 
   async function mockEnvioFalla() {
     try {
-      // Simular fallo
       throw new Error("HTTP 500");
     } catch (err) {
       errorMostrado = true;
-      // No se vacía cart
     }
   }
 
@@ -349,32 +411,53 @@ test("Doble clic simultáneo no duplica el envío (anti doble submit)", async ()
     orderSubmitting = false;
   }
 
-  // Ejecución en paralelo simultánea (doble click rápido)
   await Promise.all([simularClick(), simularClick()]);
-
   assert.strictEqual(submitCount, 1, "Solo debe procesarse 1 envío ante doble clic");
 });
 
-test("Aviso de compra mínima faltante muestra cuánto falta cuando está apagado", () => {
-  const MIN_PURCHASE = 35000;
-  const total = 20000;
-  const faltante = MIN_PURCHASE - total;
-  const faltanteStr = `$${faltante.toLocaleString('es-AR')}`;
-  const htmlResult = `Compra mínima: <span id="compra-minima-monto">$35.000</span> · <span class="min-faltante-text">Te faltan ${faltanteStr} para el pedido mínimo</span>`;
+// -----------------------------------------------------------------------------
+// 4. Verificación de HTML según requerimientos de diseño
+// -----------------------------------------------------------------------------
+console.log("\n4. Verificación de estructura HTML de index.html:");
 
-  assert(htmlResult.includes("Te faltan $15.000 para el pedido mínimo"), "Debe calcular y mostrar el monto faltante exacto");
+test("index.html contiene el modal de elección con las 2 tarjetas y textos solicitados", () => {
+  assert(htmlCode.includes('id="payment-choice-modal"'), "Debe existir #payment-choice-modal");
+  assert(htmlCode.includes('id="btn-choice-online"'), "Debe existir #btn-choice-online");
+  assert(htmlCode.includes('id="btn-choice-delivery"'), "Debe existir #btn-choice-delivery");
+  assert(htmlCode.includes('id="choice-online-amount"'), "Debe existir #choice-online-amount");
+  assert(htmlCode.includes('id="choice-delivery-amount"'), "Debe existir #choice-delivery-amount");
+  assert(htmlCode.includes("Pago online"), "Debe tener 'Pago online'");
+  assert(htmlCode.includes("Pagás ahora de forma segura con Mercado Pago"), "Debe tener descripción de pago online");
+  assert(htmlCode.includes("Pago contra entrega"), "Debe tener 'Pago contra entrega'");
+  assert(htmlCode.includes("Pagás al recibir tu pedido con QR, transferencia, tarjeta de débito o crédito. No se acepta efectivo."), "Debe tener descripción de contra entrega");
+  assert(htmlCode.includes("estimado: puede variar según el peso real"), "Debe tener leyenda de peso estimado");
 });
 
-test("index.html contiene el selector de pago y estructura de confirmación requerida", () => {
-  assert(htmlCode.includes('id="btn-pay-online"'), "Debe existir #btn-pay-online");
-  assert(htmlCode.includes('id="btn-pay-delivery"'), "Debe existir #btn-pay-delivery");
-  assert(htmlCode.includes('id="pay-online-amount"'), "Debe existir #pay-online-amount");
-  assert(htmlCode.includes('id="pay-delivery-amount"'), "Debe existir #pay-delivery-amount");
-  assert(htmlCode.includes("Pagar online"), "Debe tener texto 'Pagar online'");
-  assert(htmlCode.includes("Pagar al recibir"), "Debe tener texto 'Pagar al recibir'");
-  assert(htmlCode.includes("Total estimado: puede variar según el peso real"), "Debe incluir leyenda de total estimado");
-  assert(htmlCode.includes('id="success-whatsapp-btn"'), "Debe existir botón WhatsApp en modal success");
-  assert(htmlCode.includes("Pendiente de pago: pagás al recibir"), "Debe existir estado de pago en el modal");
+test("index.html contiene banner arriba del formulario con enlace 'Cambiar forma de pago'", () => {
+  assert(htmlCode.includes('id="selected-payment-banner"'), "Debe existir #selected-payment-banner");
+  assert(htmlCode.includes('id="selected-payment-name"'), "Debe existir #selected-payment-name");
+  assert(htmlCode.includes('id="btn-change-payment"'), "Debe existir #btn-change-payment");
+  assert(htmlCode.includes("Cambiar forma de pago"), "Debe tener enlace/botón 'Cambiar forma de pago'");
+});
+
+test("index.html NO tiene los dos botones de pago debajo del total en el resumen", () => {
+  assert(!htmlCode.includes('class="payment-cards-grid"'), "No debe tener payment-cards-grid en resumen");
+  assert(htmlCode.includes('id="btn-summary-checkout"'), "Debe tener botón de finalizar en el resumen");
+});
+
+test("index.html contiene modal de confirmación contra entrega con todos los campos requeridos", () => {
+  assert(htmlCode.includes('id="success-modal"'), "Debe existir #success-modal");
+  assert(htmlCode.includes("¡Pedido recibido!"), "Debe tener título '¡Pedido recibido!'");
+  assert(htmlCode.includes('id="success-order-num"'), "Debe existir #success-order-num");
+  assert(htmlCode.includes("Pendiente de pago: pagás al recibir"), "Debe existir texto de pendiente");
+  assert(htmlCode.includes('id="success-order-total"'), "Debe existir #success-order-total");
+  assert(htmlCode.includes('id="success-order-address"'), "Debe existir #success-order-address");
+  assert(htmlCode.includes('id="success-order-delivery"'), "Debe existir #success-order-delivery");
+  assert(htmlCode.includes('id="success-order-products"'), "Debe existir #success-order-products");
+  assert(htmlCode.includes("11 6177-1376"), "Debe contener contacto WhatsApp 11 6177-1376");
+  assert(htmlCode.includes('id="success-whatsapp-btn"'), "Debe existir #success-whatsapp-btn");
+  assert(htmlCode.includes("Enviar mi pedido por WhatsApp"), "Debe tener texto 'Enviar mi pedido por WhatsApp'");
+  assert(htmlCode.includes("Volver a la tienda"), "Debe tener botón 'Volver a la tienda'");
 });
 
 console.log("\n==================================================================");

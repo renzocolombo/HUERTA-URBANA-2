@@ -3940,6 +3940,243 @@ html.preview-locked #preview-screen {
     gap: 5px;
 }
 
+/* ==================== MODAL ELECCIÓN DE PAGO PRE-FORMULARIO ==================== */
+.payment-choice-modal-content {
+    max-width: 520px;
+    width: 92%;
+    border-radius: 20px;
+    padding: 28px 22px;
+    text-align: center;
+    background: #ffffff;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.payment-choice-header {
+    margin-bottom: 20px;
+}
+
+.payment-choice-header h2 {
+    font-size: 1.5rem;
+    color: var(--primary);
+    margin-bottom: 6px;
+}
+
+.payment-choice-header p {
+    font-size: 0.9rem;
+    color: var(--text-muted);
+}
+
+.payment-choice-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+}
+
+.payment-choice-card {
+    background: #ffffff;
+    border: 2px solid #e2e8f0;
+    border-radius: 14px;
+    padding: 18px 16px;
+    cursor: pointer;
+    text-align: left;
+    transition: var(--transition);
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    outline: none;
+    font-family: inherit;
+    position: relative;
+}
+
+.payment-choice-card:hover {
+    border-color: #22c55e;
+    transform: translateY(-2px);
+    box-shadow: 0 8px 22px rgba(34, 197, 94, 0.15);
+    background: #fdfefe;
+}
+
+.payment-choice-card-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+}
+
+.payment-choice-title-wrap {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.payment-choice-title-wrap h3 {
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0;
+}
+
+.payment-choice-icon {
+    font-size: 1.4rem;
+    color: #2d5a27;
+}
+
+.payment-choice-desc {
+    font-size: 0.85rem;
+    color: #475569;
+    line-height: 1.4;
+    margin-bottom: 12px;
+}
+
+.payment-choice-amount-row {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    border-top: 1px solid #f1f5f9;
+    padding-top: 10px;
+}
+
+.payment-choice-amount-label {
+    font-size: 0.82rem;
+    color: #64748b;
+    font-weight: 600;
+}
+
+.payment-choice-amount {
+    font-size: 1.25rem;
+    font-weight: 800;
+    color: #15803d;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.payment-choice-legend {
+    font-size: 0.72rem;
+    color: #64748b;
+    font-style: italic;
+    margin-top: 4px;
+}
+
+/* ==================== BANNER DE FORMA DE PAGO EN EL FORMULARIO ==================== */
+.selected-payment-banner {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #f0fdf4;
+    border: 1.5px solid #86efac;
+    border-radius: 12px;
+    padding: 12px 16px;
+    margin-bottom: 20px;
+    gap: 12px;
+}
+
+.selected-payment-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    text-align: left;
+}
+
+.selected-payment-icon {
+    font-size: 1.6rem;
+    color: #16a34a;
+    flex-shrink: 0;
+}
+
+.selected-payment-text-wrap {
+    display: flex;
+    flex-direction: column;
+}
+
+.selected-payment-label {
+    font-size: 0.75rem;
+    color: #166534;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.selected-payment-text-wrap strong {
+    font-size: 0.95rem;
+    color: #14532d;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.selected-payment-sub {
+    font-size: 0.8rem;
+    color: #334155;
+    margin-top: 2px;
+}
+
+.btn-change-payment {
+    background: #ffffff;
+    border: 1px solid #22c55e;
+    color: #15803d;
+    font-size: 0.82rem;
+    font-weight: 700;
+    padding: 8px 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    white-space: nowrap;
+    transition: var(--transition);
+    flex-shrink: 0;
+}
+
+.btn-change-payment:hover {
+    background: #22c55e;
+    color: #ffffff;
+}
+
+@media (max-width: 600px) {
+    .selected-payment-banner {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .btn-change-payment {
+        width: 100%;
+        text-align: center;
+        margin-top: 6px;
+    }
+}
+
+.btn-summary-checkout {
+    margin: 12px 0 6px 0;
+}
+
+.success-detail-column {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
+}
+
+.success-products-list {
+    width: 100%;
+    max-height: 120px;
+    overflow-y: auto;
+    font-size: 0.82rem;
+    color: #334155;
+    padding: 4px 0;
+}
+
+.success-prod-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 2px 0;
+    border-bottom: 1px dotted #e2e8f0;
+}
+
+.success-contact-hint {
+    font-size: 0.85rem;
+    color: #334155;
+    margin: 8px 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+}
+
+
 
 
 

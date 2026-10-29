@@ -99,7 +99,7 @@
       }
     </style>
 
-    <link rel="stylesheet" href="style.css?v=63.0">
+    <link rel="stylesheet" href="style.css?v=64.0">
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RE23859X6R"></script>
@@ -386,35 +386,7 @@
                                     <span id="summary-total">$0</span>
                                 </div>
 
-                                <!-- Selector de Método de Pago -->
-                                <div class="payment-selector-container">
-                                    <label class="payment-selector-label">Elegí cómo pagar:</label>
-                                    <div class="payment-cards-grid">
-                                        <button type="button" class="payment-card-btn active" id="btn-pay-online" data-metodo="mercadopago">
-                                            <div class="payment-card-top">
-                                                <div class="payment-card-title-wrap">
-                                                    <ion-icon name="card-outline" class="payment-card-icon"></ion-icon>
-                                                    <strong class="payment-card-title">Pagar online</strong>
-                                                </div>
-                                                <span class="payment-card-badge">Mercado Pago</span>
-                                            </div>
-                                            <div class="payment-card-amount" id="pay-online-amount">$0</div>
-                                        </button>
-
-                                        <button type="button" class="payment-card-btn" id="btn-pay-delivery" data-metodo="efectivo">
-                                            <div class="payment-card-top">
-                                                <div class="payment-card-title-wrap">
-                                                    <ion-icon name="wallet-outline" class="payment-card-icon"></ion-icon>
-                                                    <strong class="payment-card-title">Pagar al recibir</strong>
-                                                </div>
-                                            </div>
-                                            <div class="payment-card-sub">QR, transferencia, débito o crédito (no efectivo)</div>
-                                            <div class="payment-card-amount" id="pay-delivery-amount">$0</div>
-                                            <div class="payment-card-legend">Total estimado: puede variar según el peso real</div>
-                                        </button>
-                                    </div>
-                                </div>
-
+                                <button type="button" id="btn-summary-checkout" onclick="abrirEleccionPago('summary')" class="btn btn-primary btn-full btn-summary-checkout">Finalizar compra</button>
                                 <p class="shipping-info"><ion-icon name="bicycle-outline"></ion-icon> Envíos gratis a partir de <span id="envio-gratis-monto">$35.000</span></p>
                                 <p id="min-purchase-msg" class="warning-text">Compra mínima: <span id="compra-minima-monto">$35.000</span></p>
                                 <div class="payment-policy-box" id="summary-payment-policy">
@@ -445,6 +417,19 @@
 
                     <!-- Formulario -->
                     <div class="order-form-container">
+                        <div id="selected-payment-banner" class="selected-payment-banner">
+                            <div class="selected-payment-info">
+                                <ion-icon name="card-outline" class="selected-payment-icon" id="selected-payment-icon"></ion-icon>
+                                <div class="selected-payment-text-wrap">
+                                    <span class="selected-payment-label">Forma de pago elegida</span>
+                                    <strong id="selected-payment-name">Pago online (Mercado Pago)</strong>
+                                    <span class="selected-payment-sub" id="selected-payment-sub">Pagás ahora de forma segura con Mercado Pago</span>
+                                </div>
+                            </div>
+                            <button type="button" id="btn-change-payment" class="btn-change-payment" onclick="abrirEleccionPago('form')">
+                                Cambiar forma de pago
+                            </button>
+                        </div>
                         <h3>Datos de Entrega</h3>
                         <form id="order-form">
                             <!-- Campos de Control (Ocultos para Make/Google Sheets) -->
@@ -603,6 +588,47 @@
         </div>
     </footer>
 
+    <!-- Modal Elección de Forma de Pago -->
+    <div id="payment-choice-modal" class="modal">
+        <div class="modal-content payment-choice-modal-content">
+            <button class="close-modal" onclick="cerrarEleccionPago(true)" aria-label="Cerrar"><ion-icon name="close-outline"></ion-icon></button>
+            <div class="payment-choice-header">
+                <h2>Elegí cómo querés pagar</h2>
+                <p>Seleccioná una opción para continuar con tu pedido</p>
+            </div>
+            <div class="payment-choice-grid">
+                <!-- Tarjeta 1: Pago online -->
+                <button type="button" class="payment-choice-card" id="btn-choice-online" onclick="seleccionarYContinuar('mercadopago')">
+                    <div class="payment-choice-card-header">
+                        <ion-icon name="card-outline" class="payment-choice-card-icon"></ion-icon>
+                        <span class="payment-choice-badge">Mercado Pago</span>
+                    </div>
+                    <h3 class="payment-choice-card-title">Pago online</h3>
+                    <p class="payment-choice-card-desc">Pagás ahora de forma segura con Mercado Pago</p>
+                    <div class="payment-choice-card-total">
+                        <span class="payment-choice-total-label">Total a pagar:</span>
+                        <strong class="payment-choice-total-amount" id="choice-online-amount">$0</strong>
+                    </div>
+                </button>
+
+                <!-- Tarjeta 2: Pago contra entrega -->
+                <button type="button" class="payment-choice-card" id="btn-choice-delivery" onclick="seleccionarYContinuar('efectivo')">
+                    <div class="payment-choice-card-header">
+                        <ion-icon name="wallet-outline" class="payment-choice-card-icon"></ion-icon>
+                        <span class="payment-choice-badge badge-contraentrega">Contra entrega</span>
+                    </div>
+                    <h3 class="payment-choice-card-title">Pago contra entrega</h3>
+                    <p class="payment-choice-card-desc">Pagás al recibir tu pedido con QR, transferencia, tarjeta de débito o crédito. No se acepta efectivo.</p>
+                    <div class="payment-choice-card-total">
+                        <span class="payment-choice-total-label">Total estimado:</span>
+                        <strong class="payment-choice-total-amount" id="choice-delivery-amount">$0</strong>
+                        <span class="payment-choice-legend">estimado: puede variar según el peso real</span>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+
     <!-- Modal Success -->
     <div id="success-modal" class="modal">
         <div class="modal-content success-card-modal">
@@ -618,13 +644,22 @@
                     <strong class="success-detail-val status-pending-pill">Pendiente de pago: pagás al recibir</strong>
                 </div>
                 <div class="success-detail-row">
-                    <span class="success-detail-label">Monto estimado a pagar:</span>
+                    <span class="success-detail-label">Monto estimado:</span>
                     <strong class="success-detail-val success-total-val" id="success-order-total">$0</strong>
+                </div>
+                <div class="success-detail-row">
+                    <span class="success-detail-label">Dirección de entrega:</span>
+                    <strong class="success-detail-val" id="success-order-address">-</strong>
                 </div>
                 <div class="success-detail-row">
                     <span class="success-detail-label">Entrega:</span>
                     <strong class="success-detail-val" id="success-order-delivery">-</strong>
                 </div>
+            </div>
+
+            <div class="success-products-container" style="margin: 12px 0; text-align: left;">
+                <span class="success-section-title" style="font-size: 0.82rem; font-weight: 700; color: #166534; text-transform: uppercase; letter-spacing: 0.5px;">Detalle de productos:</span>
+                <div id="success-order-products" class="success-products-list"></div>
             </div>
 
             <div class="payment-policy-box modal-payment-box">
@@ -634,9 +669,13 @@
                 </div>
             </div>
 
+            <div class="success-contact-hint">
+                <ion-icon name="logo-whatsapp"></ion-icon> Contacto WhatsApp: <strong>11 6177-1376</strong>
+            </div>
+
             <div class="success-actions">
                 <a id="success-whatsapp-btn" href="https://wa.me/5491161771376" target="_blank" rel="noopener noreferrer" class="btn btn-whatsapp-action">
-                    <ion-icon name="logo-whatsapp"></ion-icon> Contactar por WhatsApp (11 6177-1376)
+                    <ion-icon name="logo-whatsapp"></ion-icon> Enviar mi pedido por WhatsApp
                 </a>
                 <button type="button" onclick="closeModal()" class="btn btn-primary btn-full">Volver a la tienda</button>
             </div>
@@ -688,8 +727,8 @@
                 </div>
             </div>
             <div class="cart-modal-footer">
-                <button onclick="closeCartModal(); window.location.href='#formulario';"
-                    class="btn btn-primary btn-full">Finalizar Pedido</button>
+                <button type="button" id="btn-cart-checkout" onclick="abrirEleccionPago('cart')"
+                    class="btn btn-primary btn-full">Finalizar compra</button>
             </div>
         </div>
     </div>
@@ -980,7 +1019,7 @@
       });
     </script>
     <script src="entregaCalendario.js?v=1.0"></script>
-    <script src="script.js?v=61.0"></script>
+    <script src="script.js?v=62.0"></script>
     <script type="module" src="auth.js?v=53.0"></script>
 </body>
 
