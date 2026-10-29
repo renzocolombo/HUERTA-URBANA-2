@@ -4180,3 +4180,54 @@ html.preview-locked #preview-screen {
 
 
 
+/* In-App Browser Warning (Instagram/WhatsApp/Facebook) */
+.inapp-browser-warning {
+    width: 100%;
+    background: rgba(234, 179, 8, 0.15);
+    border: 1px solid rgba(234, 179, 8, 0.4);
+    border-radius: 12px;
+    padding: 14px 16px;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    color: #fef08a;
+    box-sizing: border-box;
+}
+.inapp-warning-icon {
+    font-size: 1.5rem;
+    line-height: 1;
+}
+.inapp-warning-content {
+    flex: 1;
+}
+.inapp-warning-title {
+    display: block;
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin-bottom: 4px;
+}
+.inapp-warning-desc {
+    font-size: 0.82rem;
+    color: #d1d5db;
+    margin-bottom: 10px;
+    line-height: 1.3;
+}
+.btn-copy-inapp-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: #ffffff;
+    color: #111827;
+    border: none;
+    padding: 8px 14px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.btn-copy-inapp-link:hover {
+    background: #f3f4f6;
+}

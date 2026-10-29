@@ -1,5 +1,5 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-app.js";
-import { getAuth, GoogleAuthProvider, signInWithPopup, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
+import { getAuth, GoogleAuthProvider, signInWithPopup, signInWithRedirect, getRedirectResult, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.9.0/firebase-firestore.js";
 
 const firebaseConfig = {
@@ -16,6 +16,71 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 const provider = new GoogleAuthProvider();
 
+// Procesar resultado de redirección si se usó signInWithRedirect como respaldo
+getRedirectResult(auth).catch((error) => {
+    console.warn("[AUTH] Error en getRedirectResult:", error);
+});
+
+// Detección de navegador interno (Instagram, Facebook, WhatsApp)
+function esNavegadorInterno() {
+    const ua = (navigator.userAgent || navigator.vendor || window.opera || '').toLowerCase();
+    return /instagram|fbav|fban|fb_iab|whatsapp/i.test(ua);
+}
+window.esNavegadorInterno = esNavegadorInterno;
+
+// Copiar enlace en aviso de navegador interno
+const btnCopyInapp = document.getElementById('btn-copy-inapp-link');
+const txtCopyInapp = document.getElementById('btn-copy-inapp-text');
+if (btnCopyInapp) {
+    btnCopyInapp.addEventListener('click', async () => {
+        const url = window.location.href;
+        let ok = false;
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+            try {
+                await navigator.clipboard.writeText(url);
+                ok = true;
+            } catch (e) {}
+        }
+        if (!ok) {
+            try {
+                const ta = document.createElement('textarea');
+                ta.value = url;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.focus();
+                ta.select();
+                document.execCommand('copy');
+                document.body.removeChild(ta);
+                ok = true;
+            } catch (e) {}
+        }
+        if (txtCopyInapp) {
+            txtCopyInapp.textContent = ok ? '¡Enlace copiado!' : 'Copiar enlace';
+            setTimeout(() => {
+                if (txtCopyInapp) txtCopyInapp.textContent = 'Copiar enlace';
+            }, 2500);
+        }
+    });
+}
+
+// Iniciar sesión con Google (Popup y respaldo con Redirección)
+async function iniciarLoginGoogle() {
+    try {
+        console.log("[AUTH] Intentando login con popup...");
+        await signInWithPopup(auth, provider);
+    } catch (popupError) {
+        console.warn("[AUTH] Falló signInWithPopup, intentando signInWithRedirect como respaldo:", popupError);
+        try {
+            await signInWithRedirect(auth, provider);
+        } catch (redirectError) {
+            console.error("[AUTH] Falló signInWithRedirect:", redirectError);
+            alert("No se pudo iniciar sesión con Google. Si estás usando una app como Instagram o WhatsApp, abrí esta página en Chrome o Safari.");
+        }
+    }
+}
+window.iniciarLoginGoogle = iniciarLoginGoogle;
+
 // Genera código de referido único tipo HU-XXXX
 const generarCodigoReferido = () => {
     const caracteres = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -25,6 +90,37 @@ const generarCodigoReferido = () => {
     }
     return `HU-${resultado}`;
 };
+
+// Sincronización robusta con Google Sheets (idempotente, con 1 reintento, no bloquea el flujo)
+async function guardarClienteEnSheets(uid, email, nombre, codigoReferido) {
+    if (!uid) return;
+    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzWSEDWrGAkLRPj_ugVL6ZIm9qZBxLu93VemH6eSXv0xx6RNSyakn-4q2T7Ik6TpyX7/exec';
+    const params = new URLSearchParams({
+        accion: 'guardarCliente',
+        uid: uid || '',
+        email: email || '',
+        nombre: nombre || '',
+        codigo_referido: codigoReferido || ''
+    });
+    const url = `${APPS_SCRIPT_URL}?${params.toString()}`;
+
+    for (let intento = 1; intento <= 2; intento++) {
+        try {
+            console.log(`[AUTH] Sincronizando cliente con Google Sheets (intento ${intento})...`);
+            const res = await fetch(url);
+            if (!res.ok) throw new Error(`HTTP ${res.status}`);
+            const data = await res.json().catch(() => ({}));
+            console.log("[AUTH] Resultado de sincronizar cliente con Sheets:", data);
+            return data;
+        } catch (err) {
+            console.warn(`[AUTH] Error en intento ${intento} al sincronizar cliente con Sheets:`, err);
+            if (intento < 2) {
+                await new Promise(r => setTimeout(r, 1000));
+            }
+        }
+    }
+}
+window.guardarClienteEnSheets = guardarClienteEnSheets;
 
 // DOM Elements
 const userProfile = document.getElementById('user-profile');
@@ -42,15 +138,11 @@ const loginBottomSheet = document.getElementById('login-bottom-sheet');
 const btnLoginGooglePopup = document.getElementById('btn-login-google-popup');
 const btnCloseLoginPopup = document.getElementById('btn-close-login-popup');
 
-btnLoginGooglePopup.addEventListener('click', async () => {
-    try {
-        await signInWithPopup(auth, provider);
-    } catch (error) {
-        console.error("Error al iniciar sesión con Google:", error);
-    }
+btnLoginGooglePopup?.addEventListener('click', async () => {
+    await iniciarLoginGoogle();
 });
 
-btnLogout.addEventListener('click', async () => {
+btnLogout?.addEventListener('click', async () => {
     if (auth.currentUser) {
         signOut(auth).then(() => {
             closeUserPanel();
@@ -58,25 +150,42 @@ btnLogout.addEventListener('click', async () => {
             console.error("Error al cerrar sesión", error);
         });
     } else {
-        try {
-            await signInWithPopup(auth, provider);
-            closeUserPanel();
-        } catch (error) {
-            console.error("Error al iniciar sesión desde el panel:", error);
-        }
+        await iniciarLoginGoogle();
+        closeUserPanel();
     }
 });
 
-btnCloseLoginPopup.addEventListener('click', () => {
+btnCloseLoginPopup?.addEventListener('click', () => {
     sessionStorage.setItem('login_popup_cerrado', 'true');
     loginBottomSheet.classList.add('hidden');
+    loginBottomSheet.style.display = 'none';
+    window.continuarCheckoutPostLogin = false;
 });
+
+// Pedir login obligatorio al finalizar compra
+window.solicitarLoginGoogle = function(mensajePersonalizado) {
+    const subtitle = document.querySelector('.login-subtitle');
+    if (mensajePersonalizado && subtitle) {
+        subtitle.textContent = mensajePersonalizado;
+        subtitle.style.color = '#ffffff';
+        subtitle.style.fontWeight = '600';
+    }
+    const inappWarn = document.getElementById('inapp-browser-warning');
+    if (inappWarn) {
+        inappWarn.style.display = esNavegadorInterno() ? 'flex' : 'none';
+    }
+    if (loginBottomSheet) {
+        loginBottomSheet.classList.remove('hidden');
+        loginBottomSheet.style.display = 'flex';
+    }
+};
 
 let popupTimeout;
 
 onAuthStateChanged(auth, async (user) => {
     window.userUID = user ? user.uid : '';
     if (user) {
+        let codigoReferido = '';
         // Guardar/Actualizar en Firestore
         try {
             const docRef = doc(db, "clientes", user.uid);
@@ -84,52 +193,43 @@ onAuthStateChanged(auth, async (user) => {
 
             if (!docSnap.exists()) {
                 // Cliente nuevo — generar código de referido
-                const codigoReferido = generarCodigoReferido();
+                codigoReferido = generarCodigoReferido();
                 await setDoc(docRef, {
                     uid: user.uid,
-                    nombre: user.displayName,
-                    email: user.email,
-                    foto: user.photoURL,
+                    nombre: user.displayName || '',
+                    email: user.email || '',
+                    foto: user.photoURL || '',
                     creditos: 0,
                     codigo_referido: codigoReferido,
                     fecha_registro: serverTimestamp()
                 });
                 window.userCredits = 0;
-
-                // Enviar datos a Google Sheets (v6.0)
-                try {
-                    const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzWSEDWrGAkLRPj_ugVL6ZIm9qZBxLu93VemH6eSXv0xx6RNSyakn-4q2T7Ik6TpyX7/exec';
-                    fetch(APPS_SCRIPT_URL + '?accion=guardarCliente&uid=' + encodeURIComponent(user.uid) + '&email=' + encodeURIComponent(user.email) + '&nombre=' + encodeURIComponent(user.displayName) + '&codigo_referido=' + encodeURIComponent(codigoReferido));
-                } catch (e) {
-                    console.error("Error al sincronizar con Google Sheets:", e);
-                }
             } else {
                 const data = docSnap.data();
                 window.userCredits = data.creditos || 0;
+                codigoReferido = data.codigo_referido || '';
                 console.log('[AUTH] Cliente existente en Firestore. Créditos:', window.userCredits);
-                console.log('[AUTH] codigo_referido actual:', JSON.stringify(data.codigo_referido));
+                console.log('[AUTH] codigo_referido actual:', JSON.stringify(codigoReferido));
 
                 // Si el cliente ya existe pero no tiene código de referido, generarlo
-                if (!data.codigo_referido) {
+                if (!codigoReferido) {
                     console.log("[AUTH] El cliente no tiene código de referido. Generando uno...");
-                    const nuevoCodigo = generarCodigoReferido();
+                    codigoReferido = generarCodigoReferido();
                     await setDoc(docRef, {
-                        codigo_referido: nuevoCodigo
+                        codigo_referido: codigoReferido
                     }, { merge: true });
-                    console.log("[AUTH] Código de referido generado y guardado en Firestore:", nuevoCodigo);
-
-                    // Sincronizar nuevo código con Google Sheets
-                    try {
-                        const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzWSEDWrGAkLRPj_ugVL6ZIm9qZBxLu93VemH6eSXv0xx6RNSyakn-4q2T7Ik6TpyX7/exec';
-                        fetch(APPS_SCRIPT_URL + '?accion=actualizarCodigoReferido&uid=' + encodeURIComponent(user.uid) + '&codigo_referido=' + encodeURIComponent(nuevoCodigo));
-                        console.log("[AUTH] Sincronización de código de referido enviada a Apps Script");
-                    } catch (e) {
-                        console.error("[AUTH] Error al sincronizar código con Apps Script:", e);
-                    }
+                    console.log("[AUTH] Código de referido generado y guardado en Firestore:", codigoReferido);
                 }
             }
 
+            // Sincronizar SIEMPRE con Google Sheets para clientes nuevos y existentes (idempotente, con reintento)
+            guardarClienteEnSheets(user.uid, user.email, user.displayName, codigoReferido);
 
+            // Pre-cargar nombre y email en el formulario
+            const inputNombre = document.getElementById('fullname') || document.querySelector('[name="nombre"]');
+            const inputEmail = document.getElementById('email') || document.querySelector('[name="email"]');
+            if (inputNombre && user.displayName) inputNombre.value = user.displayName;
+            if (inputEmail && user.email) inputEmail.value = user.email;
 
             // Actualizar UI de créditos v5.7
             const fmtCredits = '$' + (window.userCredits || 0).toLocaleString('es-AR');
@@ -165,6 +265,14 @@ onAuthStateChanged(auth, async (user) => {
             const panelCredits = document.querySelector('.credit-amount');
             if (panelCredits) panelCredits.innerText = fmtCredits;
 
+            // Continuar automáticamente al checkout si el usuario venía de "Finalizar compra"
+            if (window.continuarCheckoutPostLogin) {
+                window.continuarCheckoutPostLogin = false;
+                if (typeof window.abrirEleccionPago === 'function') {
+                    window.abrirEleccionPago(window.checkoutOrigen || 'summary');
+                }
+            }
+
         } catch (error) {
             console.error("Error al interactuar con Firestore:", error);
         }
@@ -176,6 +284,7 @@ onAuthStateChanged(auth, async (user) => {
 
         if (popupTimeout) clearTimeout(popupTimeout);
         loginBottomSheet.classList.add('hidden');
+        loginBottomSheet.style.display = 'none';
         
         userProfile.style.display = 'flex';
         if (user.photoURL) {
@@ -267,6 +376,8 @@ loginBottomSheet.addEventListener('click', (e) => {
     if (e.target === loginBottomSheet) {
         sessionStorage.setItem('login_popup_cerrado', 'true');
         loginBottomSheet.classList.add('hidden');
+        loginBottomSheet.style.display = 'none';
+        window.continuarCheckoutPostLogin = false;
     }
 });
 

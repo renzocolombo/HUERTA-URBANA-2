@@ -99,7 +99,7 @@
       }
     </style>
 
-    <link rel="stylesheet" href="style.css?v=64.0">
+    <link rel="stylesheet" href="style.css?v=65.0">
 
     <!-- Google Analytics -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-RE23859X6R"></script>
@@ -390,9 +390,9 @@
                                 <p class="shipping-info"><ion-icon name="bicycle-outline"></ion-icon> Envíos gratis a partir de <span id="envio-gratis-monto">$35.000</span></p>
                                 <p id="min-purchase-msg" class="warning-text">Compra mínima: <span id="compra-minima-monto">$35.000</span></p>
                                 <div class="payment-policy-box" id="summary-payment-policy">
-                                    <ion-icon name="shield-checkmark-outline" class="payment-policy-icon" id="payment-policy-icon"></ion-icon>
+                                    <ion-icon name="wallet-outline" class="payment-policy-icon" id="payment-policy-icon"></ion-icon>
                                     <p class="payment-policy-text" id="payment-policy-text">
-                                        Pagás ahora de forma segura con Mercado Pago
+                                        Pago al recibir con QR, transferencia, débito o crédito (no efectivo). El pago online no está disponible por ahora. El monto final se calcula con el peso real de los productos.
                                     </p>
                                     <span class="payment-policy-ref-hidden" style="display:none;">
                                         Pagás al recibir tu pedido: QR, transferencia, tarjeta de débito o crédito (no efectivo). El monto final puede variar levemente según el peso real de los productos.
@@ -419,14 +419,14 @@
                     <div class="order-form-container">
                         <div id="selected-payment-banner" class="selected-payment-banner">
                             <div class="selected-payment-info">
-                                <ion-icon name="card-outline" class="selected-payment-icon" id="selected-payment-icon"></ion-icon>
+                                <ion-icon name="wallet-outline" class="selected-payment-icon" id="selected-payment-icon"></ion-icon>
                                 <div class="selected-payment-text-wrap">
-                                    <span class="selected-payment-label">Forma de pago elegida</span>
-                                    <strong id="selected-payment-name">Pago online (Mercado Pago)</strong>
-                                    <span class="selected-payment-sub" id="selected-payment-sub">Pagás ahora de forma segura con Mercado Pago</span>
+                                    <span class="selected-payment-label" style="display: none;">Forma de pago elegida</span>
+                                    <strong id="selected-payment-name">Pago contra entrega:</strong>
+                                    <span class="selected-payment-sub" id="selected-payment-sub">pagás al recibir con QR, transferencia, tarjeta de débito o crédito (no efectivo). El monto final se calcula con el peso real de los productos.</span>
                                 </div>
                             </div>
-                            <button type="button" id="btn-change-payment" class="btn-change-payment" onclick="abrirEleccionPago('form')">
+                            <button type="button" id="btn-change-payment" class="btn-change-payment" onclick="abrirEleccionPago('form')" style="display: none;">
                                 Cambiar forma de pago
                             </button>
                         </div>
@@ -912,6 +912,18 @@
                 </li>
             </ul>
 
+            <div id="inapp-browser-warning" class="inapp-browser-warning" style="display: none;">
+                <div class="inapp-warning-icon">⚠️</div>
+                <div class="inapp-warning-content">
+                    <strong class="inapp-warning-title">Abrí esta página en Chrome o Safari para ingresar</strong>
+                    <p class="inapp-warning-desc">El inicio de sesión con Google suele estar bloqueado dentro del navegador de Instagram, Facebook o WhatsApp.</p>
+                    <button type="button" id="btn-copy-inapp-link" class="btn-copy-inapp-link">
+                        <ion-icon name="copy-outline"></ion-icon>
+                        <span id="btn-copy-inapp-text">Copiar enlace</span>
+                    </button>
+                </div>
+            </div>
+
             <button id="btn-login-google-popup" class="btn-login-popup">
                 <svg width="24" height="24" viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">
                     <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
@@ -1019,8 +1031,8 @@
       });
     </script>
     <script src="entregaCalendario.js?v=1.0"></script>
-    <script src="script.js?v=62.0"></script>
-    <script type="module" src="auth.js?v=53.0"></script>
+    <script src="script.js?v=63.0"></script>
+    <script type="module" src="auth.js?v=54.0"></script>
 </body>
 
 </html>
